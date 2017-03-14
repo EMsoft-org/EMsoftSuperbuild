@@ -10,7 +10,7 @@ set(FFTW_BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build")
 set(FFTW_SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source")
 set(FFTW_STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp")
 set(FFTW_TEMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Tmp")
-set(FFTW_INSTALL_DIR "${EMsoft_SDK}/Doxygen-${FFTW_VERSION}")
+set(FFTW_INSTALL_DIR "${EMsoft_SDK}/fftw-${FFTW_VERSION}")
 set(FFTW_DOWNLOAD_FILE ${FFTW_FOLDER_NAME}.tar.gz)
 if(WIN32)
   set(FFTW_INSTALL_DIR "${EMsoft_SDK}/fftw-${FFTW_VERSION}-dll64")
@@ -36,35 +36,32 @@ get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 #-- On OS X systems we are going to simply download Doxygen and copy the .app bundle to the /Applications DIRECTORY
 #-- which is where CMake expects to find it.
 if(APPLE)
-  set(DOX_OSX_BASE_NAME Doxygen-${FFTW_VERSION})
-  set(DOX_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/Doxygen-${FFTW_VERSION}.dmg")
-  set(FFTW_DMG ${DOX_OSX_DMG_ABS_PATH})
 
-  configure_file(
-    "${_self_dir}/Doxygen_osx_install.sh.in"
-    "${CMAKE_BINARY_DIR}/Doxygen_osx_install.sh"
-    @ONLY
-  )
-
-  if(NOT EXISTS "${DOX_OSX_DMG_ABS_PATH}")
-    message(STATUS "===============================================================")
-    message(STATUS "   Downloading ${extProjectName}-${FFTW_VERSION}")
-    message(STATUS "   Large Download!! This can take a bit... Please be patient")
-    file(DOWNLOAD ${FFTW_URL} "${DOX_OSX_DMG_ABS_PATH}" SHOW_PROGRESS)
-  endif()
-
-  if(NOT EXISTS "/Applications/DOxygen.app")
-    execute_process(COMMAND "${CMAKE_BINARY_DIR}/Doxygen_osx_install.sh"
-                    OUTPUT_VARIABLE MOUNT_OUTPUT
-                    RESULT_VARIABLE did_run
-                    ERROR_VARIABLE mount_error
-                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-    message(STATUS "OUTPUT_VARIABLE: ${MOUNT_OUTPUT}")
-  endif()
 
 elseif(WIN32)
 
+  if(MSVC90)
+    message(FATAL_ERROR "Visual Studio Version 9 is NOT supported.")
+  endif(MSVC90)
+  if(MSVC10)
+    message(FATAL_ERROR "Visual Studio Version 10 is NOT supported.")
+  endif(MSVC10)
+  if(MSVC11)
+    message(FATAL_ERROR "Visual Studio Version 11 is NOT supported.")
+  endif(MSVC11)
+  if(MSVC12)
+    message(FATAL_ERROR "Visual Studio Version 12 is NOT supported.")
+  endif(MSVC12)
+  if(MSVC14)
+    set(FFTW_CMAKE_GENERATOR "Visual Studio 14 2015 Win64")
+    set(FFTW_VS_VERSION "14.0")
+  endif()
+
+  configure_file(
+    "${_self_dir}/fftw/Build_fftw.bat.in"
+    "${EMsoft_SDK}/superbuild/${extProjectName}/Build/Build_FFTW.bat"
+    @ONLY
+    )
 
   set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
@@ -75,13 +72,13 @@ elseif(WIN32)
     STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp"
     DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
     SOURCE_DIR "${FFTW_INSTALL_DIR}"
-    BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+    BINARY_DIR "${FFTW_INSTALL_DIR}"
     INSTALL_DIR "${FFTW_INSTALL_DIR}"
 
     CONFIGURE_COMMAND ""
     PATCH_COMMAND ""
     BUILD_COMMAND ""
-    INSTALL_COMMAND ""
+    INSTALL_COMMAND "${EMsoft_SDK}/superbuild/${extProjectName}/Build/Build_FFTW.bat"
 
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
@@ -93,26 +90,6 @@ elseif(WIN32)
 
 else()
 
-  ExternalProject_Add( Doxygen
-    #--Download step--------------
-    #   GIT_REPOSITORY ""
-    #   GIT_TAG ""
-    URL ${FFTW_URL}
-    # URL_MD5
-    #--Update/Patch step----------
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
-    #--Configure step-------------
-    SOURCE_DIR "${FFTW_SOURCE_DIR}"
-    CONFIGURE_COMMAND ""
-    #--Build step-----------------
-    BINARY_DIR "${FFTW_BINARY_DIR}"
-    BUILD_COMMAND ""
-    #--Install step-----------------
-    INSTALL_DIR "${FFTW_INSTALL_DIR}"
-    INSTALL_COMMAND ""
-    DEPENDS ${FFTW_DEPENDENCIES}
-  )
 
 endif()
 
