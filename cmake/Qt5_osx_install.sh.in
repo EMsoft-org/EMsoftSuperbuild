@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "Mounting Qt5 Disk Image....."
+hdiutil mount "@Qt5_DMG@"
+echo "Executing Qt5 Installer .... "
+"/Volumes/@Qt5_OSX_BASE_NAME@/@Qt5_OSX_BASE_NAME@.app/Contents/MacOS/@Qt5_OSX_BASE_NAME@" --script "@JSFILE@"
+echo "Unmounting the Qt5 Disk Image .. "
+hdiutil unmount "/Volumes/@Qt5_OSX_BASE_NAME@"

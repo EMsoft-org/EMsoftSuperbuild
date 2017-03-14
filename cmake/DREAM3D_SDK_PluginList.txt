@@ -1,0 +1,47 @@
+
+#--------------------------------------------------------------------------------------------------
+# Only Run this the first time when configuring DREAM.3D. After that the values
+# are cached properly and the user can add additional plugins through the normal
+# CMake GUI or CCMake programs.
+if(NOT DEFINED DREAM3D_FIRST_CONFIGURE)
+  
+  # These are the base external plugins that are compiled into the release version of DREAM.3D
+  # Each one is in a separate repository and should be cloned into a directory called "DREAM3D_Plugins"
+  # where the "DREAM3D_Plugins" directory is at the same level as the DREAM3D source directory.
+  # If you want to use any of these plugins you need to first UNCOMMENT the lines and then run
+  # CMake on a clean DREAM3D build diretory.
+  set(DREAM3D_Release_Plugins
+#      Anisotropy
+#      DDDAnalysisToolbox
+#      HEDMAnalysis
+#      ImageProcessing
+#      TransformationPhase
+#      UCSBUtilities
+    )
+
+  # This CMake variable is a typically used to list out extra plugins that are internal to a company
+  # or institution and are NOT marked for release to the public.
+  set(DREAM3_Private_Plugins
+
+  )
+
+  set (MyPlugins
+    ${DREAM3D_Release_Plugins}
+    ${DREAM3_Private_Plugins}
+  )
+
+  # Loop on each plugin and generate a semi-colon separated list of values
+  foreach(plugin ${MyPlugins})
+    list(APPEND MyPluginList "${plugin}")
+  endforeach()
+
+  list(LENGTH MyPluginList LIST_LENGTH)
+  if(LIST_LENGTH GREATER 1)
+    list(SORT MyPluginList)
+  endif()
+
+  set(DREAM3D_EXTRA_PLUGINS "${MyPluginList}" CACHE STRING "" FORCE)
+
+  set(DREAM3D_FIRST_CONFIGURE "ON" CACHE STRING "Determines if DREAM3D has already been configured at least once.")
+endif()
+

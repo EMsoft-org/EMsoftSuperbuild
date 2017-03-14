@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "Mounting Doxygen Disk Image....."
+hdiutil mount "@DOXYGEN_DMG@"
+echo "Copying Doxygen.app to /Applications .... "
+cp -R "/Volumes/Doxygen/Doxygen.app" /Applications
+echo "Unmounting the Doxygen Disk Image .. "
+hdiutil unmount "/Volumes/Doxygen/"
