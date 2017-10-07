@@ -49,9 +49,9 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_CXX_STANDARD=11 
     -DCMAKE_CXX_STANDARD_REQUIRED=ON
     -Wno-dev
-		-DQT_QMAKE_EXECUTABLE=
-		-DBUILD_SHARED_LIBS=OFF 
-		-DBUILD_TESTING=OFF 
+    -DQT_QMAKE_EXECUTABLE=
+    -DBUILD_SHARED_LIBS=OFF 
+    -DBUILD_TESTING=OFF 
 
   LOG_DOWNLOAD 1
   LOG_UPDATE 1
@@ -64,7 +64,7 @@ ExternalProject_Add(${extProjectName}
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoft for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# Eigen Library Location\n")

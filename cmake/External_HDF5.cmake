@@ -20,10 +20,8 @@ set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 if(WIN32)
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
-  set(BUILD_SHARED_LIBS ON)
 elseif(APPLE)
   set(CXX_FLAGS "-stdlib=libc++ -std=c++11")
-  set(BUILD_SHARED_LIBS OFF)
 else()
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(CXX_FLAGS "-stdlib=libc++ -std=c++11")
@@ -68,21 +66,21 @@ ExternalProject_Add(${extProjectName}
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoft for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# HDF5 Library Location\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}/cmake\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}/cmake\" CACHE PATH \"\")\n")
 else()
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${CMAKE_BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
 endif()
-FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${HDF5_DIR} \${CMAKE_MODULE_PATH} )\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${HDF5_DIR})\n")

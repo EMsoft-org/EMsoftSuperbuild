@@ -1,12 +1,12 @@
 set(extProjectName "jsonfortran")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(JSONFORTRAN_VERSION "4.2.0")
+set(JSONFORTRAN_VERSION "4.2.1")
 
 if(WIN32)
-  set(JSONFORTRAN_INSTALL "${EMsoft_SDK}")
+  set(JSONFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${JSONFORTRAN_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
-  set(JSONFORTRAN_INSTALL "${EMsoft_SDK}")
+  set(JSONFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${JSONFORTRAN_VERSION}-${CMAKE_BUILD_TYPE}")
 endif()
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
@@ -46,6 +46,7 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     -DCMAKE_OSX_DEPLOYMENT_TARGET=${OSX_DEPLOYMENT_TARGET}
     -DCMAKE_OSX_SYSROOT=${OSX_SDK}
+    -DUSE_GNU_INSTALL_CONVENTION=ON
 
   LOG_DOWNLOAD 1
   LOG_UPDATE 1
@@ -64,15 +65,15 @@ FILE(APPEND ${EMsoft_SDK_FILE} "#-----------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# JSONFORTRAN Library Location\n")
 if(APPLE)
   MESSAGE(FATAL_ERROR "")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${CMAKE_BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${CMAKE_BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-intel-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/cmake\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/lib/cmake/${extProjectName}-intel-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-intel_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 else()
   MESSAGE(FATAL_ERROR "")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${CMAKE_BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${CMAKE_BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${JSONFORTRAN_DIR})\n")

@@ -1,0 +1,9 @@
+
+#--------------------------------------------------------------------------------------------------
+# Only Run this the first time when configuring EMsoft After that the values
+# are cached properly and the user can add additional plugins through the normal
+# CMake GUI or CCMake programs.
+if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
+  set(EMsoft_FIRST_CONFIGURE "ON" CACHE STRING "Determines if EMsoft has already been configured at least once.")
+endif()
+
