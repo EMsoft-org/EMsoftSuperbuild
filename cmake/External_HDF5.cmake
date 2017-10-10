@@ -1,14 +1,16 @@
 set(extProjectName "hdf5")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(HDF5_VERSION "1.8.18")
+set(HDF5_VERSION "1.8.19")
 #set(HDF5_URL "http://www.hdfgroup.org/ftp/HDF5/prev-releases/hdf5-${HDF5_VERSION}/src/hdf5-${HDF5_VERSION}.tar.gz")
 set(HDF5_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/HDF5/hdf5-${HDF5_VERSION}.tar.gz")
-
+set(HDF5_BUILD_SHARED_LIBS ON)
 if(WIN32)
   set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}")
 else()
   set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(HDF5_BUILD_SHARED_LIBS OFF)
+
 endif()
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
@@ -41,7 +43,7 @@ ExternalProject_Add(${extProjectName}
   INSTALL_DIR "${HDF5_INSTALL}"
 
   CMAKE_ARGS
-    -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
+    -DBUILD_SHARED_LIBS:BOOL=${HDF5_BUILD_SHARED_LIBS}
     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     -DCMAKE_CXX_FLAGS=${CXX_FLAGS}

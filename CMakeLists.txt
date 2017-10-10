@@ -97,7 +97,6 @@ endif()
 
 
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "set(BUILD_SHARED_LIBS ON CACHE BOOL \"\")\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_ROOT \"${EMsoft_SDK}\")\n")
 
 include(External_FFTW)

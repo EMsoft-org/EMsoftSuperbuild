@@ -118,6 +118,13 @@ endif()
 
 
 ExternalProject_Add(Qt5
+    TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/"
+    STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/"
+    DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}/Download
+    SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/"
+    BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/"
+    INSTALL_DIR "${EMsoft_SDK}/${extProjectName}"
+
     DOWNLOAD_COMMAND ""
     UPDATE_COMMAND ""
     PATCH_COMMAND ""
