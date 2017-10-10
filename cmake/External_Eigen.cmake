@@ -69,5 +69,6 @@ FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# Eigen Library Location\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(EIGEN_INSTALL \"\${EMsoft_SDK_ROOT}/Eigen-${Eigen_VERSION}\" CACHE PATH \"\")\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${EIGEN_INSTALL})\n")
 
 

@@ -147,5 +147,6 @@ else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${qt5_version_full}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${Qt5_DIR})\n")
 
 
