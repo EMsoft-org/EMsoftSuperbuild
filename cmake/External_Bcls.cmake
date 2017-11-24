@@ -59,7 +59,7 @@ ExternalProject_Add(${extProjectName}
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoft for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# bcls Library Location\n")
