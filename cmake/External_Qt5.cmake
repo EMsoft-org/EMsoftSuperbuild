@@ -8,7 +8,7 @@ message(STATUS "External Project: ${extProjectName}" )
 # Qt 5.9.x is going to be used.
 set(qt5_version_full "5.9.2")
 set(qt5_version_short "5.9.2")
-set(qt5_installer_version "591")
+set(qt5_installer_version "592")
 
 
 set(qt5_INSTALL "${EMsoft_SDK}/${extProjectName}${qt5_version_full}")
@@ -23,7 +23,7 @@ if(APPLE)
 elseif(WIN32)
   set(qt5_Headless_FILE "Qt_HeadlessInstall_Win64.js")
 else()
-  set(qt5_Headless_FILE "Qt_HeadlessInstall_OSX.js")
+  set(qt5_Headless_FILE "Qt_HeadlessInstall_Linux.js")
 endif()
 
 set(QT_MSVC_VERSION_NAME "")
@@ -112,8 +112,44 @@ elseif(WIN32)
   endif()
   set(QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/bin/qmake.exe)
 else()
+  set(QT5_ONLINE_INSTALLER "qt-opensource-linux-x64-5.9.2.run")
+  set(qt5_url "download.qt.io/official_releases/qt/5.9/5.9.2/${QT5_ONLINE_INSTALLER}")
+
+  if(NOT EXISTS "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${QT5_ONLINE_INSTALLER}")
+    message(STATUS "===============================================================")
+    message(STATUS "   Downloading ${extProjectName}${qt5_version_full}")
+    message(STATUS "   Large Download!! This can take a bit... Please be patient")
+    file(DOWNLOAD 
+          ${qt5_url} 
+          "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${QT5_ONLINE_INSTALLER}" SHOW_PROGRESS
+    )
+    execute_process(COMMAND "/bin/chmod" ugo+rwx "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${QT5_ONLINE_INSTALLER}"
+                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt5-download-out.log"
+                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt5-download-err.log"
+                    ERROR_VARIABLE installer_error
+                    )
+  endif()
+
+  set(QT5_INSTALL_SCRIPT_NAME "Qt_Linux_HeadlessInstall.sh") 
+  configure_file(
+    "${_self_dir}/Qt5_Linux_install.sh.in"
+    "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${QT5_INSTALL_SCRIPT_NAME}"
+    @ONLY
+  )
+
+  message(STATUS "   Installing ${extProjectName}${qt5_version_full}")  
+
+  if(NOT EXISTS "${EMsoft_SDK}/${extProjectName}${qt5_version_full}")
+    message(STATUS "Executing the Qt5 Installer... ")
+    execute_process(COMMAND "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${QT5_INSTALL_SCRIPT_NAME}"
+                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-installer-out.log"
+                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
+                    ERROR_VARIABLE installer_error
+                    WORKING_DIRECTORY ${qt5_BINARY_DIR} )
+  endif()
   
   set(QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/gcc_64/bin/qmake)
+
 endif()
 
 
@@ -123,7 +159,7 @@ ExternalProject_Add(Qt5
     DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}/Download
     SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/"
     BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/"
-    INSTALL_DIR "${EMsoft_SDK}/${extProjectName}"
+    INSTALL_DIR "${EMsoft_SDK}/${extProjectName}${qt5_version_full}"
 
     DOWNLOAD_COMMAND ""
     UPDATE_COMMAND ""

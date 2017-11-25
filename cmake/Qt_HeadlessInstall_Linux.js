@@ -28,8 +28,10 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 Controller.prototype.ComponentSelectionPageCallback = function() {
     var widget = gui.currentPageWidget();
 
-    // widget.deselectAll();
-    // widget.selectComponent("qt.56.gcc_64");
+    //widget.selectAll();
+    widget.selectComponent("qt.592.gcc_64");
+    widget.selectComponent("qt.592.examples");
+    widget.selectComponent("qt.592.doc");
     // widget.selectComponent("qt.56.qtquickcontrols");
 
     // widget.deselectComponent("qt.tools.qtcreator");
@@ -43,7 +45,7 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
     // widget.deselectComponent("qt.tools.doc");
     // widget.deselectComponent("qt.tools.examples");
 
-    gui.clickButton(buttons.NextButton);
+    //gui.clickButton(buttons.NextButton);
 }
 
 Controller.prototype.LicenseAgreementPageCallback = function() {

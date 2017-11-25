@@ -72,9 +72,11 @@ elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/lib/cmake/${extProjectName}-intel-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-intel_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 else()
-  MESSAGE(FATAL_ERROR "")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}-gnu-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-gnu_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${JSONFORTRAN_DIR})\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${JSONFORTRAN_DIR})\n")
+
+

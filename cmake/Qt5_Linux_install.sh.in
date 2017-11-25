@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Executing Qt5 Installer .... "
+"@EMsoft_SDK@/superbuild/@extProjectName@/Download/@QT5_ONLINE_INSTALLER@" --script "@JSFILE@" --verbose
+

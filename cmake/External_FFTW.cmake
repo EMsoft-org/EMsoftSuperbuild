@@ -37,7 +37,7 @@ get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 #-- On OS X systems we are going to simply download FFTW archive
 if(APPLE)
 # http://www.fftw.org/fftw-3.3.4-pl2.tar.gz
-#http://www.fftw.org/fftw-3.3.4.tar.gz
+# http://www.fftw.org/fftw-3.3.4.tar.gz
 
   ExternalProject_Add(${extProjectName}
     DOWNLOAD_NAME ${FFTW_DOWNLOAD_FILE}
@@ -119,6 +119,34 @@ elseif(WIN32)
   )
 
 else()
+  ExternalProject_Add(${extProjectName}
+      DOWNLOAD_NAME ${FFTW_DOWNLOAD_FILE}
+      URL ${FFTW_URL}
+
+      TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp"
+      STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp"
+      DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}/Download
+      SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source"
+      #BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build"
+      INSTALL_DIR "${FFTW_INSTALL_DIR}"
+
+      #DOWNLOAD_COMMAND ""
+      UPDATE_COMMAND ""
+      PATCH_COMMAND ""
+      CONFIGURE_COMMAND ${EMsoft_SDK}/superbuild/${extProjectName}/Source/configure --prefix=${FFTW_INSTALL_DIR} --enable-shared
+      BUILD_COMMAND make -j${CoreCount}
+      INSTALL_COMMAND make install
+      TEST_COMMAND ""
+
+      BUILD_IN_SOURCE 1
+
+      LOG_DOWNLOAD 1
+      LOG_UPDATE 1
+      LOG_CONFIGURE 1
+      LOG_BUILD 1
+      LOG_TEST 1
+      LOG_INSTALL 1
+    )
 
 
 endif()
@@ -137,5 +165,6 @@ elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_LIBRARY \"\${EMsoft_SDK_ROOT}/fftw-${FFTW_VERSION}-dll64/libfftw3-3.lib\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_IS_SHARED TRUE)\n")
 else()
-
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_INSTALL \"\${EMsoft_SDK_ROOT}/fftw-${FFTW_VERSION}\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_VERSION \"${FFTW_VERSION}\")\n")
 endif()
