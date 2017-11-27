@@ -19,7 +19,7 @@ libraries as prebuilt binaries or as source code and compiling those libraries.
 |------------------|----------------|------------------|
 | macOS (10.12) | Xcode Native tools (8.3.x) | GFortran 6.3.0 and above |
 | Windows (10) | Visual Studio 2015 (CE/Pro) | Intel Fortran v17 |
-| Linux (Ubuntu 16.x, CentOS 7.x) | GCC 4.8 and Above, Clang 3.8 and greater | GFortran 6.3 and above |
+| Linux (Ubuntu 16.x, CentOS 7.x) | GCC 4.8 and Above, Clang 3.8 and greater | GNU Fortran 5.4.1 20160904 or newer |
 
 ## Git Locations ##
 
@@ -52,18 +52,21 @@ Git verison 2.x is pretty much required.
 1. Clone this repository onto your hard disk.
 2. open a terminal and invoke the following commands
 
-	cd EMsoftSuperbuild
-	mkdir Debug
-    cd Debug
-	cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Debug ../
-    make -j
-    cd ../
-    mkdir Release
-    cd Release
-	cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
-    make -j
+		git clone git://www.github.com/marcdegraef/EMsoftSuperbuild
+        cd EMsoftSuperbuild
+        mkdir Debug
+        cd Debug
+        cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Debug ../
+        make -j
+        cd ../
+        mkdir Release
+        cd Release
+        cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
+        make -j
 
 3. The initial run of CMake is going to take  **REALLY** long time because it will be downloading the full Qt 5.9.2 installer which is about 3~4 GB in size. On macOS systems it then must verify the .dmg, mount it and run the installer (which verifies the .app). Go get coffee. Compiling (the 'make -j' part) should not take that long, only about 5 minutes or so.
+
+**NOTE**: there is currently a known issue where the Qt5.9.2 installer will NOT actually run during the Linux cmake process. If the user does *NOT* want to build the GUI application then this is fine. If the user does want to build the GUI application then they will need to install Qt5.9.2 themselves. The download will be at /path/to/EMsoft_SDK/superbuild/Qt/download
 
 The developer can use CMakeGui if they would like instead of the command lines. The only required variable are the path to where you want the EMsoft_SDK folder and the build type (Debug or Release)
 
