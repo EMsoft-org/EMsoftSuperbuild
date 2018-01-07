@@ -2,7 +2,7 @@
 set(extProjectName "fftw")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(FFTW_VERSION "3.3.4")
+set(FFTW_VERSION "3.3.5")
 set(FFTW_PREFIX "${EMsoft_SDK}/superbuild/${extProjectName}")
 set(FFTW_FOLDER_NAME "fftw-${FFTW_VERSION}-pl2.tar.gz")
 set(FFTW_DOWNLOAD_DIR "${EMsoft_SDK}/superbuild/${extProjectName}")
@@ -18,7 +18,8 @@ if(WIN32)
 endif()
 
 #set(FFTW_url_server "http://dream3d.bluequartz.net/binaries/EMSoft_SDK/")
-set(FFTW_url_server "http://www.fftw.org")
+# ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip
+set(FFTW_url_server "ftp://ftp.fftw.org/pub/fftw")
 
 if(WIN32)
   set(FFTW_DOWNLOAD_FILE fftw-${FFTW_VERSION}-dll64.zip)
