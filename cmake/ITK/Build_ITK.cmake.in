@@ -1,13 +1,13 @@
 
 #------------------------------------------------------------------------------
-# This cmake file should be able to configure an ITK 4.7.x or newer source
-# The SDK_INSTALL is the location of your DREAM3D_SDK directory that was
+# This cmake file should be able to configure an ITK 4.12.x or newer source
+# The SDK_INSTALL is the location of your EMsoft_SDK directory that was
 # installed First
 
 include (CMakeParseArguments)
 
 # Get our Variables
-set(SDK_INSTALL $ENV{DREAM3D_SDK})
+set(SDK_INSTALL $ENV{EMsoft_SDK})
 
 set(PARALLEL_BUILD $ENV{PARALLEL_BUILD})
 

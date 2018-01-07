@@ -1,5 +1,9 @@
 # EMsoft SDK Superbuild #
 
+## IMPORTANT NOTE ##
+
+If you find bugs and fix them **PLEASE** consider submitting a "Pull Request" from your fork to the official repository. This will allow the entire EMsoft community to benefit from your bug fixes.
+
 ## Introduction ##
 
 This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party 
@@ -40,7 +44,7 @@ Git verison 2.x is pretty much required.
 | FFTW | 3.3.4 | Precompiled (Windows) or Compiled (macOS/Linux) |
 | Json-Fortran | 4.2.1 | Compiled from source on GitHub |
 | Eigen | 3.2.9 | Compiled from Source |
-| Qt 5 | 5.9.2 | Precompiled Binaries from www.qt.io |
+| Qt 5 | 5.9.3 | Precompiled Binaries from www.qt.io |
 
 ## Instructions ##
 
@@ -63,9 +67,9 @@ Git verison 2.x is pretty much required.
         cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
         make -j
 
-3. The initial run of CMake is going to take  **REALLY** long time because it will be downloading the full Qt 5.9.2 installer which is about 3~4 GB in size. On macOS systems it then must verify the .dmg, mount it and run the installer (which verifies the .app). Go get coffee. Compiling (the 'make -j' part) should not take that long, only about 5 minutes or so.
+3. The initial run of CMake is going to take a **REALLY** long time because it will be downloading the full Qt 5.9.3 installer which is about 3~4 GB in size. On macOS systems it then must verify the .dmg, mount it and run the installer (which verifies the .app). Go get coffee. Compiling (the 'make -j' part) should not take that long, only about 5 minutes or so.
 
-**Note**: There is a known issue where the Qt installer will *NOT* during the Linux install. This is currently being looked at.
+**Note**: There is a known issue where the Qt installer will *NOT* execute during the Linux install. This is currently being looked at.
 
 The developer can use CMakeGui if they would like instead of the command lines. The only required variable are the path to where you want the EMsoft_SDK folder and the build type (Debug or Release)
 

@@ -102,7 +102,7 @@ elseif(WIN32)
     STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp"
     DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
     SOURCE_DIR "${FFTW_INSTALL_DIR}"
-    BINARY_DIR "${ _INSTALL_DIR}"
+    BINARY_DIR "${FFTW_INSTALL_DIR}"
     INSTALL_DIR "${FFTW_INSTALL_DIR}"
 
     CONFIGURE_COMMAND ""

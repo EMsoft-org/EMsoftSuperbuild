@@ -27,29 +27,21 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 
 Controller.prototype.ComponentSelectionPageCallback = function() {
     var widget = gui.currentPageWidget();
-    
-    // This is for Qt5 installation
-    widget.deselectAll();
-    widget.selectComponent("qt.@qt5_installer_version@.clang_64");
-    widget.selectComponent("qt.@qt5_installer_version@.qtwebengine");
 
-    widget.selectComponent("qt.@qt5_installer_version@.doc");
-    widget.selectComponent("qt.@qt5_installer_version@.doc.qtcharts");
-    widget.selectComponent("qt.@qt5_installer_version@.doc.qtdatavis3d");
-    widget.selectComponent("qt.@qt5_installer_version@.doc.qtwebengine");
-    widget.selectComponent("qt.@qt5_installer_version@.examples");
-    widget.selectComponent("qt.@qt5_installer_version@.examples.qtcharts");
-    widget.selectComponent("qt.@qt5_installer_version@.examples.qtdatavis3d");
-    widget.selectComponent("qt.@qt5_installer_version@.examples.qtwebengine");
-    widget.selectComponent("qt.@qt5_installer_version@.qtcharts");
-    widget.selectComponent("qt.@qt5_installer_version@.qtcharts.clang_64");
-    widget.selectComponent("qt.@qt5_installer_version@.qtdatavis3d");
-    widget.selectComponent("qt.@qt5_installer_version@.qtdatavis3d.clang_64");
-    widget.selectComponent("qt.@qt5_installer_version@.qtwebengine");
-    widget.selectComponent("qt.@qt5_installer_version@.qtwebengine.clang_64");
-    widget.selectComponent("qt.@qt5_installer_version@.src");
-    widget.selectComponent("qt.@qt5_installer_version@.clang_64");
-    widget.selectComponent("qt.tools.qtcreator");
+    // widget.deselectAll();
+    // widget.selectComponent("qt.56.gcc_64");
+    // widget.selectComponent("qt.56.qtquickcontrols");
+
+    // widget.deselectComponent("qt.tools.qtcreator");
+    // widget.deselectComponent("qt.55.qt3d");
+    // widget.deselectComponent("qt.55.qtcanvas3d");
+    // widget.deselectComponent("qt.55.qtlocation");
+    // widget.deselectComponent("qt.55.qtquick1");
+    // widget.deselectComponent("qt.55.qtscript");
+    // widget.deselectComponent("qt.55.qtwebengine");
+    // widget.deselectComponent("qt.extras");
+    // widget.deselectComponent("qt.tools.doc");
+    // widget.deselectComponent("qt.tools.examples");
 
     gui.clickButton(buttons.NextButton);
 }

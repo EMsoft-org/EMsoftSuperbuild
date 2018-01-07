@@ -72,14 +72,14 @@ goto :eof
 :env_setup
 
 @rem Setup some environment variables in order to collect those into a single location
-@set DREAM3D_SDK=@DREAM3D_SDK@
+@set EMsoft_SDK=@EMsoft_SDK@
 @set PARALLEL_BUILD=8
 @set HDF_VERSION=@HDF5_VERSION@
 @set ITK_VERSION=@ITK_VERSION@
 
-::@set CMAKE_INSTALL=%DREAM3D_SDK%\cmake-3.7.1-win64-x64
+::@set CMAKE_INSTALL=%EMsoft_SDK%\cmake-3.10.1-win64-x64
 ::@set PATH=%PATH%;%CMAKE_INSTALL%\bin
 
-@set CMAKE_MODULE_PATH=%DREAM3D_SDK%\hdf5-%HDF_VERSION%\cmake
-cd %DREAM3D_SDK%/superbuild/@extProjectName@/Build/
+@set CMAKE_MODULE_PATH=%EMsoft_SDK%\hdf5-%HDF_VERSION%\cmake
+cd %EMsoft_SDK%/superbuild/@extProjectName@/Build/
 @CMAKE_COMMAND@ -P Build_ITK.cmake

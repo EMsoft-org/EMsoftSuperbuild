@@ -1,12 +1,12 @@
 set(extProjectName "tbb")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(tbb_VERSION "44_20160526")
-
+set(tbb_VERSION "2018_20171205")
 set(tbb_INSTALL "${EMsoft_SDK}/tbb${tbb_VERSION}oss")
-set(tbb_url_server "http://dream3d.bluequartz.net/binaries/SDK/Sources/TBB")
+set(tbb_url_server "https://github.com/01org/tbb/releases/download/2018_U2")
+
 if(APPLE)
-	set(tbb_URL "${tbb_url_server}/tbb${tbb_VERSION}oss_osx.tgz")
+  set(tbb_URL "${tbb_url_server}/tbb${tbb_VERSION}oss_mac.tgz")
 elseif(WIN32)
 	set(tbb_URL "${tbb_url_server}/tbb${tbb_VERSION}oss_win.zip")
 else()
@@ -16,8 +16,8 @@ endif()
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 #------------------------------------------------------------------------------
-# Windows and OS X have TBB Compiled and installed
-if(NOT WIN32 AND NOT APPLE)
+# Linux has TBB Compiled and installed
+if(WIN32 OR APPLE OR "${BUILD_TBB}" STREQUAL "ON" )
   ExternalProject_Add(${extProjectName}
     # DOWNLOAD_NAME ${extProjectName}-${tbb_VERSION}.tar.gz
     URL ${tbb_URL}
@@ -46,16 +46,20 @@ if(NOT WIN32 AND NOT APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "# Intel Threading Building Blocks Library\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss/cmake\" CACHE PATH \"\")\n") 
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
 
 else()
-#------------------------------------------------------------------------------
-# Linux Ubuntu 14.04 has an acceptable TBB installation
+  message(STATUS "LINUX: Please use your package manager to install Threading Building Blocks (TBB)")
+  #------------------------------------------------------------------------------
+  # Linux has an acceptable TBB installation
   FILE(APPEND ${EMsoft_SDK_FILE} "\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "# Intel Threading Building Blocks Library\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"/usr\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ROOT \"/usr\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
 
 endif()
