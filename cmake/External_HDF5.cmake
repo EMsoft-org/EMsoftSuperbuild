@@ -1,16 +1,33 @@
 set(extProjectName "hdf5")
 message(STATUS "External Project: ${extProjectName}" )
+# ******************************************************************************
+# For Windows users we are using a Patched version of HDF5 1.8.20 that has a bug
+# fix when installing hdf5. If you are on Windows and you want to update to a 
+# newer version of HDF5 then you MUST figure out if the HDF Group have applied
+# these fixes.
+# ******************************************************************************
 
-set(HDF5_VERSION "1.8.19")
+# The official HDF5 Git repository is at this address:
+#git clone https://bitbucket.hdfgroup.org/scm/hdffv/hdf5.git
+
+set(HDF5_VERSION "1.8.20")
 #set(HDF5_URL "http://www.hdfgroup.org/ftp/HDF5/prev-releases/hdf5-${HDF5_VERSION}/src/hdf5-${HDF5_VERSION}.tar.gz")
-set(HDF5_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/HDF5/hdf5-${HDF5_VERSION}.tar.gz")
-set(HDF5_BUILD_SHARED_LIBS ON)
 if(WIN32)
-  set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}")
+  set(HDF5_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/HDF5/hdf5-${HDF5_VERSION}.zip")
 else()
-  set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}-${CMAKE_BUILD_TYPE}")
-  set(HDF5_BUILD_SHARED_LIBS OFF)
+  set(HDF5_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/HDF5/hdf5-${HDF5_VERSION}.tar.gz")
+endif()
 
+
+set(HDF5_BUILD_SHARED_LIBS ON)
+set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}-${CMAKE_BUILD_TYPE}")
+
+if(MSVC_IDE)
+  set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}")
+endif()
+
+if(NOT WIN32)
+  set(HDF5_BUILD_SHARED_LIBS OFF)
 endif()
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
@@ -22,24 +39,20 @@ set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 if(WIN32)
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
-elseif(APPLE)
-  set(CXX_FLAGS "-stdlib=libc++ -std=c++11")
 else()
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(CXX_FLAGS "-stdlib=libc++ -std=c++11")
-  else()
-    set(CXX_FLAGS "-std=c++11")
+    set(CXX_FLAGS "-stdlib=libc++")
   endif()
 endif()
 
 ExternalProject_Add(${extProjectName}
   DOWNLOAD_NAME ${extProjectName}-${HDF5_VERSION}.tar.gz
   URL ${HDF5_URL}
-  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
-  DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
-  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
-  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Stamp/${CMAKE_BUILD_TYPE}"
+  DOWNLOAD_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}"
+  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Source/${extProjectName}"
+  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${HDF5_INSTALL}"
 
   CMAKE_ARGS
@@ -76,10 +89,12 @@ if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
-elseif(WIN32)
+elseif(MSVC_IDE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}/cmake\" CACHE PATH \"\")\n")
+elseif(WIN32)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/cmake\" CACHE PATH \"\")\n")
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
