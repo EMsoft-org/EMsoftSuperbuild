@@ -43,7 +43,7 @@ include(ExternalProject)
 include(download_dir)
 
 if( "${EMsoft_SDK}" STREQUAL "")
-  message(FATAL_ERROR "Please specify the EMsoft_SDK cmake variable which is the top level directory where all the DREAM.3D dependent libraries will be built")
+  message(FATAL_ERROR "Please specify the EMsoft_SDK cmake variable which is the top level directory where all the EMsoft dependent libraries will be built")
 endif()
 
 set(EMsoft_SDK_FILE ${EMsoft_SDK}/EMsoft_SDK.cmake)
@@ -116,7 +116,7 @@ include(External_HDF5)
 if("${INSTALL_QT5}" STREQUAL "ON")
   include(External_Qt5)
 else()
-  message(WARNING "The EMsoft_SDK.cmake file will be incomplete as intended. The paths to your Qt installation will be missing and DREAM.3D will probably not build.")
+  message(WARNING "The EMsoft_SDK.cmake file will be incomplete as intended. The paths to your Qt installation will be missing and EMsoft will probably not build.")
 endif()
 
 
