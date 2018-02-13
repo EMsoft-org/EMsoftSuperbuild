@@ -105,7 +105,12 @@ endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_ROOT \"${EMsoft_SDK}\")\n")
 
-include(External_FFTW)
+#------------------------------------------------------------------------------
+# On Windows we are going to use Intel MKL with the FFTW interface so we do not
+# need to install FFTW3
+if(NOT WIN32)
+  include(External_FFTW)
+endif()
 include(External_JsonFortran)
 include(External_Bcls)
 include(External_CLFortran)
