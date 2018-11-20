@@ -1,4 +1,7 @@
 #!/bin/bash
+open @QT5_INSTALL_LOG_FILE@
+open @QT5_INSTALL_ERR_FILE@
+
 echo "Mounting Qt5 Disk Image....."
 hdiutil mount "@Qt5_DMG@"
 echo "Executing Qt5 Installer .... "

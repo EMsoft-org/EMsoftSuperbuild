@@ -2,7 +2,7 @@
 set(extProjectName "fftw")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(FFTW_VERSION "3.3.5")
+set(FFTW_VERSION "3.3.8")
 set(FFTW_PREFIX "${EMsoft_SDK}/superbuild/${extProjectName}")
 set(FFTW_FOLDER_NAME "fftw-${FFTW_VERSION}-pl2.tar.gz")
 set(FFTW_DOWNLOAD_DIR "${EMsoft_SDK}/superbuild/${extProjectName}")
@@ -18,7 +18,7 @@ if(WIN32)
 endif()
 
 #set(FFTW_url_server "http://dream3d.bluequartz.net/binaries/EMSoft_SDK/")
-# ftp://ftp.fftw.org/pub/fftw/fftw-3.3.5-dll64.zip
+# ftp://ftp.fftw.org/pub/fftw/fftw-3.3.8-dll64.zip
 set(FFTW_url_server "ftp://ftp.fftw.org/pub/fftw")
 
 if(WIN32)
@@ -37,8 +37,8 @@ get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 #-- On OS X systems we are going to simply download FFTW archive
 if(APPLE)
-# http://www.fftw.org/fftw-3.3.4-pl2.tar.gz
-# http://www.fftw.org/fftw-3.3.4.tar.gz
+# http://www.fftw.org/fftw-3.3.8-pl2.tar.gz
+# http://www.fftw.org/fftw-3.3.8.tar.gz
 
   ExternalProject_Add(${extProjectName}
     DOWNLOAD_NAME ${FFTW_DOWNLOAD_FILE}

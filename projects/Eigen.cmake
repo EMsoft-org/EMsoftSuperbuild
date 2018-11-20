@@ -1,7 +1,7 @@
 set(extProjectName "Eigen")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(Eigen_VERSION "3.2.9")
+set(Eigen_VERSION "3.3.5")
 #set(Eigen_URL "https://bitbucket.org/eigen/eigen/get/${Eigen_VERSION}.tar.gz")
 set(Eigen_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/Eigen/Eigen-${Eigen_VERSION}.tar.gz")
 set(SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}.tar.gz")
@@ -21,7 +21,7 @@ endif()
 get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 configure_file(
-  "${_self_dir}/Eigen_DartConfiguration.tcl.in"
+  "${_self_dir}/patches/Eigen_DartConfiguration.tcl.in"
   "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}/DartConfiguration.tcl"
   @ONLY
   )
