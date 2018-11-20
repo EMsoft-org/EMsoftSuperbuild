@@ -21,7 +21,7 @@ endif()
 get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 configure_file(
-  "${_self_dir}/Eigen_DartConfiguration.tcl.in"
+  "${_self_dir}/patches/Eigen_DartConfiguration.tcl.in"
   "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}/DartConfiguration.tcl"
   @ONLY
   )

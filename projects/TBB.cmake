@@ -1,9 +1,10 @@
 set(extProjectName "tbb")
-message(STATUS "External Project: ${extProjectName}" )
+set(tbb_VERSION "2018_20180618")
 
-set(tbb_VERSION "2018_20171205")
+message(STATUS "External Project: ${extProjectName}: ${tbb_VERSION}" )
+
 set(tbb_INSTALL "${EMsoft_SDK}/tbb${tbb_VERSION}oss")
-set(tbb_url_server "https://github.com/01org/tbb/releases/download/2018_U2")
+set(tbb_url_server "https://github.com/01org/tbb/releases/download/2018_U5")
 
 if(APPLE)
   set(tbb_URL "${tbb_url_server}/tbb${tbb_VERSION}oss_mac.tgz")
@@ -40,14 +41,15 @@ if(WIN32 OR APPLE OR "${BUILD_TBB}" STREQUAL "ON" )
   )
 
   #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-  #-- configure EMsoft for building
+  #-- configure DREAM3D for building
+  #-- Starting with TBB 2018 U5 the Parallel STL is included which is why we need 
+  #-- the double path to the TBB cmake directory
   FILE(APPEND ${EMsoft_SDK_FILE} "\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "# Intel Threading Building Blocks Library\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss/cmake\" CACHE PATH \"\")\n") 
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss/${extProjectName}${tbb_VERSION}oss\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}${tbb_VERSION}oss/${extProjectName}${tbb_VERSION}oss/cmake\" CACHE PATH \"\")\n") 
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
 
 else()
@@ -59,7 +61,7 @@ else()
   FILE(APPEND ${EMsoft_SDK_FILE} "# Intel Threading Building Blocks Library\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"/usr\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ROOT \"/usr\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_DIR \"/usr\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
 
 endif()
