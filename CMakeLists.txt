@@ -43,7 +43,7 @@ include(ExternalProject)
 include(download_dir)
 
 if( "${EMsoft_SDK}" STREQUAL "")
-  message(FATAL_ERROR "Please specify the EMsoft_SDK cmake variable which is the top level directory where all the DREAM.3D dependent libraries will be built")
+  message(FATAL_ERROR "Please specify the EMsoft_SDK cmake variable which is the top level directory where all the EMsoft dependent libraries will be built")
 endif()
 
 set(EMsoft_SDK_FILE ${EMsoft_SDK}/EMsoft_SDK.cmake)
@@ -52,8 +52,10 @@ set(download_dir ${EMsoft_SDK})
 
 message(STATUS "EMsoft_SDK Folder: ${EMsoft_SDK}")
 message(STATUS "EMsoft_SDK_FILE:   ${EMsoft_SDK_FILE}")
+set(CLONE_EMSOFT_REPO 1)
 if("${WORKSPACE_DIR}" STREQUAL "")
-  get_filename_component(WORKSPACE_DIR ${EMsoftSuperBuild_SOURCE_DIR} DIRECTORY)  
+  #get_filename_component(WORKSPACE_DIR ${EMsoftSuperBuild_SOURCE_DIR} DIRECTORY)  
+  set(CLONE_EMSOFT_REPO 0)
 endif()
 message(STATUS "Workspace Folder:   ${WORKSPACE_DIR}")
 
@@ -71,16 +73,20 @@ if(APPLE)
   EXEC_PROGRAM(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
   STRING(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
   message(STATUS "DARWIN_VERSION: ${DARWIN_VERSION}")
-  IF (DARWIN_VERSION EQUAL 14)
+  IF (DARWIN_VERSION EQUAL 14) # macOS 10.10 Yosemite
+    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
+  ENDIF ()
+
+  IF (DARWIN_VERSION EQUAL 15) # macOS 10.11 El Capitan
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 15)
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk")
+  IF (DARWIN_VERSION EQUAL 16) # macOS 10.12 Sierra (Xcode 8.x or Xcode 9.x)
+    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
-
-  IF (DARWIN_VERSION EQUAL 16)
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk")
+  
+  IF (DARWIN_VERSION EQUAL 17) # macOS 10.13 High Sierra (Xcode 9.x)
+    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
   set(OSX_DEPLOYMENT_TARGET "10.10")
@@ -99,7 +105,12 @@ endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_ROOT \"${EMsoft_SDK}\")\n")
 
-include(External_FFTW)
+#------------------------------------------------------------------------------
+# On Windows we are going to use Intel MKL with the FFTW interface so we do not
+# need to install FFTW3
+if(NOT WIN32)
+  include(External_FFTW)
+endif()
 include(External_JsonFortran)
 include(External_Bcls)
 include(External_CLFortran)
@@ -110,7 +121,7 @@ include(External_HDF5)
 if("${INSTALL_QT5}" STREQUAL "ON")
   include(External_Qt5)
 else()
-  message(WARNING "The EMsoft_SDK.cmake file will be incomplete as intended. The paths to your Qt installation will be missing and DREAM.3D will probably not build.")
+  message(WARNING "The EMsoft_SDK.cmake file will be incomplete as intended. The paths to your Qt installation will be missing and EMsoft will probably not build.")
 endif()
 
 
@@ -160,3 +171,9 @@ function(CloneRepo)
   )
 
 endfunction()
+
+
+if(CLONE_EMSOFT_REPO)
+
+endif()
+

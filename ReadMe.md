@@ -1,5 +1,9 @@
 # EMsoft SDK Superbuild #
 
+## IMPORTANT NOTE ##
+
+If you find bugs and fix them **PLEASE** consider submitting a "Pull Request" from your fork to the official repository. This will allow the entire EMsoft community to benefit from your bug fixes.
+
 ## Introduction ##
 
 This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party 
@@ -27,23 +31,44 @@ Git verison 2.x is pretty much required.
 
 | Operating System |  Notes  |
 |------------------|--------------|
-| macOS (10.12) | CLI comes with Xcode, (SourceTree)[http://www.sourcetreeapp.com] for a nice GUI application |
-| Windows (10) | (SourceTree)[http://www.sourcetreeapp.com]. Download and install the app  |
+| macOS (10.12) | CLI comes with Xcode, [SourceTree](http://www.sourcetreeapp.com) for a nice GUI application |
+| Windows (10) | [SourceTree](http://www.sourcetreeapp.com). Download and install the app  |
 | Linux (Ubuntu 16.x, CentOS 7.x) | Use your package manager to install git.|
 
 ## Libraries that are Compiled ##
 
 | Library | Version | Notes |
 |---------|---------|-------|
-| HDF5 | 1.8.19 | Compiled from Source |
+| HDF5 | 1.8.20 | Compiled from Source |
 | CLFortran | 0.0.1 | Compiled from Source on GitHub |
-| FFTW | 3.3.4 | Precompiled (Windows) or Compiled (macOS/Linux) |
+| FFTW | 3.3.5 | Precompiled (Windows) or Compiled (macOS/Linux) |
 | Json-Fortran | 4.2.1 | Compiled from source on GitHub |
 | Eigen | 3.2.9 | Compiled from Source |
-| Qt 5 | 5.9.2 | Precompiled Binaries from www.qt.io |
+| Qt 5 | 5.9.3 | Precompiled Binaries from [www.qt.io](http://download.qt.io) |
 
-## Instructions ##
+## macOS/Linux Instructions ##
 
+1. Install your compiler tools
+2. Install CMake on your system
+3. Install a Fortran compiler on your system
+4. Install Git on your system
+1. Clone this repository onto your hard disk.
+2. open a terminal and invoke the following commands
+
+        cd EMsoftSuperbuild
+        mkdir Debug
+        cd Debug
+        cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Debug ../
+        make -j
+        cd ../
+        mkdir Release
+        cd Release
+        cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
+        make -j
+
+## Windows Instructions ##
+
+*Currently ONLY NMake files are supported. Visual Studio support is being looked at*
 
 1. Install your compiler tools
 2. Install CMake on your system
@@ -65,6 +90,7 @@ Git verison 2.x is pretty much required.
         make -j
 
 3. The initial run of CMake is going to take  **REALLY** long time because it will be downloading the full Qt 5.9.2 installer which is about 3~4 GB in size. On macOS systems it then must verify the .dmg, mount it and run the installer (which verifies the .app). Go get coffee. Compiling (the 'make -j' part) should not take that long, only about 5 minutes or so.
+
 
 **NOTE**: there is currently a known issue where the Qt5.9.2 installer will NOT actually run during the Linux cmake process. If the user does *NOT* want to build the GUI application then this is fine. If the user does want to build the GUI application then they will need to install Qt5.9.2 themselves. The download will be at /path/to/EMsoft_SDK/superbuild/Qt/download
 

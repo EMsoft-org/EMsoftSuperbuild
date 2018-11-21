@@ -1,15 +1,13 @@
 # This is the EMsoft_SDK File. This file contains all the paths to the dependent libraries.
+# This was generated for Version 6.3 Development of EMsoft. This SDK has C++11 Support ENABLED
 if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
   message(STATUS "*******************************************************")
   message(STATUS "* EMsoft First Configuration Run                    *")
   message(STATUS "* EMsoft_SDK Loading from ${CMAKE_CURRENT_LIST_DIR}  *")
   message(STATUS "*******************************************************")
-  set(CMAKE_CXX_FLAGS "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas -mfpmath=sse" CACHE STRING "" FORCE)
+  set(CMAKE_CXX_FLAGS "-std=c++11 -mfpmath=sse" CACHE STRING "" FORCE)
   set(CMAKE_CXX_STANDARD 11 CACHE STRING "" FORCE)
   set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE STRING "" FORCE)
-    # Set our Deployment Target to match Qt
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10" CACHE STRING "" FORCE)
-  set(CMAKE_OSX_SYSROOT "@OSX_SDK@" CACHE STRING "" FORCE)
 endif()
 
 #-------------------------------------------------------------------------------
@@ -47,16 +45,12 @@ endif()
 message(STATUS "The Current Build type being used is ${BUILD_TYPE}")
 
 #-------------------------------------------------------------------------------
-# We are going to assume the use of GFortran for macOS systems. This will definitely
-# mess up the use of Intel IFort on macOS. I'll cross that bridge when someone
+# We are going to assume the use of GFortran. This will definitely
+# mess up the use of Intel IFort. I'll cross that bridge when someone
 # complains about it.
 set(EMsoft_USE_GFORTRAN 1)
 # This also will help when using IDE's like QtCreator be able to find the compiler
-if(EMsoft_USE_GFORTRAN)
-  set(CMAKE_Fortran_COMPILER "/usr/local/gfortran/bin/gfortran" CACHE PATH "Path to GFortran" FORCE)
-else()
 
-endif()
 
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "")
 message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")

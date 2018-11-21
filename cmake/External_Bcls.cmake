@@ -3,7 +3,9 @@ message(STATUS "External Project: ${extProjectName}" )
 
 set(bcls_VERSION "0.1")
 
-if(WIN32)
+if(MSVC_IDE)
+  set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}")
+elseif(WIN32)
   set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
   set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}-${CMAKE_BUILD_TYPE}")
@@ -59,13 +61,16 @@ ExternalProject_Add(${extProjectName}
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoft for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# bcls Library Location\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
+elseif(MSVC_IDE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}/lib/cmake/bcls\" CACHE PATH \"\")\n") 
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")

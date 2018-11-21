@@ -3,7 +3,9 @@ message(STATUS "External Project: ${extProjectName}" )
 
 set(CLFORTRAN_VERSION "0.0.1")
 
-if(WIN32)
+if(MSVC_IDE)
+  set(CLFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFORTRAN_VERSION}")
+elseif(WIN32)
   set(CLFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFORTRAN_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
   set(CLFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFORTRAN_VERSION}-${CMAKE_BUILD_TYPE}")
@@ -66,13 +68,16 @@ ExternalProject_Add(${extProjectName}
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoft for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# CLFORTRAN Library Location\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
+elseif(MSVC_IDE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
