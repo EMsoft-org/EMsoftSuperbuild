@@ -18,10 +18,12 @@ ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 
+
 if(WIN32)
+  set(NVIDIA_CUDA_DEV_VERSION "10.0")
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
-  set(OpenCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/include")
-  set(OpenCL_LIBRARY "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v8.0/lib/x64/OpenCL.lib")
+  set(OpenCL_INCLUDE_DIR "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${NVIDIA_CUDA_DEV_VERSION}/include")
+  set(OpenCL_LIBRARY "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v${NVIDIA_CUDA_DEV_VERSION}/lib/x64/OpenCL.lib")
 elseif(APPLE)
   set(CXX_FLAGS "-stdlib=libc++ -std=c++11")
 else()
