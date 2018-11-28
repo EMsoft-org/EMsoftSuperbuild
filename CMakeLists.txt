@@ -142,8 +142,19 @@ else()
 endif()
 
 
-FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+
+FILE(APPEND ${EMsoft_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_ROOT \"${EMsoft_SDK}\")\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_VERSION ${EMsoft_SDK_VERSION})\n")
+
+FILE(APPEND ${EMsoft_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# EMsoft does not use QtWebEngine to render the docs anymore. Let the system do it.\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoftWorkbench_USE_QtWebEngine OFF)\n")
+
+FILE(APPEND ${EMsoft_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# Always write out the compile_commands.json file to help out things like QtCreator and VS Code\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n")
+
 
 
 FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_VERSION ${DREAM3DSuperBuild_VERSION})\n")

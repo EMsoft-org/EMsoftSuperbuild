@@ -82,22 +82,21 @@ ExternalProject_Add(${extProjectName}
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure EMsoft for building
+# -- The HDF5_DIR variable is VERY dependent on the version of HDF5 being compiled. If EMsoft
+#-- moves up to HDF5 1.10.x then those paths are slightly different.
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# HDF5 Library Location\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
 elseif(MSVC_IDE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}/cmake\" CACHE PATH \"\")\n")
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/cmake\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_ROOT \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/share/cmake\" CACHE PATH \"\")\n")
 endif()
