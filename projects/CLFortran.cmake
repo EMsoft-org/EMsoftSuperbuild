@@ -1,18 +1,18 @@
 set(extProjectName "CLFortran")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(CLFORTRAN_VERSION "0.0.1")
+set(CLFortran_VERSION "0.0.1")
 
 if(MSVC_IDE)
-  set(CLFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFORTRAN_VERSION}")
+  set(CLFortran_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFortran_VERSION}")
 elseif(WIN32)
-  set(CLFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFORTRAN_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(CLFortran_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFortran_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
-  set(CLFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFORTRAN_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(CLFortran_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFortran_VERSION}-${CMAKE_BUILD_TYPE}")
 endif()
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
-  set(CLFORTRAN_SUFFIX "_debug")
+  set(CLFortran_SUFFIX "_debug")
 ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
@@ -35,8 +35,8 @@ else()
 endif()
 
 ExternalProject_Add(${extProjectName}
-  #DOWNLOAD_NAME ${extProjectName}-${CLFORTRAN_VERSION}.tar.gz
-  #URL ${CLFORTRAN_URL}
+  #DOWNLOAD_NAME ${extProjectName}-${CLFortran_VERSION}.tar.gz
+  #URL ${CLFortran_URL}
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/clfortran
   GIT_TAG "develop"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
@@ -44,7 +44,7 @@ ExternalProject_Add(${extProjectName}
   DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
   SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
   BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
-  INSTALL_DIR "${CLFORTRAN_INSTALL}"
+  INSTALL_DIR "${CLFortran_INSTALL}"
 
   CMAKE_ARGS
   #  -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
@@ -65,8 +65,8 @@ ExternalProject_Add(${extProjectName}
 
 #--------------------------------------------------------------------------------------------------
 # FORTRAN CL Library
-# set(CLFORTRAN_INSTALL "${EMsoft_SDK_ROOT}/CLFortran")
-# set(CLFORTRAN_DIR "${EMsoft_SDK_ROOT}/CLFortran/lib/CMake/CLFortran")
+# set(CLFortran_INSTALL "${EMsoft_SDK_ROOT}/CLFortran")
+# set(CLFortran_DIR "${EMsoft_SDK_ROOT}/CLFortran/lib/CMake/CLFortran")
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
@@ -75,18 +75,18 @@ FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# CLFORTRAN Library Location\n")
 if(APPLE)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
 elseif(MSVC_IDE)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CLFortran_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${CLFortran_VERSION}-\${BUILD_TYPE}/lib/cmake/CLFortran\" CACHE PATH \"\")\n")
 endif()
-FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${CLFORTRAN_DIR})\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${CLFORTRAN_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${CLFortran_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${CLFortran_DIR})\n")
 
