@@ -1,7 +1,7 @@
 set(extProjectName "Eigen")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(Eigen_VERSION "3.2.9")
+set(Eigen_VERSION "3.3.5")
 #set(Eigen_URL "https://bitbucket.org/eigen/eigen/get/${Eigen_VERSION}.tar.gz")
 set(Eigen_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/Eigen/Eigen-${Eigen_VERSION}.tar.gz")
 set(SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}.tar.gz")
