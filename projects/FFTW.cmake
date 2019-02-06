@@ -120,7 +120,8 @@ elseif(WIN32)
   )
 
 else()
-  ExternalProject_Add(${extProjectName}
+	message(STATUS "FFTW_INSTALL_DIR: ${FFTW_INSTALL_DIR}") 
+ ExternalProject_Add(${extProjectName}
       DOWNLOAD_NAME ${FFTW_DOWNLOAD_FILE}
       URL ${FFTW_URL}
 
@@ -128,18 +129,13 @@ else()
       STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp"
       DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}/Download
       SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source"
-      #BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build"
+      BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build"
       INSTALL_DIR "${FFTW_INSTALL_DIR}"
 
-      #DOWNLOAD_COMMAND ""
-      UPDATE_COMMAND ""
-      PATCH_COMMAND ""
-      CONFIGURE_COMMAND ${EMsoft_SDK}/superbuild/${extProjectName}/Source/configure --prefix=${FFTW_INSTALL_DIR} --enable-shared
-      BUILD_COMMAND make -j${CoreCount}
-      INSTALL_COMMAND make install
-      TEST_COMMAND ""
-
-      BUILD_IN_SOURCE 1
+  CMAKE_ARGS
+    -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
+    -DBUILD_TESTING=OFF
+    -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 
       LOG_DOWNLOAD 1
       LOG_UPDATE 1
@@ -166,6 +162,7 @@ elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_LIBRARY \"\${EMsoft_SDK_ROOT}/fftw-${FFTW_VERSION}-dll64/libfftw3-3.lib\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_IS_SHARED TRUE)\n")
 else()
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_DIR \"\${EMsoft_SDK_ROOT}/fftw-${FFTW_VERSION}/lib64/cmake/fftw3\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_INSTALL \"\${EMsoft_SDK_ROOT}/fftw-${FFTW_VERSION}\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(FFTW3_VERSION \"${FFTW_VERSION}\")\n")
 endif()

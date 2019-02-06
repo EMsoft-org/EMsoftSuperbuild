@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Change permission on installer..."
+/usr/bin/chmod 0777 "@QT5_ONLINE_INSTALLER@"
+
 echo "Executing Qt5 Installer .... "
-"@EMsoft_SDK@/superbuild/@extProjectName@/Download/@QT5_ONLINE_INSTALLER@" --script "@JSFILE@" --verbose
+"@QT5_ONLINE_INSTALLER@" --script "@JSFILE@" --verbose
 

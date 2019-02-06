@@ -163,12 +163,22 @@ else()
 
   if(NOT EXISTS "${EMsoft_SDK}/${extProjectName}")
     message(STATUS "Executing the Qt5 Installer... ")
+    execute_process(COMMAND "/usr/bin/chmod 0777 ${QT5_ONLINE_INSTALLER}"
+			ERROR_FILE "/tmp/err.log"
+			OUTPUT_FILE "/tmp/out.log"
+			ERROR_VARIABLE chmoderror
+			)
+
     execute_process(COMMAND "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
                     OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-out.log"
                     ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
                     ERROR_VARIABLE installer_error
                     WORKING_DIRECTORY ${qt5_BINARY_DIR} )
-  endif()
+
+    message(STATUS "If the Qt5 installer did NOT execute please run the following command:")
+    message(STATUS "   ${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh")
+    message(STATUS "   If you are NOT interested in compiling the EMsoftWorkbench, then Qt5 is not necessary")
+ endif()
 
   set(QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/gcc_64/bin/qmake)
 endif()
