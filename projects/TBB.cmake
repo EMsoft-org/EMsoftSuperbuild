@@ -1,10 +1,10 @@
 set(extProjectName "tbb")
-set(tbb_VERSION "2018_20180618")
+set(tbb_VERSION "2019_20181203")
 
 message(STATUS "External Project: ${extProjectName}: ${tbb_VERSION}" )
 
 set(tbb_INSTALL "${EMsoft_SDK}/tbb${tbb_VERSION}oss")
-set(tbb_url_server "https://github.com/01org/tbb/releases/download/2018_U5")
+set(tbb_url_server "https://github.com/01org/tbb/releases/download/2019_U3")
 
 if(APPLE)
   set(tbb_URL "${tbb_url_server}/tbb${tbb_VERSION}oss_mac.tgz")

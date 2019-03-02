@@ -1,10 +1,11 @@
 
 set(Qt595 "0")
-set(Qt510 "1")
+set(Qt510 "0")
 set(Qt511 "0")
+set(Qt512 "1")
 
 if(Qt595)
-  if(Qt510 OR Qt511)
+  if(Qt510 OR Qt511 OR Qt512)
     message(FATAL_ERROR "Please select only 1 kind of Qt to install")
   endif()
   set(qt5_version_major "5.9")
@@ -15,7 +16,7 @@ if(Qt595)
 endif()
 
 if(Qt510)
-  if(Qt595 OR Qt511)
+  if(Qt595 OR Qt511 OR Qt512)
     message(FATAL_ERROR "Please select only 1 kind of Qt to install")
   endif()
   set(qt5_version_major "5.10")
@@ -26,14 +27,26 @@ if(Qt510)
 endif()
 
 if(Qt511)
-  if(Qt595 OR Qt510)
+  if(Qt595 OR Qt510 OR Qt512)
     message(FATAL_ERROR "Please select only 1 kind of Qt to install")
   endif()
   set(qt5_version_major "5.11")
-  set(qt5_version_full "5.11.1")
-  set(qt5_version_short "5.11.1")
+  set(qt5_version_full "5.11.2")
+  set(qt5_version_short "5.11.2")
   # This variable is used inside the javascript file that performs the Qt installation
-  set(qt5_installer_version "qt5.5111")
+  set(qt5_installer_version "qt5.5112")
+endif()
+
+
+if(Qt512)
+  if(Qt595 OR Qt510 OR Qt511)
+    message(FATAL_ERROR "Please select only 1 kind of Qt to install")
+  endif()
+  set(qt5_version_major "5.12")
+  set(qt5_version_full "5.12.1")
+  set(qt5_version_short "5.12.1")
+  # This variable is used inside the javascript file that performs the Qt installation
+  set(qt5_installer_version "qt5.5121")
 endif()
 
 set(extProjectName "Qt${qt5_version_full}")
@@ -82,11 +95,6 @@ if(APPLE)
   set(Qt5_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/${Qt5_OSX_BASE_NAME}.dmg")
   set(Qt5_DMG ${Qt5_OSX_DMG_ABS_PATH})
 
-  set(QT5_INSTALL_LOG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log")
-  file(WRITE ${QT5_INSTALL_LOG_FILE} "Qt5 Installation Log")
-  set(QT5_INSTALL_ERR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log")
-  file(WRITE ${QT5_INSTALL_ERR_FILE} "Qt5 Installation Error")
-  
   configure_file(
     "${_self_dir}/apple/Qt5_osx_install.sh.in"
     "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
@@ -108,14 +116,14 @@ if(APPLE)
     message(STATUS "    This may take some time for the installer to start.")
     message(STATUS "    Please wait for the installer to finish.")
     execute_process(COMMAND "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
-                    OUTPUT_FILE ${QT5_INSTALL_LOG_FILE}
-                    ERROR_FILE ${QT5_INSTALL_ERR_FILE}
+                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log"
+                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log"
                     ERROR_VARIABLE mount_error
                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-
+    message(STATUS "mount_error: ${mount_error}")
   endif()
-  set(QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/clang_64/bin/qmake)
+  set(Qt5_QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/clang_64/bin/qmake)
 
 elseif(WIN32)
   set(qt5_online_installer "qt-opensource-windows-x86-${qt5_version_full}.exe")
@@ -143,7 +151,7 @@ elseif(WIN32)
                     ERROR_VARIABLE installer_error
                     WORKING_DIRECTORY ${qt5_BINARY_DIR} )
   endif()
-  set(QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/bin/qmake.exe)
+  set(Qt5_QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/bin/qmake.exe)
 else()
   set(qt5_online_installer "qt-opensource-linux-x64-${qt5_version_full}.run")
   set(qt5_url "http://qt.mirror.constant.com/archive/qt/${qt5_version_major}/${qt5_version_short}/${qt5_online_installer}")
@@ -157,30 +165,20 @@ else()
 
   set(QT5_ONLINE_INSTALLER "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
   configure_file(
-    "${_self_dir}/unix/Qt5_Linux_install.sh.in"
+    "${_self_dir}/unix/Qt5_linux_install.sh.in"
     "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
   )
 
   if(NOT EXISTS "${EMsoft_SDK}/${extProjectName}")
     message(STATUS "Executing the Qt5 Installer... ")
-    execute_process(COMMAND "/usr/bin/chmod 0777 ${QT5_ONLINE_INSTALLER}"
-			ERROR_FILE "/tmp/err.log"
-			OUTPUT_FILE "/tmp/out.log"
-			ERROR_VARIABLE chmoderror
-			)
-
     execute_process(COMMAND "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
                     OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-out.log"
                     ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
                     ERROR_VARIABLE installer_error
                     WORKING_DIRECTORY ${qt5_BINARY_DIR} )
+  endif()
 
-    message(STATUS "If the Qt5 installer did NOT execute please run the following command:")
-    message(STATUS "   ${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh")
-    message(STATUS "   If you are NOT interested in compiling the EMsoftWorkbench, then Qt5 is not necessary")
- endif()
-
-  set(QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/gcc_64/bin/qmake)
+  set(Qt5_QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/gcc_64/bin/qmake)
 endif()
 
 
