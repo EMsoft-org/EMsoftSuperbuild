@@ -7,8 +7,7 @@ if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
   set(CMAKE_Fortran_FLAGS "/W1 /nologo /fpp /libs:dll /threads /assume:byterecl" CACHE STRING "" FORCE)
   set(CMAKE_EXE_LINKER_FLAGS " /machine:x64 /STACK:100000000" CACHE STRING "" FORCE)
   set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/INCREMENTAL" CACHE STRING "" FORCE)
-  set(CMAKE_CXX_FLAGS_DEBUG "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1 /MTd" CACHE STRING "" FORCE)
-
+  #set(CMAKE_CXX_FLAGS_DEBUG "/D_DEBUG /MDd /Zi /Ob0 /Od /RTC1" CACHE STRING "" FORCE)
 endif()
 
 #--------------------------------------------------------------------------------------------------
