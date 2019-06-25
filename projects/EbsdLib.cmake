@@ -41,7 +41,7 @@ ExternalProject_Add(${extProjectName}
     -DEigen3_DIR:PATH=${Eigen3_DIR}
     -DQt5_DIR:PATH=${Qt5_DIR}
     -DEbsdLib_ENABLE_HDF5:BOOL=OFF
-    
+
   LOG_DOWNLOAD 1
   LOG_UPDATE 1
   LOG_CONFIGURE 1
@@ -58,16 +58,16 @@ FILE(APPEND ${EMsoft_SDK_FILE} "#-----------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# EbsdLib Library Location\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/lib/cmake/EbsdLib\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
 elseif(MSVC_IDE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}/lib/cmake/EbsdLib\" CACHE PATH \"\")\n") 
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}/share/cmake/EbsdLib\" CACHE PATH \"\")\n") 
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/lib/cmake/EbsdLib\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/lib/cmake/EbsdLib\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${EbsdLib_DIR})\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${EbsdLib_DIR})\n")
