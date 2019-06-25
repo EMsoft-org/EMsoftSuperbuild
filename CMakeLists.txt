@@ -166,12 +166,17 @@ include(Eigen)
 include(HDF5)
 include(TBB)
 
+
 if("${INSTALL_QT5}" STREQUAL "ON")
   include(Qt5)
 else()
   message(WARNING "The EMsoft_SDK.cmake file will be incomplete as intended. The paths to your Qt installation will be missing and EMsoft will probably not build.")
 endif()
 
+# message(STATUS "Eigen3_DIR: ${Eigen3_DIR}")
+# message(STATUS "Qt5_DIR: ${Qt5_DIR}")
+
+include(EbsdLib)
 
 #------------------------------------------------------------------------------
 #

@@ -68,7 +68,8 @@ ExternalProject_Add(${extProjectName}
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# Eigen Library Location\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "set(EIGEN_INSTALL \"\${EMsoft_SDK_ROOT}/Eigen-${Eigen_VERSION}\" CACHE PATH \"\")\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${EIGEN_INSTALL})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(Eigen3_DIR \"\${EMsoft_SDK_ROOT}/Eigen-${Eigen_VERSION}/share/eigen3/cmake\" CACHE PATH \"\")\n")
 
+# Set this variable into the Cache since we are going to need it for other projects later.
+set(Eigen3_DIR ${EMsoft_SDK}/Eigen-${Eigen_VERSION}/share/eigen3/cmake CACHE PATH "" FORCE)
 

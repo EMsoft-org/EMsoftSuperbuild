@@ -1,22 +1,12 @@
 
-set(Qt595 "0")
+message(STATUS "EMsoft_SDK: ${EMsoft_SDK}")
 set(Qt510 "0")
 set(Qt511 "0")
 set(Qt512 "1")
 
-if(Qt595)
-  if(Qt510 OR Qt511 OR Qt512)
-    message(FATAL_ERROR "Please select only 1 kind of Qt to install")
-  endif()
-  set(qt5_version_major "5.9")
-  set(qt5_version_full "5.9.5")
-  set(qt5_version_short "5.9.5")
-  # This variable is used inside the javascript file that performs the Qt installation
-  set(qt5_installer_version "595")
-endif()
 
 if(Qt510)
-  if(Qt595 OR Qt511 OR Qt512)
+  if(Qt511 OR Qt512)
     message(FATAL_ERROR "Please select only 1 kind of Qt to install")
   endif()
   set(qt5_version_major "5.10")
@@ -27,7 +17,7 @@ if(Qt510)
 endif()
 
 if(Qt511)
-  if(Qt595 OR Qt510 OR Qt512)
+  if(Qt510 OR Qt512)
     message(FATAL_ERROR "Please select only 1 kind of Qt to install")
   endif()
   set(qt5_version_major "5.11")
@@ -39,7 +29,7 @@ endif()
 
 
 if(Qt512)
-  if(Qt595 OR Qt510 OR Qt511)
+  if(Qt510 OR Qt511)
     message(FATAL_ERROR "Please select only 1 kind of Qt to install")
   endif()
   set(qt5_version_major "5.12")
@@ -200,6 +190,7 @@ ExternalProject_Add(Qt5
   TEST_COMMAND ""
   )
 
+
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure DREAM3D for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
@@ -207,11 +198,13 @@ FILE(APPEND ${EMsoft_SDK_FILE} "#-----------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# Qt ${qt5_version_full} Library\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5" CACHE PATH "" FORCE)
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5" CACHE PATH "" FORCE)
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5" CACHE PATH "" FORCE)
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
-
 
