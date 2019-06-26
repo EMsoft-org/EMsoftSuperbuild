@@ -23,6 +23,7 @@ if(WIN32)
 endif()
 
 ExternalProject_Add(${extProjectName}
+  DEPENDS Qt5 Eigen
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/EbsdLib
   GIT_TAG "develop"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
