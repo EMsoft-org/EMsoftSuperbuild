@@ -5,7 +5,7 @@ if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
   message(STATUS "* EMsoft_SDK Loading from ${CMAKE_CURRENT_LIST_DIR}  *")
   message(STATUS "*******************************************************")
   set(CMAKE_CXX_FLAGS "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas -mfpmath=sse" CACHE STRING "" FORCE)
-  set(CMAKE_CXX_STANDARD 11 CACHE STRING "" FORCE)
+  set(CMAKE_CXX_STANDARD 14 CACHE STRING "" FORCE)
   set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE STRING "" FORCE)
     # Set our Deployment Target to match Qt
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10" CACHE STRING "" FORCE)
