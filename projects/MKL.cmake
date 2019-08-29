@@ -38,8 +38,12 @@ configure_file(
   "${MKL_CONFIG_FILE}"
   @ONLY
 )
-if(APPLE)
 
+
+#--------------------------------------------------------------------------------------------------
+# APPLE Case First
+if(APPLE)
+  set(MKL_IS_INSTALLED 0)
   # Let's look around to see if any other Intel Products have been installed on the system
   message(STATUS "Searching for previous Intel Installations... ")
   set(INTEL_)
@@ -56,7 +60,7 @@ if(APPLE)
       # Intel likes to end the path with a "/" but that will mess up some other things so get rid of it
       string(REGEX REPLACE "[/]$" "" MKL_INSTALL_LOCATION ${MKL_INSTALL_LOCATION})
       message(STATUS "|-- MKL_INSTALL_LOCATION: ${MKL_INSTALL_LOCATION}/mkl")
-
+      set(MKL_IS_INSTALLED 1)
       # since we have a location already, change the install location
       configure_file(
         "${_self_dir}/${mkl_Headless_FILE}"
@@ -82,7 +86,7 @@ if(APPLE)
     @ONLY
   )
 
-  if(NOT EXISTS "${mkl_DMG}")
+  if(NOT EXISTS "${mkl_DMG}" AND NOT MKL_IS_INSTALLED )
     message(STATUS "===============================================================")
     message(STATUS "    Downloading ${extProjectName} Offline Installer")
     message(STATUS "    ${mkl_url}")
@@ -104,14 +108,14 @@ if(APPLE)
     message(STATUS "|-- mkl_install_error: ${mkl_install_error}")
   endif()
 
-elseif(WIN32)
-
+elseif(WIN32) #--------------------------------------------------------------------------------------------------
+  # The ONLY configuration that is supported on Windows is Intel Fortran. When ifort
+  # is installed MKL is also installed with it so there is no need to actuall install
+  # MKL at this time. If EMsoft ever supports GFortran on Windows then this will
+  # need to be revisited.
 else()
 
 endif()
-
-
-
 
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers

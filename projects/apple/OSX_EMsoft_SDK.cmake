@@ -8,7 +8,7 @@ if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
   set(CMAKE_CXX_STANDARD 14 CACHE STRING "" FORCE)
   set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE STRING "" FORCE)
     # Set our Deployment Target to match Qt
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.10" CACHE STRING "" FORCE)
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "" FORCE)
   set(CMAKE_OSX_SYSROOT "@OSX_SDK@" CACHE STRING "" FORCE)
 endif()
 
@@ -47,16 +47,9 @@ endif()
 message(STATUS "The Current Build type being used is ${BUILD_TYPE}")
 
 #-------------------------------------------------------------------------------
-# We are going to assume the use of GFortran for macOS systems. This will definitely
-# mess up the use of Intel IFort on macOS. I'll cross that bridge when someone
-# complains about it.
-set(EMsoft_USE_GFORTRAN 1)
 # This also will help when using IDE's like QtCreator be able to find the compiler
-if(EMsoft_USE_GFORTRAN)
-  set(CMAKE_Fortran_COMPILER "/usr/local/gfortran/bin/gfortran" CACHE PATH "Path to GFortran" FORCE)
-else()
+set(CMAKE_Fortran_COMPILER "@CMAKE_Fortran_COMPILER@" CACHE PATH "Path to Fortran Compiler")
 
-endif()
 
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "")
 message(STATUS "BUILD_SHARED_LIBS: ${BUILD_SHARED_LIBS}")

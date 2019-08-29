@@ -48,7 +48,7 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     -DCMAKE_OSX_DEPLOYMENT_TARGET=${OSX_DEPLOYMENT_TARGET}
     -DCMAKE_OSX_SYSROOT=${OSX_SDK}
-    -DUSE_GNU_INSTALL_CONVENTION=ON
+    -DUSE_${FC_NAME}_INSTALL_CONVENTION=ON
     -DSKIP_DOC_GEN=1
 
   LOG_DOWNLOAD 1
@@ -59,7 +59,12 @@ ExternalProject_Add(${extProjectName}
   LOG_INSTALL 1
 )
 
-
+if (${CMAKE_Fortran_COMPILER} MATCHES "gfortran.*")
+  set(FC_NAME "gnu")
+endif()
+if (${CMAKE_Fortran_COMPILER} MATCHES "ifort.*")
+  set(FC_NAME "intel")
+endif()
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure EMsoft for building
@@ -68,20 +73,20 @@ FILE(APPEND ${EMsoft_SDK_FILE} "#-----------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# JSONFORTRAN Library Location\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}-gnu-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-gnu_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}-${FC_NAME}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-${FC_NAME}_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 elseif(MSVC_IDE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/lib/cmake/${extProjectName}-intel-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-intel_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/lib/cmake/${extProjectName}-${FC_NAME}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-${FC_NAME}_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/lib/cmake/${extProjectName}-intel-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-intel_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${JSONFORTRAN_INSTALL}/lib/cmake/${extProjectName}-${FC_NAME}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-${FC_NAME}_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}-gnu-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-gnu_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}-${FC_NAME}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-${FC_NAME}_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${JSONFORTRAN_DIR})\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${JSONFORTRAN_DIR})\n")
