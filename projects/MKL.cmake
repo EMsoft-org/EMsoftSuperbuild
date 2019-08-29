@@ -1,0 +1,136 @@
+
+set(mkl_version_major "2019.4")
+set(mkl_version_full "2019.4.233")
+set(mkl_version_short "2019.4.233")
+
+set(extProjectName "MKL${mkl_version_full}")
+message(STATUS "External Project: ${extProjectName}: ${mkl_version_full}" )
+
+if(APPLE)
+  set(mkl_url "http://dream3d.bluequartz.net/binaries/SDK/Sources/intel/m_mkl_${mkl_version_full}.dmg")
+elseif(WIN32)
+  set(mkl_version_major "2019.4")
+  set(mkl_version_full "2019.4.245")
+  set(mkl_version_short "2019.4.245")
+  set(mkl_url "http://dream3d.bluequartz.net/binaries/SDK/Sources/intel/w_mkl_${mkl_version_full}.exe")
+else()
+  set(mkl_url "http://dream3d.bluequartz.net/binaries/SDK/Sources/intel/l_mkl_${mkl_version_full}.tgz")
+endif()
+
+set(mkl_INSTALL "${EMsoft_SDK}/${extProjectName}${mkl_version_full}")
+set(mkl_BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build")
+
+get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
+
+set(MKL_INSTALL_LOCATION "${EMsoft_SDK}/intel")
+
+if(APPLE)
+  set(mkl_Headless_FILE "apple/mkl_HeadlessInstall_OSX.cfg.in")
+elseif(WIN32)
+  set(mkl_Headless_FILE "win32/mkl_HeadlessInstall_Win64.cfg.in")
+else()
+  set(mkl_Headless_FILE "unix/mkl_HeadlessInstall.cfg.in")
+endif()
+
+set(MKL_CONFIG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl_config.cfg")
+configure_file(
+  "${_self_dir}/${mkl_Headless_FILE}"
+  "${MKL_CONFIG_FILE}"
+  @ONLY
+)
+if(APPLE)
+
+  # Let's look around to see if any other Intel Products have been installed on the system
+  message(STATUS "Searching for previous Intel Installations... ")
+  set(INTEL_)
+  if(EXISTS "/opt/intel")
+    message(STATUS "|-- Found Previous Intel Installation ")
+    if(EXISTS "/opt/intel/.pset/db/intel_sdp_products.tgz.db")
+      message(STATUS "|-- Reading install log '/opt/intel/.pset/db/intel_sdp_products.tgz.db' ")
+      file(STRINGS "/opt/intel/.pset/db/intel_sdp_products.tgz.db" intel_install_log)
+      list(LENGTH intel_install_log install_log_length)
+      message(STATUS "|-- ${install_log_length} entries in install log. Using the first one to extract install location.")
+      list(GET intel_install_log 0 install_line)
+      string(REPLACE "|" ";" install_line ${install_line})
+      list(GET install_line 3 MKL_INSTALL_LOCATION)
+      # Intel likes to end the path with a "/" but that will mess up some other things so get rid of it
+      string(REGEX REPLACE "[/]$" "" MKL_INSTALL_LOCATION ${MKL_INSTALL_LOCATION})
+      message(STATUS "|-- MKL_INSTALL_LOCATION: ${MKL_INSTALL_LOCATION}/mkl")
+
+      # since we have a location already, change the install location
+      configure_file(
+        "${_self_dir}/${mkl_Headless_FILE}"
+        "${MKL_CONFIG_FILE}"
+        @ONLY
+      )
+
+    endif()
+  endif()
+
+
+  set(mkl_OSX_BASE_NAME m_mkl_${mkl_version_full})
+
+  set(mkl_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/${mkl_OSX_BASE_NAME}.dmg")
+  set(mkl_DMG ${mkl_OSX_DMG_ABS_PATH})
+  set(mkl_INSTALL_SCRIPT "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl_osx_install.sh")
+  set(MKL_INSTALL_LOG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl-offline-out.log")
+  set(MKL_INSTALL_ERR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl-offline-err.log")
+
+  configure_file(
+    "${_self_dir}/apple/mkl_osx_install.sh.in"
+    "${mkl_INSTALL_SCRIPT}"
+    @ONLY
+  )
+
+  if(NOT EXISTS "${mkl_DMG}")
+    message(STATUS "===============================================================")
+    message(STATUS "    Downloading ${extProjectName} Offline Installer")
+    message(STATUS "    ${mkl_url}")
+    message(STATUS "    Large Download!! This can take a bit... Please be patient")
+    file(DOWNLOAD ${mkl_url} "${mkl_DMG}" SHOW_PROGRESS)
+  endif()
+
+
+  if(NOT EXISTS "${MKL_INSTALL_LOCATION}/compilers_and_libraries_${mkl_version_full}")
+    message(STATUS "|-- Running MKL Installer. ")
+    message(STATUS "|-- This may take some time for the installer to start.")
+    message(STATUS "|-- Please wait for the installer to finish.")
+    execute_process(COMMAND "${mkl_INSTALL_SCRIPT}"
+                    OUTPUT_FILE ${MKL_INSTALL_LOG_FILE}
+                    ERROR_FILE ${MKL_INSTALL_ERR_FILE}
+                    ERROR_VARIABLE mkl_install_error
+                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    message(STATUS "|-- mkl_install_error: ${mkl_install_error}")
+  endif()
+
+elseif(WIN32)
+
+else()
+
+endif()
+
+
+
+
+
+#-- Append this information to the EMsoft_SDK CMake file that helps other developers
+#-- configure DREAM3D for building
+FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# MKL ${mkl_version_full} Library\n")
+if(APPLE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"${MKL_INSTALL_LOCATION}/mkl\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(INTEL_DIR \"${MKL_INSTALL_LOCATION}\" CACHE PATH \"\")\n")
+elseif(WIN32)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${mkl_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/MKL\" CACHE PATH \"\")\n")
+  set(MKL_DIR "${EMsoft_SDK}/${extProjectName}/${mkl_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/MKL" CACHE PATH "" FORCE)
+else()
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL\" CACHE PATH \"\")\n")
+  set(MKL_DIR "${EMsoft_SDK}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL" CACHE PATH "" FORCE)
+endif()
+#FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${MKL_DIR})\n")
+
+
+
+

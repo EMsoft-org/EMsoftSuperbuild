@@ -153,12 +153,14 @@ FILE(APPEND ${EMsoft_SDK_FILE} "\n#---------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# Always write out the compile_commands.json file to help out things like QtCreator and VS Code\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n")
 
+
 #------------------------------------------------------------------------------
 # On Windows we are going to use Intel MKL with the FFTW interface so we do not
 # need to install FFTW3
 if(NOT WIN32)
   include(FFTW)
 endif()
+include(MKL)
 include(JsonFortran)
 include(Bcls)
 include(CLFortran)

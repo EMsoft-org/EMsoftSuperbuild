@@ -1,5 +1,4 @@
 
-message(STATUS "EMsoft_SDK: ${EMsoft_SDK}")
 set(Qt510 "0")
 set(Qt511 "0")
 set(Qt512 "1")
@@ -84,14 +83,14 @@ if(APPLE)
 
   set(Qt5_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/${Qt5_OSX_BASE_NAME}.dmg")
   set(Qt5_DMG ${Qt5_OSX_DMG_ABS_PATH})
+  set(QT5_INSTALL_LOG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log")
+  set(QT5_INSTALL_ERR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log")
 
   configure_file(
     "${_self_dir}/apple/Qt5_osx_install.sh.in"
     "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
     @ONLY
   )
-
-
   if(NOT EXISTS "${Qt5_DMG}")
     message(STATUS "===============================================================")
     message(STATUS "    Downloading ${extProjectName} Offline Installer")
@@ -106,8 +105,8 @@ if(APPLE)
     message(STATUS "    This may take some time for the installer to start.")
     message(STATUS "    Please wait for the installer to finish.")
     execute_process(COMMAND "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
-                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log"
-                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log"
+                    OUTPUT_FILE "${QT5_INSTALL_LOG_FILE}"
+                    ERROR_FILE "${QT5_INSTALL_ERR_FILE}"
                     ERROR_VARIABLE mount_error
                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
