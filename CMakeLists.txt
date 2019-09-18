@@ -185,7 +185,7 @@ if("${INSTALL_QT5}" STREQUAL "ON")
   include(Qt5)
   include(EbsdLib)
 else()
-  message(WARNING "Qt5 & EBSDLib are disabled. EMsoftWorkbench will can NOT be compiled. use -DINSTALL_QT5=ON to enable Qt5 and EBSDLib installation.")
+  message(WARNING "Qt5 & EBSDLib are disabled. EMsoftWorkbench can NOT be compiled. use -DINSTALL_QT5=ON to enable Qt5 and EBSDLib installation.")
 endif()
 
 #------------------------------------------------------------------------------

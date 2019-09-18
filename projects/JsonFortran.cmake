@@ -30,6 +30,13 @@ else()
   endif()
 endif()
 
+if (${CMAKE_Fortran_COMPILER} MATCHES "gfortran.*")
+  set(FC_NAME "gnu")
+endif()
+if (${CMAKE_Fortran_COMPILER} MATCHES "ifort.*")
+  set(FC_NAME "intel")
+endif()
+
 ExternalProject_Add(${extProjectName}
   #DOWNLOAD_NAME ${extProjectName}-${JSONFORTRAN_VERSION}.tar.gz
   #URL ${JSONFORTRAN_URL}
@@ -48,7 +55,7 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     -DCMAKE_OSX_DEPLOYMENT_TARGET=${OSX_DEPLOYMENT_TARGET}
     -DCMAKE_OSX_SYSROOT=${OSX_SDK}
-    -DUSE_${FC_NAME}_INSTALL_CONVENTION=ON
+    -DUSE_GNU_INSTALL_CONVENTION=ON
     -DSKIP_DOC_GEN=1
 
   LOG_DOWNLOAD 1
@@ -59,12 +66,7 @@ ExternalProject_Add(${extProjectName}
   LOG_INSTALL 1
 )
 
-if (${CMAKE_Fortran_COMPILER} MATCHES "gfortran.*")
-  set(FC_NAME "gnu")
-endif()
-if (${CMAKE_Fortran_COMPILER} MATCHES "ifort.*")
-  set(FC_NAME "intel")
-endif()
+
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure EMsoft for building

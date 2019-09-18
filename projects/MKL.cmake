@@ -46,7 +46,6 @@ if(APPLE)
   set(MKL_IS_INSTALLED 0)
   # Let's look around to see if any other Intel Products have been installed on the system
   message(STATUS "Searching for previous Intel Installations... ")
-  set(INTEL_)
   if(EXISTS "/opt/intel")
     message(STATUS "|-- Found Previous Intel Installation ")
     if(EXISTS "/opt/intel/.pset/db/intel_sdp_products.tgz.db")
@@ -110,9 +109,14 @@ if(APPLE)
 
 elseif(WIN32) #--------------------------------------------------------------------------------------------------
   # The ONLY configuration that is supported on Windows is Intel Fortran. When ifort
-  # is installed MKL is also installed with it so there is no need to actuall install
+  # is installed MKL is also installed with it so there is no need to actuall7 install
   # MKL at this time. If EMsoft ever supports GFortran on Windows then this will
   # need to be revisited.
+  get_filename_component(IFORT_COMPILER_ROOT_DIR ${CMAKE_Fortran_COMPILER} DIRECTORY)
+  get_filename_component(IFORT_COMPILER_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY)
+  get_filename_component(IFORT_COMPILER_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY)
+
+  set(MKL_DIR "${IFORT_COMPILER_ROOT_DIR}/mkl")
 else()
 
 endif()
@@ -127,8 +131,7 @@ if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"${MKL_INSTALL_LOCATION}/mkl\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(INTEL_DIR \"${MKL_INSTALL_LOCATION}\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${mkl_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/MKL\" CACHE PATH \"\")\n")
-  set(MKL_DIR "${EMsoft_SDK}/${extProjectName}/${mkl_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/MKL" CACHE PATH "" FORCE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"${MKL_DIR}\" CACHE PATH \"\")\n")
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL\" CACHE PATH \"\")\n")
   set(MKL_DIR "${EMsoft_SDK}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL" CACHE PATH "" FORCE)
