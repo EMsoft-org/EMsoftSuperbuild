@@ -1,6 +1,6 @@
 set(extProjectName "bcls")
 message(STATUS "External Project: ${extProjectName}" )
-
+message(STATUS "|-- MKL_DIR: ${MKL_DIR}")
 set(bcls_VERSION "0.1")
 set(BCLS_GIT_TAG "topic/mkl")
 

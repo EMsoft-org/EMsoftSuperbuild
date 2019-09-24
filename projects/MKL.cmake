@@ -4,7 +4,7 @@ set(mkl_version_full "2019.4.233")
 set(mkl_version_short "2019.4.233")
 
 set(extProjectName "MKL${mkl_version_full}")
-message(STATUS "External Project: ${extProjectName}: ${mkl_version_full}" )
+message(STATUS "External Project: ${extProjectName}" )
 
 if(APPLE)
   set(mkl_url "http://dream3d.bluequartz.net/binaries/SDK/Sources/intel/m_mkl_${mkl_version_full}.dmg")
@@ -45,9 +45,9 @@ configure_file(
 if(APPLE)
   set(MKL_IS_INSTALLED 0)
   # Let's look around to see if any other Intel Products have been installed on the system
-  message(STATUS "Searching for previous Intel Installations... ")
+  message(STATUS "|-- Searching for previous Intel MKL Installations... ")
   if(EXISTS "/opt/intel")
-    message(STATUS "|-- Found Previous Intel Installation ")
+    message(STATUS "|-- Found Previous Intel Installation at /opt/intel")
     if(EXISTS "/opt/intel/.pset/db/intel_sdp_products.tgz.db")
       message(STATUS "|-- Reading install log '/opt/intel/.pset/db/intel_sdp_products.tgz.db' ")
       file(STRINGS "/opt/intel/.pset/db/intel_sdp_products.tgz.db" intel_install_log)
@@ -58,7 +58,7 @@ if(APPLE)
       list(GET install_line 3 MKL_INSTALL_LOCATION)
       # Intel likes to end the path with a "/" but that will mess up some other things so get rid of it
       string(REGEX REPLACE "[/]$" "" MKL_INSTALL_LOCATION ${MKL_INSTALL_LOCATION})
-      message(STATUS "|-- MKL_INSTALL_LOCATION: ${MKL_INSTALL_LOCATION}/mkl")
+      message(STATUS "|-- MKL_INSTALL_LOCATION: ${MKL_INSTALL_LOCATION}")
       set(MKL_IS_INSTALLED 1)
       # since we have a location already, change the install location
       configure_file(
@@ -106,7 +106,7 @@ if(APPLE)
     )
     message(STATUS "|-- mkl_install_error: ${mkl_install_error}")
   endif()
-
+  set(MKL_DIR ${MKL_INSTALL_LOCATION}/mkl)
 elseif(WIN32) #--------------------------------------------------------------------------------------------------
   # The ONLY configuration that is supported on Windows is Intel Fortran. When ifort
   # is installed MKL is also installed with it so there is no need to actuall7 install
