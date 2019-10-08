@@ -1,7 +1,7 @@
 
-set(mkl_version_major "2019.4")
-set(mkl_version_full "2019.4.233")
-set(mkl_version_short "2019.4.233")
+set(mkl_version_major "2019.5")
+set(mkl_version_full "2019.5.281")
+set(mkl_version_short "2019.5.281")
 
 set(extProjectName "MKL${mkl_version_full}")
 message(STATUS "External Project: ${extProjectName}" )

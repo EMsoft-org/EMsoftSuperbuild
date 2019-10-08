@@ -116,7 +116,7 @@ if(APPLE)
     ")
 
   endif()
-  set(OSX_DEPLOYMENT_TARGET "10.10")
+  set(OSX_DEPLOYMENT_TARGET "10.13")
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoft_SDK.cmake
               ${EMsoft_SDK}/EMsoft_SDK.cmake @ONLY )
@@ -166,6 +166,7 @@ get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 if(${Fortran_COMPILER_NAME} MATCHES "gfortran.*")
   include(FFTW)
 elseif (${Fortran_COMPILER_NAME} MATCHES "ifort.*")
+  set(OSX_DEPLOYMENT_TARGET "10.13")
   include(MKL)
 else()
   message(STATUS "The Fotran compiler is NOT recognized. EMsoft may not support it.")
