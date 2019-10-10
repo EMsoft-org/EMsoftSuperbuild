@@ -172,7 +172,7 @@ else()
   message(STATUS "The Fotran compiler is NOT recognized. EMsoft may not support it.")
   message(FATAL_ERROR "Current Fotran Compiler is ${CMAKE_Fortran_COMPILER}")
 endif()
-include(MKL)
+
 include(JsonFortran)
 include(Bcls)
 include(CLFortran)
