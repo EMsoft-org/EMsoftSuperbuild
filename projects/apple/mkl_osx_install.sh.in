@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# open the console app to show what is going on.... 
+open @MKL_INSTALL_ERR_FILE@
+open @MKL_INSTALL_LOG_FILE@
+
+
+echo "Mounting MKL Disk Image....."
+hdiutil mount "@mkl_DMG@"
+echo "Executing MKL Installer with installation set to @MKL_INSTALL_LOCATION@ through the config file..."
+sudo "/Volumes/@mkl_OSX_BASE_NAME@/@mkl_OSX_BASE_NAME@.app/Contents/MacOS/install.sh" --user-mode --silent "@MKL_CONFIG_FILE@"
+echo "Unmounting the MKL Disk Image .. "
+hdiutil unmount "/Volumes/@mkl_OSX_BASE_NAME@"
+
+if [ -d "@MKL_INSTALL_LOCATION@" ]; then
+  echo "Intel MKL successfully installed into @MKL_INSTALL_LOCATION@"
+fi

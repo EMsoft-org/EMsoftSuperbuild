@@ -1,10 +1,10 @@
 set(extProjectName "tbb")
-set(tbb_VERSION "2019_20181203")
+set(tbb_VERSION "2019_20190320")
 
 message(STATUS "External Project: ${extProjectName}: ${tbb_VERSION}" )
 
 set(tbb_INSTALL "${EMsoft_SDK}/tbb${tbb_VERSION}oss")
-set(tbb_url_server "https://github.com/01org/tbb/releases/download/2019_U3")
+set(tbb_url_server "http://github.com/01org/tbb/releases/download/2019_U5")
 
 if(APPLE)
   set(tbb_URL "${tbb_url_server}/tbb${tbb_VERSION}oss_mac.tgz")
@@ -41,7 +41,7 @@ if(WIN32 OR APPLE OR "${BUILD_TBB}" STREQUAL "ON" )
   )
 
   #-- Append this information to the EMsoft_SDK CMake file that helps other developers
-  #-- configure DREAM3D for building
+  #-- configure EMsoft for building
   #-- Starting with TBB 2018 U5 the Parallel STL is included which is why we need 
   #-- the double path to the TBB cmake directory
   FILE(APPEND ${EMsoft_SDK_FILE} "\n")

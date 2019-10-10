@@ -10,7 +10,6 @@ cmake_minimum_required(VERSION 3.8.0)
 
 project(EMsoftSuperBuild VERSION 1.0.0.0 LANGUAGES C CXX Fortran)
 
-
 # This allows us to just use the "include()" command and the name of the project
 set(CMAKE_MODULE_PATH 
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake" 
@@ -69,9 +68,6 @@ message(STATUS "Workspace Folder:   ${WORKSPACE_DIR}")
 
 set(BUILD_SHARED_LIBS ON)
 
-OPTION(INSTALL_QT5 "Download and Install Qt5" ON)
-
-
 if(APPLE)
   set(OSX_SDK "NOT-FOUND")
   EXEC_PROGRAM(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
@@ -102,6 +98,11 @@ if(APPLE)
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
+  IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x)
+    message(STATUS "Found macOS 10.15 Catalina as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
+  ENDIF ()
+
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
     The following versions are supported:\n\
@@ -110,11 +111,12 @@ if(APPLE)
     (16) macOS 10.12 Sierra\n\
     (17) macOS 10.13 High Sierra\n\
     (18) macOS 10.14 Mojave\n\
+    (19) macOS 10.15 Catalina\n\
     Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
     ")
 
   endif()
-  set(OSX_DEPLOYMENT_TARGET "10.10")
+  set(OSX_DEPLOYMENT_TARGET "10.13")
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoft_SDK.cmake
               ${EMsoft_SDK}/EMsoft_SDK.cmake @ONLY )
@@ -153,12 +155,24 @@ FILE(APPEND ${EMsoft_SDK_FILE} "\n#---------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# Always write out the compile_commands.json file to help out things like QtCreator and VS Code\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n")
 
+
+#------------------------------------------------------------------------------
+# Get the name of the Fortran compiler for easier decisions
+get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+
 #------------------------------------------------------------------------------
 # On Windows we are going to use Intel MKL with the FFTW interface so we do not
 # need to install FFTW3
-if(NOT WIN32)
+if(${Fortran_COMPILER_NAME} MATCHES "gfortran.*")
   include(FFTW)
+elseif (${Fortran_COMPILER_NAME} MATCHES "ifort.*")
+  set(OSX_DEPLOYMENT_TARGET "10.13")
+  include(MKL)
+else()
+  message(STATUS "The Fotran compiler is NOT recognized. EMsoft may not support it.")
+  message(FATAL_ERROR "Current Fotran Compiler is ${CMAKE_Fortran_COMPILER}")
 endif()
+
 include(JsonFortran)
 include(Bcls)
 include(CLFortran)
@@ -166,12 +180,13 @@ include(Eigen)
 include(HDF5)
 include(TBB)
 
+OPTION(INSTALL_QT5 "Download and Install Qt5" OFF)
 
 if("${INSTALL_QT5}" STREQUAL "ON")
   include(Qt5)
   include(EbsdLib)
 else()
-  message(WARNING "The EMsoft_SDK.cmake file will be incomplete as intended. The paths to your Qt installation will be missing and EMsoft will probably not build.")
+  message(WARNING "Qt5 & EBSDLib are disabled. EMsoftWorkbench can NOT be compiled. use -DINSTALL_QT5=ON to enable Qt5 and EBSDLib installation.")
 endif()
 
 #------------------------------------------------------------------------------

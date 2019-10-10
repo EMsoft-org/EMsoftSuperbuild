@@ -26,3 +26,5 @@ Support/Scripts/GMT/gmt.history
 .vscode
 /ExternalProjects
 /TEST/
+/*-release
+/*-debug

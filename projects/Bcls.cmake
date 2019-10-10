@@ -1,7 +1,8 @@
 set(extProjectName "bcls")
 message(STATUS "External Project: ${extProjectName}" )
-
+message(STATUS "|-- MKL_DIR: ${MKL_DIR}")
 set(bcls_VERSION "0.1")
+set(BCLS_GIT_TAG "topic/mkl")
 
 if(MSVC_IDE)
   set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}")
@@ -17,7 +18,10 @@ ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
-
+#-------------------------------------------------------------------------------
+# We only support Intel Visual Fortran 2018 and newer since those have a sane
+# folder structure scheme. These next lines make sense on Windows Intel installs,
+# let's hope that their installations on Linux and macOS are about the same
 if(WIN32)
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
 elseif(APPLE)
@@ -30,11 +34,22 @@ else()
   endif()
 endif()
 
+if(${Fortran_COMPILER_NAME} MATCHES "gfortran.*")
+  set(BCLS_USE_MKL "OFF")
+elseif (${Fortran_COMPILER_NAME} MATCHES "ifort.*")
+  set(BCLS_USE_MKL "ON")
+else()
+  message(STATUS "The Fotran compiler is NOT recognized. EMsoft may not support it.")
+  message(FATAL_ERROR "Current Fotran Compiler is ${CMAKE_Fortran_COMPILER}")
+endif()
+
+
+
 ExternalProject_Add(${extProjectName}
   #DOWNLOAD_NAME ${extProjectName}-${bcls_VERSION}.tar.gz
   #URL ${bcls_URL}
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/bcls
-  GIT_TAG "develop"
+  GIT_TAG "${BCLS_GIT_TAG}"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
   STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
   DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
@@ -50,6 +65,8 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_OSX_SYSROOT=${OSX_SDK}
     -DOpenCL_INCLUDE_DIR:PATH=${OpenCL_INCLUDE_DIR}
     -DOpenCL_LIBRARY:FILEPATH=${OpenCL_LIBRARY}
+    -DBCLS_USE_MKL:BOOL=${BCLS_USE_MKL}
+    -DMKL_DIR:PATH=${MKL_DIR}
 
   LOG_DOWNLOAD 1
   LOG_UPDATE 1
