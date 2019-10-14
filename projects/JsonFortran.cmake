@@ -4,7 +4,7 @@ message(STATUS "External Project: ${extProjectName}" )
 set(JSONFORTRAN_VERSION "4.2.1")
 
 # This is need to figure out the proper install dir for some Linux distributions
-include(include(GNUInstallDirs))
+include(GNUInstallDirs)
 
 if(MSVC_IDE)
   set(JSONFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${JSONFORTRAN_VERSION}")
