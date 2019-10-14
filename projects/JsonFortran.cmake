@@ -3,6 +3,9 @@ message(STATUS "External Project: ${extProjectName}" )
 
 set(JSONFORTRAN_VERSION "4.2.1")
 
+# This is need to figure out the proper install dir for some Linux distributions
+include(include(GNUInstallDirs)
+
 if(MSVC_IDE)
   set(JSONFORTRAN_INSTALL "${EMsoft_SDK}/${extProjectName}-${JSONFORTRAN_VERSION}")
 elseif(WIN32)
@@ -92,7 +95,7 @@ elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-${FC_NAME}_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}-${FC_NAME}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(JSONFORTRAN_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${JSONFORTRAN_VERSION}-\${BUILD_TYPE}/${CMAKE_INSTALL_LIBDIR}/cmake/${extProjectName}-${FC_NAME}-${JSONFORTRAN_VERSION}\" CACHE PATH \"\")\n")
   FILE(APPEND ${EMsoft_SDK_FILE} "set(${extProjectName}-${FC_NAME}_DIR \"\${JSONFORTRAN_DIR}\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${JSONFORTRAN_DIR})\n")
