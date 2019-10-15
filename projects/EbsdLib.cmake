@@ -1,7 +1,7 @@
 set(extProjectName "EbsdLib")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(EbsdLib_VERSION "0.1")
+set(EbsdLib_VERSION "2.0")
 
 if(MSVC_IDE)
   set(EbsdLib_INSTALL "${EMsoft_SDK}/${extProjectName}-${EbsdLib_VERSION}")
