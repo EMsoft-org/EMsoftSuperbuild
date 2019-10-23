@@ -11,7 +11,7 @@ libraries as prebuilt binaries or as source code and compiling those libraries.
 
 ## Prerequisites ##
 
-+ CMake 3.9.x installed on system
++ CMake 3.14.5 or more recent installed on system
 + Compiler Suite installed on system
 + Fortran compiler installed on system
 + Git installed on the system

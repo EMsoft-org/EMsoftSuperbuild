@@ -6,7 +6,7 @@ if(${CMAKE_MAJOR_VERSION} STREQUAL "3")
   cmake_policy(SET CMP0054 NEW)
 endif()
 
-cmake_minimum_required(VERSION 3.8.0)
+cmake_minimum_required(VERSION 3.14.5)
 
 project(EMsoftSuperBuild VERSION 1.0.0.0 LANGUAGES C CXX Fortran)
 
