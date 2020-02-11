@@ -79,7 +79,14 @@ ExternalProject_Add(${extProjectName}
 # FORTRAN CL Library
 # set(CLFortran_INSTALL "${EMsoft_SDK_ROOT}/CLFortran")
 # set(CLFortran_DIR "${EMsoft_SDK_ROOT}/CLFortran/lib/CMake/CLFortran")
+if(WIN32)
+  FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "# OpenCL Library and Include directories\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(OpenCL_LIBRARY \"${OpenCL_LIBRARY}\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(OpenCL_INCLUDE_DIR \"${OpenCL_INCLUDE_DIR}\")\n")
 
+endif()
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure EMsoft for building
