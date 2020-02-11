@@ -20,17 +20,19 @@ libraries as prebuilt binaries or as source code and compiling those libraries.
 
 | Operating System | C/C++ Compiler | Fortran Compiler |
 |------------------|----------------|------------------|
-| macOS (>=10.12) | Xcode Native tools (9) | GFortran 6.3.0 and above |
+| macOS (>=10.13) | Xcode Native tools (10/11) | GFortran 6.3.0 or Intel Fortran 19\*\* |
 | Windows (10) | Visual Studio 2015 (CE/Pro) | Intel Fortran v17/v19 |
 | Linux (Ubuntu 16.x, CentOS 7.x) | GCC 7.x and Above, Clang 3.8 and greater | GNU Fortran 6.3.5 20160904 or newer |
 
+\*\*macOS Note: If you are installing Intel Fortran try to install into a location **other** then /opt/intel which is the default. Try /opt/intel_sw instead.
+
 ## Git Locations ##
 
-Git verison 2.x is pretty much required.
+Git verison 2.x is required.
 
 | Operating System |  Notes  |
 |------------------|--------------|
-| macOS (10.12) | CLI comes with Xcode, [SourceTree](http://www.sourcetreeapp.com) for a nice GUI application |
+| macOS (10.13) | CLI comes with Xcode, [SourceTree](http://www.sourcetreeapp.com) for a nice GUI application |
 | Windows (10) | [SourceTree](http://www.sourcetreeapp.com). Download and install the app  |
 | Linux (Ubuntu 16.x, CentOS 7.x) | Use your package manager to install git.|
 
@@ -38,7 +40,7 @@ Git verison 2.x is pretty much required.
 
 | Library | Version | Notes |
 |---------|---------|-------|
-| HDF5 | 1.8.20 | Compiled from Source |
+| HDF5 | 1.10.5 | Compiled from Source |
 | CLFortran | 0.0.1 | Compiled from Source on GitHub |
 | FFTW | 3.3.5 | Compiled (macOS/Linux) |
 | Intel MKL | 2019_xxxx | Precompiled for IFort compilers (windows & macos) |
