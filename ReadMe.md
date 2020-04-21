@@ -82,7 +82,7 @@ Git verison 2.x is required.
 6. Open a command prompt and invoke the following commands
 
         cd C:/Users/[USERNAME]/EMsoft-Dev
-		git clone git://www.github.com/marcdegraef/EMsoftSuperbuild
+		git clone git://www.github.com/emsoft-org/EMsoftSuperbuild
         cd EMsoftSuperbuild
         mkdir Debug
         cd Debug
