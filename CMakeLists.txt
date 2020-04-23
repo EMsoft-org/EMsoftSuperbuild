@@ -192,6 +192,9 @@ include(Eigen)
 include(HDF5)
 include(TBB)
 
+#--------------------------------------------------------------------------------------------------
+# Are we installing Qt (ON by default)
+#--------------------------------------------------------------------------------------------------
 OPTION(INSTALL_QT5 "Download and Install Qt5" OFF)
 
 if("${INSTALL_QT5}" STREQUAL "ON")
