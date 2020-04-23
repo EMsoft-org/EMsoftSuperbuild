@@ -2,6 +2,7 @@ set(extProjectName "EbsdLib")
 message(STATUS "External Project: ${extProjectName}" )
 
 set(EbsdLib_VERSION "2.0")
+set(GIT_HASH "f72a450df03fb660484da3fb5c02138845b341b8")
 
 if(MSVC_IDE)
   set(EbsdLib_INSTALL "${EMsoft_SDK}/${extProjectName}-${EbsdLib_VERSION}")
@@ -25,7 +26,7 @@ endif()
 ExternalProject_Add(${extProjectName}
   DEPENDS Qt5 Eigen
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/EbsdLib
-  GIT_TAG "develop"
+  GIT_TAG "${GIT_HASH}"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
   STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
   DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
