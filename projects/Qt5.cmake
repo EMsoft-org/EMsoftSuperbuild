@@ -262,10 +262,13 @@ FILE(APPEND ${EMsoft_SDK_FILE} "#-----------------------------------------------
 FILE(APPEND ${EMsoft_SDK_FILE} "# Qt ${qt5_version_full} Library\n")
 if(APPLE)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5" CACHE PATH "")
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5" CACHE PATH "")
 else()
   FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5" CACHE PATH "")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
 
