@@ -1,3 +1,8 @@
+#--------------------------------------------------------------------------------------------------
+# Are we installing Qt (ON by default)
+#--------------------------------------------------------------------------------------------------
+OPTION(INSTALL_QT5 "Install Qt5" ON)
+
 if("${QtVersion}" STREQUAL "")
   set(QtVersion "5.12")
 endif()
@@ -61,16 +66,47 @@ if(Qt514)
     message(FATAL_ERROR "Please set the -DQtVersion=(5.9 | 5.12 | 5.14) to select the version of Qt5 that you want to build against.")
   endif()
   set(qt5_version_major "5.14")
-  set(qt5_version_full "5.14.1")
-  set(qt5_version_short "5.14.1")
+  set(qt5_version_full "5.14.2")
+  set(qt5_version_short "5.14.2")
   # This variable is used inside the javascript file that performs the Qt installation
-  set(qt5_installer_version "qt5.5141")
+  set(qt5_installer_version "qt5.5142")
 endif()
 
+
 set(extProjectName "Qt${qt5_version_full}")
-message(STATUS "External Project: ${extProjectName}: ${qt5_version_full}" )
 
+if("${INSTALL_QT5}" STREQUAL "OFF" AND "${Qt5_QMAKE_EXECUTABLE}" STREQUAL "")
+  message(FATAL_ERROR "INSTALL_QT5=${INSTALL_QT5}\nYou have indicated that Qt5 is already installed. Please use -DQt5_QMAKE_EXECUTABLE=/path/to/qmake cmake variable to point to the location of the qmake(.exe) executable.")
+  return()
+endif()
 
+if(NOT INSTALL_QT5 AND NOT "${Qt5_QMAKE_EXECUTABLE}" STREQUAL "")
+
+  execute_process(
+    COMMAND "${Qt5_QMAKE_EXECUTABLE}" -query QT_VERSION
+    OUTPUT_VARIABLE qt5_version_full
+    OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_STRIP_TRAILING_WHITESPACE
+  )
+  execute_process(
+    COMMAND "${Qt5_QMAKE_EXECUTABLE}" -query QT_INSTALL_LIBS
+    OUTPUT_VARIABLE QT_INSTALL_LIBS
+    OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_STRIP_TRAILING_WHITESPACE
+  )
+
+  set(extProjectName "Qt${qt5_version_full}")
+  message(STATUS "Using Installed ${extProjectName}: -DQt5_QMAKE_EXECUTABLE=${Qt5_QMAKE_EXECUTABLE}" )
+
+  FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "# Qt5 ${qt5_version_full} Library\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"${QT_INSTALL_LIBS}/cmake/Qt5\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
+  return()
+endif()
+
+if("${INSTALL_QT5}")
+  message(STATUS "Building: ${extProjectName} ${qt5_version_full}: -DINSTALL_QT5=${INSTALL_QT5}" )
+endif()
 
 set(qt5_INSTALL "${EMsoft_SDK}/${extProjectName}${qt5_version_full}")
 set(qt5_BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build")
@@ -112,14 +148,14 @@ if(APPLE)
 
   set(Qt5_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/${Qt5_OSX_BASE_NAME}.dmg")
   set(Qt5_DMG ${Qt5_OSX_DMG_ABS_PATH})
-  set(QT5_INSTALL_LOG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log")
-  set(QT5_INSTALL_ERR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log")
 
   configure_file(
     "${_self_dir}/apple/Qt5_osx_install.sh.in"
     "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
     @ONLY
   )
+
+
   if(NOT EXISTS "${Qt5_DMG}")
     message(STATUS "===============================================================")
     message(STATUS "    Downloading ${extProjectName} Offline Installer")
@@ -134,12 +170,12 @@ if(APPLE)
     message(STATUS "    This may take some time for the installer to start.")
     message(STATUS "    Please wait for the installer to finish.")
     execute_process(COMMAND "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
-                    OUTPUT_FILE "${QT5_INSTALL_LOG_FILE}"
-                    ERROR_FILE "${QT5_INSTALL_ERR_FILE}"
+                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log"
+                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log"
                     ERROR_VARIABLE mount_error
                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
-    message(STATUS "mount_error: ${mount_error}")
+
   endif()
   set(Qt5_QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/clang_64/bin/qmake)
 
@@ -183,7 +219,7 @@ else()
 
   set(QT5_ONLINE_INSTALLER "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
   configure_file(
-    "${_self_dir}/unix/Qt5_Linux_install.sh.in"
+    "${_self_dir}/unix/Qt5_linux_install.sh.in"
     "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
   )
 
@@ -194,6 +230,7 @@ else()
                     ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
                     ERROR_VARIABLE installer_error
                     WORKING_DIRECTORY ${qt5_BINARY_DIR} )
+    message(STATUS "installer_error: ${installer_error}")
   endif()
 
   set(Qt5_QMAKE_EXECUTABLE ${QT_INSTALL_LOCATION}/${qt5_version_short}/gcc_64/bin/qmake)
@@ -218,21 +255,18 @@ ExternalProject_Add(Qt5
   TEST_COMMAND ""
   )
 
-
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure DREAM3D for building
 FILE(APPEND ${EMsoft_SDK_FILE} "\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "# Qt ${qt5_version_full} Library\n")
 if(APPLE)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
-  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5" CACHE PATH "" FORCE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5\" CACHE PATH \"\")\n")
-  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5" CACHE PATH "" FORCE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
-  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5" CACHE PATH "" FORCE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
+
 
