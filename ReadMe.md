@@ -51,13 +51,24 @@ Git verison 2.x is required.
 | Qt 5 | 5.12.4 | Precompiled Binaries from [www.qt.io](http://download.qt.io) |
 
 ## macOS/Linux Instructions ##
+0. Have a working GPU driver and OpenCL installed.
+1. 
+ + Install your compiler tools
+ + Install CMake on your system
+ + Install a Fortran compiler on your system
+ + Install Git on your system
 
-1. Install your compiler tools
-2. Install CMake on your system
-3. Install a Fortran compiler on your system
-4. Install Git on your system
-5. Clone this repository onto your hard disk.
-6. open a terminal and invoke the following commands
+ If you start with a blank Ubuntu 20.04 system (for instance WSL or Docker) then you can do all this in one line:
+
+       apt-get update && apt-get install -y
+       libtbb-dev \
+       build-essential \
+       gfortran \
+       libblas-dev liblapack-dev \
+       cmake\
+       git
+2. Clone this repository onto your hard disk.
+3. open a terminal and invoke the following commands
 
         cd EMsoftSuperbuild
         mkdir Debug
