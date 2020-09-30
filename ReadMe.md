@@ -25,6 +25,7 @@ libraries as prebuilt binaries or as source code and compiling those libraries.
 | Linux (Ubuntu 16.x, CentOS 7.x) | GCC 7.x and Above, Clang 3.8 and greater | GNU Fortran 6.3.5 20160904 or newer |
 
 \*\*macOS Note: If you are installing Intel Fortran try to install into a location **other** then /opt/intel which is the default. Try /opt/intel_sw instead.
+
 \*\*WSL Note: While WSL2 supports passing the NVidia graphic card through to the subsystem, be aware that, to date, we did not find a way to install the OpenCL driver needed for CLFortran computation. Perhaps not far in the future it will be made possible and WSL would become a viable solution for setting up EMsoft on Windows. 
 
 ## Git Locations ##
