@@ -1,7 +1,7 @@
 set(extProjectName "jsonfortran")
 message(STATUS "External Project: ${extProjectName}" )
 
-set(JSONFORTRAN_VERSION "4.2.1")
+set(JSONFORTRAN_VERSION "4.3.0")
 
 # This is need to figure out the proper install dir for some Linux distributions
 include(GNUInstallDirs)
@@ -43,8 +43,8 @@ endif()
 ExternalProject_Add(${extProjectName}
   #DOWNLOAD_NAME ${extProjectName}-${JSONFORTRAN_VERSION}.tar.gz
   #URL ${JSONFORTRAN_URL}
-  GIT_REPOSITORY https://github.com/bluequartzsoftware/json-fortran
-  GIT_TAG "4.2.1"
+  GIT_REPOSITORY https://github.com/jacobwilliams/json-fortran
+  GIT_TAG "${JSONFORTRAN_VERSION}"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
   STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
   DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
