@@ -88,16 +88,22 @@ if(APPLE)
   IF (DARWIN_VERSION EQUAL 14) # macOS 10.10 Yosemite
     message(STATUS "Found macOS 10.10 Yosemite as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
+    set(OSX_DEPLOYMENT_TARGET "10.10")
+    message(FATAL_ERROR "MacOS 10.10 Yosemite NOT supported")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 15) # macOS 10.11 El Capitan
     message(STATUS "Found macOS 10.11 El Capitan as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
+    set(OSX_DEPLOYMENT_TARGET "10.11")
+    message(FATAL_ERROR "MacOS 10.11 El Capitan NOT supported")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 16) # macOS 10.12 Sierra (Xcode 8.x or Xcode 9.x)
     message(STATUS "Found macOS 10.12 Sierra as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
+    set(OSX_DEPLOYMENT_TARGET "10.12")
+    message(FATAL_ERROR "MacOS 10.12 Sierra NOT supported")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 17) # macOS 10.13 High Sierra (Xcode 9.x)
@@ -107,25 +113,25 @@ if(APPLE)
 
   IF (DARWIN_VERSION EQUAL 18) # macOS 10.14 Mojave (Xcode 10.x)
     message(STATUS "Found macOS 10.14 Mojave as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "10.14")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x)
     message(STATUS "Found macOS 10.15 Catalina as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "10.15")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 20) # macOS 11.0 Big Sur (Xcode 11.x)
-    message(STATUS "Found macOS 11.0 big sur as the host. Darwin Version:${DARWIN_VERSION}")
+  IF (DARWIN_VERSION EQUAL 20) # macOS 11.00 Big Sur (Xcode 12.x)
+    message(STATUS "Found macOS 11.00 Big Sur as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
+    set(OSX_DEPLOYMENT_TARGET "11.00")
   ENDIF ()
 
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
     The following versions are supported:\n\
-    (14) macOS 10.10 Yosemite\n\
-    (15) macOS 10.11 El Capitan\n\
-    (16) macOS 10.12 Sierra\n\
     (17) macOS 10.13 High Sierra\n\
     (18) macOS 10.14 Mojave\n\
     (19) macOS 10.15 Catalina\n\
@@ -134,7 +140,7 @@ if(APPLE)
     ")
 
   endif()
-  set(OSX_DEPLOYMENT_TARGET "10.13")
+
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoft_SDK.cmake
               ${EMsoft_SDK}/EMsoft_SDK.cmake @ONLY )
