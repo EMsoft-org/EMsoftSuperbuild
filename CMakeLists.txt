@@ -115,6 +115,11 @@ if(APPLE)
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
+  IF (DARWIN_VERSION EQUAL 20) # macOS 11.0 Big Sur (Xcode 11.x)
+    message(STATUS "Found macOS 11.0 big sur as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
+  ENDIF ()
+
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
     The following versions are supported:\n\
@@ -124,6 +129,7 @@ if(APPLE)
     (17) macOS 10.13 High Sierra\n\
     (18) macOS 10.14 Mojave\n\
     (19) macOS 10.15 Catalina\n\
+    (20) macOS 11.00 Big Sur\n\
     Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
     ")
 
