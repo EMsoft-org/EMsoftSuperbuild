@@ -2,7 +2,7 @@ set(extProjectName "EbsdLib")
 message(STATUS "External Project: ${extProjectName}" )
 
 set(EbsdLib_VERSION "2.0")
-set(GIT_HASH "f72a450df03fb660484da3fb5c02138845b341b8")
+set(GIT_HASH "develop")
 
 if(MSVC_IDE)
   set(EbsdLib_INSTALL "${EMsoft_SDK}/${extProjectName}-${EbsdLib_VERSION}")
@@ -24,7 +24,7 @@ if(WIN32)
 endif()
 
 ExternalProject_Add(${extProjectName}
-  DEPENDS Qt5 Eigen
+  DEPENDS Eigen ghcFilesystem tbb
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/EbsdLib
   GIT_TAG "${GIT_HASH}"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
@@ -41,8 +41,9 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=${OSX_DEPLOYMENT_TARGET}
     -DCMAKE_OSX_SYSROOT:PATH=${OSX_SDK}
     -DEigen3_DIR:PATH=${Eigen3_DIR}
-    -DQt5_DIR:PATH=${Qt5_DIR}
     -DEbsdLib_ENABLE_HDF5:BOOL=OFF
+    -DghcFilesystem_DIR:PATH=${EMsoft_SDK}/ghcFilesystem-1.3.2/lib/cmake/ghcFilesystem
+    -DTBB_DIR:PATH=${EMsoft_SDK}/tbb-${tbb_VERSION}-${tbb_os_name}/tbb/cmake
 
   LOG_DOWNLOAD 1
   LOG_UPDATE 1
