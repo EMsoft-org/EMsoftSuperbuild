@@ -47,6 +47,11 @@ else()
   endif()
 endif()
 
+if(${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU" AND ${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER 9.9)
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-invalid-boz")
+  message(STATUS "Adjusting CMAKE_Fortran_FLAGS for gfortran-10 compatibility: '${CMAKE_Fortran_FLAGS}'")
+endif()
+
 ExternalProject_Add(${extProjectName}
   #DOWNLOAD_NAME ${extProjectName}-${CLFortran_VERSION}.tar.gz
   #URL ${CLFortran_URL}
@@ -65,6 +70,7 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     -DCMAKE_OSX_DEPLOYMENT_TARGET=${OSX_DEPLOYMENT_TARGET}
     -DCMAKE_OSX_SYSROOT=${OSX_SDK}
+    -DCMAKE_Fortran_FLAGS:STRING=${CMAKE_Fortran_FLAGS}
     -DOpenCL_INCLUDE_DIR:PATH=${OpenCL_INCLUDE_DIR}
     -DOpenCL_LIBRARY:FILEPATH=${OpenCL_LIBRARY}
 
