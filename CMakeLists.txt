@@ -126,7 +126,7 @@ if(APPLE)
 
   IF (DARWIN_VERSION EQUAL 20) # macOS 11.00 Big Sur (Xcode 12.x)
     message(STATUS "Found macOS 11.00 Big Sur as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "11.00")
+    set(OSX_DEPLOYMENT_TARGET "10.15")
     set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
