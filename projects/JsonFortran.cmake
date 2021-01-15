@@ -1,7 +1,30 @@
-set(extProjectName "jsonfortran")
-message(STATUS "External Project: ${extProjectName}" )
+#--------------------------------------------------------------------------------------------------
+# Are we building HDF5 (ON by default)
+#--------------------------------------------------------------------------------------------------
+OPTION(BUILD_JSONFORTRAN "Build JSONFORTRAN" ON)
+if("${BUILD_JSONFORTRAN}" STREQUAL "OFF")
+  return()
+endif()
 
-set(JSONFORTRAN_VERSION "4.3.0")
+set(extProjectName "jsonfortran")
+
+#------------------------------------------------------------------------------
+# JSON Fortran 4.2.1 will NOT compile with newer versions of GFortran which is
+# why version 4.3.0 is used on NON Windows platforms. Version 4.3.0 on Windows
+# platforms will not install correctly due to DLL export library not being created
+# because no symbols are exported using the #! DEC comment. 
+# 4.2.1 was an update by BlueQuartzSoftware and is ONLY located on the BlueQuartz Software
+# fork of the original repo
+if(WIN32)
+  set(JSONFORTRAN_VERSION "4.2.1")
+  set(GIT_REPOSITORY_URL "https://github.com/bluequartzsoftware/json-fortran")
+else()
+  set(JSONFORTRAN_VERSION "4.3.0")
+  set(GIT_REPOSITORY_URL "https://github.com/jacobwilliams/json-fortran")
+endif()
+
+message(STATUS "Building: ${extProjectName} ${JSONFORTRAN_VERSION}: -DBUILD_JSONFORTRAN=${BUILD_JSONFORTRAN}" )
+
 
 # This is need to figure out the proper install dir for some Linux distributions
 include(GNUInstallDirs)
@@ -43,7 +66,7 @@ endif()
 ExternalProject_Add(${extProjectName}
   #DOWNLOAD_NAME ${extProjectName}-${JSONFORTRAN_VERSION}.tar.gz
   #URL ${JSONFORTRAN_URL}
-  GIT_REPOSITORY https://github.com/jacobwilliams/json-fortran
+  GIT_REPOSITORY "${GIT_REPOSITORY_URL}"
   GIT_TAG "${JSONFORTRAN_VERSION}"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
   STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"

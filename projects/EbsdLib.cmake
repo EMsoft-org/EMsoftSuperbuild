@@ -18,13 +18,16 @@ ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
-
+set(DEPENDS Eigen ghcFilesystem tbb)
 if(WIN32)
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
+  set(DEPENDS Eigen tbb)
 endif()
 
+
+
 ExternalProject_Add(${extProjectName}
-  DEPENDS Eigen ghcFilesystem tbb
+  DEPENDS ${DEPENDS}
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/EbsdLib
   GIT_TAG "${GIT_HASH}"
   TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
