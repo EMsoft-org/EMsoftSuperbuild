@@ -117,6 +117,23 @@ elseif(WIN32) #-----------------------------------------------------------------
   get_filename_component(IFORT_COMPILER_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY)
 
   set(MKL_DIR "${IFORT_COMPILER_ROOT_DIR}/mkl")
+
+  # recent (as of spring 2021) ifort changes mean that MKL can be installed in a different location in bundled w/ 'oneAPI'
+  # w/ oneAPI the ifort root dir is e.g. C:/Program Files (x86)/Intel/oneAPI/compiler/2021.1.1/windows
+  # but the mkl root dir is e.g. C:/Program Files (x86)/Intel/oneAPI/mkl/2021.1.1
+  if(NOT EXISTS ${MKL_DIR} AND ${IFORT_COMPILER_ROOT_DIR} MATCHES ".+[/\]Intel[/\]oneAPI[/\]compiler[/\].+[/\]windows")
+    get_filename_component(ONE_API_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY) # e.g. C:/Program Files (x86)/Intel/oneAPI/compiler/2021.1.1
+    get_filename_component(ONE_API_VERSION  ${ONE_API_ROOT_DIR}        NAME     ) # e.g. 2021.1.1
+    get_filename_component(ONE_API_ROOT_DIR ${ONE_API_ROOT_DIR}        DIRECTORY) # e.g. C:/Program Files (x86)/Intel/oneAPI/compiler
+    get_filename_component(ONE_API_ROOT_DIR ${ONE_API_ROOT_DIR}        DIRECTORY) # e.g. C:/Program Files (x86)/Intel/oneAPI
+    set(MKL_DIR "${ONE_API_ROOT_DIR}/mkl/${ONE_API_VERSION}")
+  endif()
+
+  # in either case having the value wrong makes debugging much harder down the line
+  if(NOT EXISTS ${MKL_DIR})
+    message(FATAL_ERROR "failed to determine MKL directory (tried ${MKL_DIR})")
+  endif()
+
 else()
 
 endif()
