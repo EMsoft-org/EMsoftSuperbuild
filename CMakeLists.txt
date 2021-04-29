@@ -30,7 +30,7 @@ set(CMAKE_MODULE_PATH
 
 set(BUILD_TYPE ${CMAKE_BUILD_TYPE})
 if("${BUILD_TYPE}" STREQUAL "")
-    set(BUILD_TYPE "Release" CACHE STRING "" FORCE)
+    set(BUILD_TYPE "Release" CACHE string "" FORCE)
 endif()
 
 # Set up some standard defaults, these will be passed down into external the
@@ -82,52 +82,31 @@ set(BUILD_SHARED_LIBS ON)
 
 if(APPLE)
   set(OSX_SDK "NOT-FOUND")
-  EXEC_PROGRAM(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
-  STRING(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
-  #message(STATUS "DARWIN_VERSION: ${DARWIN_VERSION}")
-  IF (DARWIN_VERSION EQUAL 14) # macOS 10.10 Yosemite
-    message(STATUS "Found macOS 10.10 Yosemite as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
-    set(OSX_DEPLOYMENT_TARGET "10.10")
-    message(FATAL_ERROR "MacOS 10.10 Yosemite NOT supported")
-  ENDIF ()
-
-  IF (DARWIN_VERSION EQUAL 15) # macOS 10.11 El Capitan
-    message(STATUS "Found macOS 10.11 El Capitan as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
-    set(OSX_DEPLOYMENT_TARGET "10.11")
-    message(FATAL_ERROR "MacOS 10.11 El Capitan NOT supported")
-  ENDIF ()
-
-  IF (DARWIN_VERSION EQUAL 16) # macOS 10.12 Sierra (Xcode 8.x or Xcode 9.x)
-    message(STATUS "Found macOS 10.12 Sierra as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
-    set(OSX_DEPLOYMENT_TARGET "10.12")
-    message(FATAL_ERROR "MacOS 10.12 Sierra NOT supported")
-  ENDIF ()
+  # Use this to figure out the version of MacOS being used for compilation
+  exec_program(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
+  string(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
+  # Use this to figure out where the MacOS SDK folder is at. This can change based on if Xcode is actually installed
+  # or if just the command line tools are installed.
+  exec_program(xcrun ARGS --show-sdk-path OUTPUT_VARIABLE OSX_SDK)
 
   IF (DARWIN_VERSION EQUAL 17) # macOS 10.13 High Sierra (Xcode 9.x)
     message(STATUS "Found macOS 10.13 High Sierra as the host. Darwin Version:${DARWIN_VERSION}")  
     set(OSX_DEPLOYMENT_TARGET "10.13")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 18) # macOS 10.14 Mojave (Xcode 10.x)
     message(STATUS "Found macOS 10.14 Mojave as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_DEPLOYMENT_TARGET "10.14")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x)
+  IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x or Xcode<=12.4)
     message(STATUS "Found macOS 10.15 Catalina as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_DEPLOYMENT_TARGET "10.15")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 20) # macOS 11.00 Big Sur (Xcode 12.x)
     message(STATUS "Found macOS 11.00 Big Sur as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_DEPLOYMENT_TARGET "10.15")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
   ENDIF ()
 
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
