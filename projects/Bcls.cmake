@@ -1,10 +1,19 @@
+
+#--------------------------------------------------------------------------------------------------
+# Are we building BCLS (ON by default)
+#--------------------------------------------------------------------------------------------------
+OPTION(BUILD_BCLS "Build BCLS" ON)
+if("${BUILD_BCLS}" STREQUAL "OFF")
+  return()
+endif()
+
 set(extProjectName "bcls")
-message(STATUS "External Project: ${extProjectName}" )
 if(NOT "${MKL_DIR}" STREQUAL "")
   message(STATUS "|-- MKL_DIR: ${MKL_DIR}")
 endif()
 set(bcls_VERSION "0.1")
 set(BCLS_GIT_TAG "develop")
+message(STATUS "Building: ${extProjectName} ${bcls_VERSION}: -DBUILD_BCLS=${BUILD_BCLS}" )
 
 if(MSVC_IDE)
   set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}")

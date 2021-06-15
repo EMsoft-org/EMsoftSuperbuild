@@ -4,7 +4,7 @@
 OPTION(INSTALL_QT5 "Install Qt5" ON)
 
 if("${QtVersion}" STREQUAL "")
-  set(QtVersion "5.12")
+  set(QtVersion "5.14")
 endif()
 
 if("${QtVersion}" STREQUAL "5.9")

@@ -1,7 +1,17 @@
-set(extProjectName "Eigen")
-message(STATUS "External Project: ${extProjectName}" )
+#--------------------------------------------------------------------------------------------------
+# Are we building Eigen (ON by default)
+#--------------------------------------------------------------------------------------------------
+option(BUILD_EIGEN "Build Eigen" ON)
+if(NOT BUILD_EIGEN)
+  return()
+endif()
 
+
+set(extProjectName "Eigen")
 set(Eigen_VERSION "3.3.5")
+
+message(STATUS "Building: ${extProjectName} ${Eigen3_VERSION}: -DBUILD_EIGEN=${BUILD_EIGEN}")
+
 #set(Eigen_URL "https://bitbucket.org/eigen/eigen/get/${Eigen_VERSION}.tar.gz")
 set(Eigen_URL "http://dream3d.bluequartz.net/binaries/SDK/Sources/Eigen/Eigen-${Eigen_VERSION}.tar.gz")
 set(SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}.tar.gz")

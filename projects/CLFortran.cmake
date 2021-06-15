@@ -1,7 +1,16 @@
-set(extProjectName "CLFortran")
-message(STATUS "External Project: ${extProjectName}" )
 
+#--------------------------------------------------------------------------------------------------
+# Are we building CLFortran (ON by default)
+#--------------------------------------------------------------------------------------------------
+OPTION(BUILD_CLFortran "Build CLFortran" ON)
+if("${BUILD_CLFortran}" STREQUAL "OFF")
+  return()
+endif()
+
+set(extProjectName "CLFortran")
 set(CLFortran_VERSION "0.0.1")
+message(STATUS "Building: ${extProjectName} ${CLFortran_VERSION}: -DBUILD_CLFortran=${BUILD_CLFortran}" )
+
 
 if(MSVC_IDE)
   set(CLFortran_INSTALL "${EMsoft_SDK}/${extProjectName}-${CLFortran_VERSION}")
