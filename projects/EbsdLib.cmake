@@ -18,7 +18,11 @@ ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
-set(DEPENDS Eigen ghcFilesystem tbb)
+set(DEPENDS Eigen tbb)
+if(TARGET ghcFilesystem)
+  set(DEPENDS ${DEPENDS} ghcFilesystem)
+endif()
+
 if(WIN32)
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
   set(DEPENDS Eigen tbb)
