@@ -42,7 +42,7 @@ ExternalProject_Add(${extProjectName}
   DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}-${nlopt_VERSION}/Download
   SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${nlopt_VERSION}/Source"
   BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${nlopt_VERSION}/Build/${CMAKE_BUILD_TYPE}"
-  INSTALL_DIR "${haru_INSTALL}"
+  INSTALL_DIR "${nlopt_INSTALL}"
 
   CMAKE_ARGS
     -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
