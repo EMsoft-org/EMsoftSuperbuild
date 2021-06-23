@@ -8,7 +8,7 @@ endif()
 
 
 set(extProjectName "Eigen")
-set(Eigen_VERSION "3.3.5")
+set(Eigen_VERSION "3.3.9")
 
 message(STATUS "Building: ${extProjectName} ${Eigen3_VERSION}: -DBUILD_EIGEN=${BUILD_EIGEN}")
 
