@@ -184,10 +184,7 @@ include(CLFortran)
 include(Eigen)
 include(HDF5)
 include(TBB)
-if(NOT MSVC)
-  include(ghcFilesystem)
-endif()
-include(EbsdLib)
+
 
 #--------------------------------------------------------------------------------------------------
 # Are we installing Qt (ON by default)
@@ -195,9 +192,13 @@ include(EbsdLib)
 OPTION(INSTALL_QT5 "Download and Install Qt5" OFF)
 
 if("${INSTALL_QT5}" STREQUAL "ON")
+  if(NOT MSVC)
+    include(ghcFilesystem)
+  endif()
+  include(EbsdLib)
   include(Qt5)
 else()
-  message(WARNING "Qt5 & EBSDLib are disabled. EMsoftWorkbench can NOT be compiled. use -DINSTALL_QT5=ON to enable Qt5 and EBSDLib installation.")
+  message(WARNING "Qt5 & EBSDLib are disabled. Only command line tools will be compiled. Use -DINSTALL_QT5=ON to enable Qt5 and EBSDLib installation.")
 endif()
 
 #------------------------------------------------------------------------------
