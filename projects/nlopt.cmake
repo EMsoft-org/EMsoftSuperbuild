@@ -10,6 +10,9 @@ set(extProjectName "nlopt")
 set(NLopt_VERSION "2.7.0")
 message(STATUS "Building: ${extProjectName} ${NLopt_VERSION}: -DBUILD_NLOPT=${BUILD_NLOPT}" )
 
+# This is need to figure out the proper install dir for some Linux distributions
+include(GNUInstallDirs)
+
 if(MSVC_IDE)
   set(nlopt_INSTALL "${EMsoft_SDK}/${extProjectName}-${NLopt_VERSION}")
 elseif(WIN32)
@@ -80,7 +83,7 @@ if(APPLE)
 elseif(WIN32)
   FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}-\${BUILD_TYPE}/lib64/cmake/${extProjectName}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}-\${BUILD_TYPE}/${CMAKE_INSTALL_LIBDIR}/cmake/${extProjectName}\" CACHE PATH \"\")\n")
 endif()
 FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${NLopt_DIR})\n")
 FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_VERSION \"${NLopt_VERSION}\" CACHE STRING \"\")\n")
