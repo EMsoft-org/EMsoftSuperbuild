@@ -6,8 +6,8 @@ If you find bugs and fix them **PLEASE** consider submitting a "Pull Request" fr
 
 ## Introduction ##
 
-This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party 
-libraries as prebuilt binaries or as source code and compiling those libraries. 
+This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party
+libraries as prebuilt binaries or as source code and compiling those libraries.
 
 ## Prerequisites ##
 
@@ -25,6 +25,8 @@ libraries as prebuilt binaries or as source code and compiling those libraries.
 | Linux (Ubuntu 16.x, CentOS 7.x) | GCC 7.x and Above, Clang 3.8 and greater | GNU Fortran 6.3.5 20160904 or newer |
 
 \*\*macOS Note: If you are installing Intel Fortran try to install into a location **other** then /opt/intel which is the default. Try /opt/intel_sw instead.
+
+\*\*WSL Note: While WSL2 supports passing the NVidia graphic card through to the subsystem, be aware that, to date, we did not find a way to install the OpenCL driver needed for CLFortran computation. Perhaps not far in the future it will be made possible and WSL would become a viable solution for setting up EMsoft on Windows. 
 
 ## Git Locations ##
 
@@ -49,13 +51,24 @@ Git verison 2.x is required.
 | Qt 5 | 5.12.4 | Precompiled Binaries from [www.qt.io](http://download.qt.io) |
 
 ## macOS/Linux Instructions ##
+0. Have a working GPU driver and OpenCL installed.
+1. 
+ + Install your compiler tools
+ + Install CMake on your system
+ + Install a Fortran compiler on your system
+ + Install Git on your system
 
-1. Install your compiler tools
-2. Install CMake on your system
-3. Install a Fortran compiler on your system
-4. Install Git on your system
-5. Clone this repository onto your hard disk.
-6. open a terminal and invoke the following commands
+ If you start with a blank Ubuntu 20.04 system (for instance WSL or Docker) then you can do all this in one line:
+
+       apt-get update && apt-get install -y
+       libtbb-dev \
+       build-essential \
+       gfortran \
+       libblas-dev liblapack-dev \
+       cmake\
+       git
+2. Clone this repository onto your hard disk.
+3. open a terminal and invoke the following commands
 
         cd EMsoftSuperbuild
         mkdir Debug
