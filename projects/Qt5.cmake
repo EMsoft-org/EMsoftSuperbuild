@@ -219,7 +219,7 @@ else()
 
   set(QT5_ONLINE_INSTALLER "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
   configure_file(
-    "${_self_dir}/unix/Qt5_linux_install.sh.in"
+    "${_self_dir}/unix/Qt5_Linux_install.sh.in"
     "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
   )
 
