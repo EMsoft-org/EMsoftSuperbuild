@@ -7,7 +7,9 @@ If you find bugs and fix them **PLEASE** consider submitting a "Pull Request" fr
 ## Introduction ##
 
 This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party 
-libraries as prebuilt binaries or as source code and compiling those libraries. 
+libraries as prebuilt binaries or as source code and compiling those libraries. In this developOO bench,
+the cmake code will build an EMsoftOO_SDK that is suitable for linking against the EMsoftOO object oriented 
+source code base. Note that this SDK can co-exist alongside the regular SDK built by the develop branch.
 
 ## Prerequisites ##
 
@@ -40,7 +42,7 @@ Git verison 2.x is required.
 
 | Library | Version | Notes |
 |---------|---------|-------|
-| HDF5 | 1.10.5 | Compiled from Source |
+| HDF5 | 1.12.2 | Compiled from Source |
 | CLFortran | 0.0.1 | Compiled from Source on GitHub |
 | FFTW | 3.3.5 | Compiled (macOS/Linux) |
 | Intel MKL | 2019_xxxx | Precompiled for IFort compilers (windows & macos) |
@@ -60,12 +62,12 @@ Git verison 2.x is required.
         cd EMsoftSuperbuild
         mkdir Debug
         cd Debug
-        cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Debug ../
+        cmake -DEMsoftOO_SDK=/Some/Path/To/EMsoftOO_SDK -DCMAKE_BUILD_TYPE=Debug ../
         make -j
         cd ../
         mkdir Release
         cd Release
-        cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
+        cmake -DEMsoftOO_SDK=/Some/Path/To/EMsoftOO_SDK -DCMAKE_BUILD_TYPE=Release ../
         make -j
 
 ## Windows Instructions ##
@@ -77,7 +79,7 @@ Git verison 2.x is required.
 3. Install a Fortran compiler on your system
 4. Install Git on your system
 5. Create the following Directories:
-    + C:/Users/[USERNAME]/EMsoft_SDK
+    + C:/Users/[USERNAME]/EMsoftOO_SDK
     + C:/Users/[USERNAME]/EMsoft-Dev
 6. Open a command prompt and invoke the following commands
 
@@ -86,12 +88,12 @@ Git verison 2.x is required.
         cd EMsoftSuperbuild
         mkdir Debug
         cd Debug
-        cmake -G "NMake Makefiles" -DEMsoft_SDK=C:/Users/[USERNAME]/EMsoft_SDK -DCMAKE_BUILD_TYPE=Debug ../
+        cmake -G "NMake Makefiles" -DEMsoftOO_SDK=C:/Users/[USERNAME]/EMsoftOO_SDK -DCMAKE_BUILD_TYPE=Debug ../
         nmake
         cd ../
         mkdir Release
         cd Release
-        cmake -G "NMake Makefiles" -DEMsoft_SDK=C:/Users/[USERNAME]/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
+        cmake -G "NMake Makefiles" -DEMsoftOO_SDK=C:/Users/[USERNAME]/EMsoftOO_SDK -DCMAKE_BUILD_TYPE=Release ../
         make -j
 
 7. The initial run of CMake is going to take  **REALLY** long time because it will be downloading the full Qt 5.x installer which is about 3~4 GB in size. On macOS systems it then must verify the .dmg, mount it and run the installer (which verifies the .app). Go get coffee. Compiling (the 'make -j' part) should not take that long, only about 5 minutes or so.
