@@ -30,9 +30,9 @@ else()
 endif()
 
 set(tbb_URL "${tbb_url_server}/tbb-${tbb_VERSION}-${tbb_os_name}.${tbb_os_ext}")
-set(tbb_INSTALL "${EMsoft_SDK}/tbb-${tbb_VERSION}-${tbb_os_name}")
+set(tbb_INSTALL "${EMsoftOO_SDK}/tbb-${tbb_VERSION}-${tbb_os_name}")
 
-set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
+set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
 
 #------------------------------------------------------------------------------
 # Linux has TBB Compiled and installed
@@ -40,11 +40,11 @@ if(WIN32 OR APPLE OR "${BUILD_TBB}" STREQUAL "ON" )
   ExternalProject_Add(${extProjectName}
     # DOWNLOAD_NAME ${extProjectName}-${tbb_VERSION}.tar.gz
     URL ${tbb_URL}
-    TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-    STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp"
-    DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
+    TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
+    STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Stamp"
+    DOWNLOAD_DIR ${EMsoftOO_SDK}/superbuild/${extProjectName}
     SOURCE_DIR "${tbb_INSTALL}"
-    BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+    BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
     INSTALL_DIR "${tbb_INSTALL}"
     CONFIGURE_COMMAND "" 
     BUILD_COMMAND "" 
@@ -58,26 +58,26 @@ if(WIN32 OR APPLE OR "${BUILD_TBB}" STREQUAL "ON" )
     LOG_INSTALL 1
   )
 
-  #-- Append this information to the EMsoft_SDK CMake file that helps other developers
+  #-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
   #-- configure EMsoft for building
-  FILE(APPEND ${EMsoft_SDK_FILE} "\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "# Intel Threading Building Blocks Library\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"\${EMsoft_SDK_ROOT}/tbb-${tbb_VERSION}-${tbb_os_name}/${extProjectName}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_DIR \"\${EMsoft_SDK_ROOT}/tbb-${tbb_VERSION}-${tbb_os_name}/${extProjectName}/cmake\" CACHE PATH \"\")\n") 
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "# Intel Threading Building Blocks Library\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_INSTALL_DIR \"\${EMsoftOO_SDK_ROOT}/tbb-${tbb_VERSION}-${tbb_os_name}/${extProjectName}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_DIR \"\${EMsoftOO_SDK_ROOT}/tbb-${tbb_VERSION}-${tbb_os_name}/${extProjectName}/cmake\" CACHE PATH \"\")\n") 
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
 else()
   message(STATUS "LINUX: Please use your package manager to install Threading Building Blocks (TBB)")
   #------------------------------------------------------------------------------
   # Linux has an acceptable TBB installation
-  FILE(APPEND ${EMsoft_SDK_FILE} "\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "# Intel Threading Building Blocks Library\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_INSTALL_DIR \"/usr\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_DIR \"/usr\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "# Intel Threading Building Blocks Library\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(SIMPL_USE_MULTITHREADED_ALGOS ON CACHE BOOL \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_INSTALL_DIR \"/usr\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_DIR \"/usr\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_ARCH_TYPE \"intel64\" CACHE STRING \"\")\n")
 endif()
 
-FILE(APPEND ${EMsoft_SDK_FILE} "set(TBB_VERSION \"${tbb_VERSION}\" CACHE STRING \"\")\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "set(TBB_VERSION \"${tbb_VERSION}\" CACHE STRING \"\")\n")
