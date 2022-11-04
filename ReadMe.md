@@ -11,6 +11,8 @@ libraries as prebuilt binaries or as source code and compiling those libraries. 
 the cmake code will build an EMsoftOO_SDK that is suitable for linking against the EMsoftOO object oriented 
 source code base. Note that this SDK can co-exist alongside the regular SDK built by the develop branch.
 
+**This branch is still under development and there is no guarantee that it will always work properly...**
+
 ## Prerequisites ##
 
 + CMake 3.15.x installed on system
