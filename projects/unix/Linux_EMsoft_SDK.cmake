@@ -1,22 +1,21 @@
-# This is the EMsoftOO_SDK File. This file contains all the paths to the dependent libraries.
-if(NOT DEFINED EMsoftOO_FIRST_CONFIGURE)
+# This is the EMsoft_SDK File. This file contains all the paths to the dependent libraries.
+# This was generated for Version 6.3 Development of EMsoft. This SDK has C++11 Support ENABLED
+if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
   message(STATUS "*******************************************************")
   message(STATUS "* EMsoft First Configuration Run                    *")
-  message(STATUS "* EMsoftOO_SDK Loading from ${CMAKE_CURRENT_LIST_DIR}  *")
+  message(STATUS "* EMsoft_SDK Loading from ${CMAKE_CURRENT_LIST_DIR}  *")
   message(STATUS "*******************************************************")
-  set(CMAKE_CXX_FLAGS "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas -mfpmath=sse" CACHE STRING "" FORCE)
+  set(CMAKE_CXX_FLAGS "-std=c++11 -mfpmath=sse" CACHE STRING "" FORCE)
+  set(CMAKE_CXX_STANDARD 14 CACHE STRING "" FORCE)
   set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE STRING "" FORCE)
-    # Set our Deployment Target to match Qt
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "@OSX_DEPLOYMENT_TARGET@" CACHE STRING "" FORCE)
-  set(CMAKE_OSX_SYSROOT "@OSX_SDK@" CACHE STRING "" FORCE)
 endif()
 
 #-------------------------------------------------------------------------------
 # Only Run this the first time when configuring EMsoft. After that the values
 # are cached properly and the user can add additional plugins through the normal
 # CMake GUI or CCMake programs.
-if(NOT DEFINED EMsoftOO_FIRST_CONFIGURE)
-  set(EMsoftOO_FIRST_CONFIGURE "ON" CACHE STRING "Determines if EMsoft has already been configured at least once.")
+if(NOT DEFINED EMsoft_FIRST_CONFIGURE)
+  set(EMsoft_FIRST_CONFIGURE "ON" CACHE STRING "Determines if EMsoft has already been configured at least once.")
 endif()
 
 #-------------------------------------------------------------------------------
@@ -46,8 +45,11 @@ endif()
 message(STATUS "The Current Build type being used is ${BUILD_TYPE}")
 
 #-------------------------------------------------------------------------------
+# We are going to assume the use of GFortran. This will definitely
+# mess up the use of Intel IFort. I'll cross that bridge when someone
+# complains about it.
+set(EMsoft_USE_GFORTRAN 1)
 # This also will help when using IDE's like QtCreator be able to find the compiler
-set(CMAKE_Fortran_COMPILER "@CMAKE_Fortran_COMPILER@" CACHE PATH "Path to Fortran Compiler")
 
 
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "")

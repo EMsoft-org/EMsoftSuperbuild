@@ -16,18 +16,18 @@ set(BCLS_GIT_TAG "develop")
 message(STATUS "Building: ${extProjectName} ${bcls_VERSION}: -DBUILD_BCLS=${BUILD_BCLS}" )
 
 if(MSVC_IDE)
-  set(bcls_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${bcls_VERSION}")
+  set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}")
 elseif(WIN32)
-  set(bcls_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${bcls_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
-  set(bcls_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${bcls_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(bcls_INSTALL "${EMsoft_SDK}/${extProjectName}-${bcls_VERSION}-${CMAKE_BUILD_TYPE}")
 endif()
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
   set(bcls_SUFFIX "_debug")
 ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
-set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
+set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 #-------------------------------------------------------------------------------
 # We only support Intel Visual Fortran 2018 and newer since those have a sane
@@ -61,11 +61,11 @@ ExternalProject_Add(${extProjectName}
   #URL ${bcls_URL}
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/bcls
   GIT_TAG "${BCLS_GIT_TAG}"
-  TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
-  DOWNLOAD_DIR ${EMsoftOO_SDK}/superbuild/${extProjectName}
-  SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
-  BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
+  DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
+  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
+  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${bcls_INSTALL}"
 
   CMAKE_ARGS
@@ -88,23 +88,23 @@ ExternalProject_Add(${extProjectName}
 )
 
 
-#-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
+#-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure EMsoft for building
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "# bcls Library Location\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# bcls Library Location\n")
 if(APPLE)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
 elseif(MSVC_IDE)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}/lib/cmake/bcls\" CACHE PATH \"\")\n") 
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}/lib/cmake/bcls\" CACHE PATH \"\")\n") 
 elseif(WIN32)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(bcls_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(bcls_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${bcls_VERSION}-\${BUILD_TYPE}/lib/cmake/bcls\" CACHE PATH \"\")\n")
 endif()
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${bcls_DIR})\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "Check3rdPartyDir(DIR \${bcls_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${bcls_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${bcls_DIR})\n")
