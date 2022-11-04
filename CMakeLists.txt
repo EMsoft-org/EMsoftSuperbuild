@@ -59,16 +59,16 @@ if(MSVC12)
 endif(MSVC12)
 
 
-if( "${EMsoftOO_SDK}" STREQUAL "")
-  message(FATAL_ERROR "Please specify the EMsoftOO_SDK cmake variable which is the top level directory where all the EMsoft dependent libraries will be built")
+if( "${EMsoft_SDK}" STREQUAL "")
+  message(FATAL_ERROR "Please specify the EMsoft_SDK cmake variable which is the top level directory where all the EMsoft dependent libraries will be built")
 endif()
 
-set(EMsoftOO_SDK_FILE ${EMsoftOO_SDK}/EMsoftOO_SDK.cmake)
-set(download_dir ${EMsoftOO_SDK})
+set(EMsoft_SDK_FILE ${EMsoft_SDK}/EMsoft_SDK.cmake)
+set(download_dir ${EMsoft_SDK})
 
 
-message(STATUS "EMsoftOO_SDK Folder: ${EMsoftOO_SDK}")
-message(STATUS "EMsoftOO_SDK_FILE:   ${EMsoftOO_SDK_FILE}")
+message(STATUS "EMsoft_SDK Folder: ${EMsoft_SDK}")
+message(STATUS "EMsoft_SDK_FILE:   ${EMsoft_SDK_FILE}")
 
 
 set(CLONE_EMSOFT_REPO 1)
@@ -122,8 +122,8 @@ if(APPLE)
   endif()
 
 
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoftOO_SDK.cmake
-              ${EMsoftOO_SDK}/EMsoftOO_SDK.cmake @ONLY )
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoft_SDK.cmake
+              ${EMsoft_SDK}/EMsoft_SDK.cmake @ONLY )
 elseif(WIN32)
   if(MSVC90)
     message(FATAL_ERROR "Visual Studio Version 9 2009 is NOT supported.")
@@ -140,24 +140,24 @@ elseif(WIN32)
   if( ${MSVC_VERSION} EQUAL "1900")
     message(FATAL_ERROR "Visual Studio Version 14 2015 is NOT supported.")
   endif()
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/win32/WIN_EMsoftOO_SDK.cmake
-              ${EMsoftOO_SDK}/EMsoftOO_SDK.cmake COPYONLY )
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/win32/WIN_EMsoft_SDK.cmake
+              ${EMsoft_SDK}/EMsoft_SDK.cmake COPYONLY )
 else()
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/unix/Linux_EMsoftOO_SDK.cmake
-                ${EMsoftOO_SDK}/EMsoftOO_SDK.cmake COPYONLY )
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/unix/Linux_EMsoft_SDK.cmake
+                ${EMsoft_SDK}/EMsoft_SDK.cmake COPYONLY )
 endif()
  
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EMsoftOO_SDK_ROOT \"${EMsoftOO_SDK}\")\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EMsoftOO_SDK_VERSION ${EMsoftOO_SDK_VERSION})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_ROOT \"${EMsoft_SDK}\")\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoft_SDK_VERSION ${EMsoft_SDK_VERSION})\n")
 
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "# EMsoft does not use QtWebEngine to render the docs anymore. Let the system do it.\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EMsoftWorkbench_USE_QtWebEngine OFF)\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# EMsoft does not use QtWebEngine to render the docs anymore. Let the system do it.\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(EMsoftWorkbench_USE_QtWebEngine OFF)\n")
 
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "# Always write out the compile_commands.json file to help out things like QtCreator and VS Code\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# Always write out the compile_commands.json file to help out things like QtCreator and VS Code\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n")
 
 
 #------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ elseif (${Fortran_COMPILER_NAME} MATCHES "ifort.*")
   set(OSX_DEPLOYMENT_TARGET "10.13")
   include(MKL)
 else()
-  message(STATUS "The Fortran compiler is NOT recognized. EMsoftOO may not support it.")
+  message(STATUS "The Fortran compiler is NOT recognized. EMsoft may not support it.")
   message(FATAL_ERROR "Current Fortran Compiler is ${CMAKE_Fortran_COMPILER}")
 endif()
 

@@ -17,12 +17,12 @@ else()
   set(mkl_url "http://dream3d.bluequartz.net/binaries/SDK/Sources/intel/l_mkl_${mkl_version_full}.tgz")
 endif()
 
-set(mkl_INSTALL "${EMsoftOO_SDK}/${extProjectName}${mkl_version_full}")
-set(mkl_BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build")
+set(mkl_INSTALL "${EMsoft_SDK}/${extProjectName}${mkl_version_full}")
+set(mkl_BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build")
 
 get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 
-set(MKL_INSTALL_LOCATION "${EMsoftOO_SDK}/intel")
+set(MKL_INSTALL_LOCATION "${EMsoft_SDK}/intel")
 
 if(APPLE)
   set(mkl_Headless_FILE "apple/mkl_HeadlessInstall_OSX.cfg.in")
@@ -32,7 +32,7 @@ else()
   set(mkl_Headless_FILE "unix/mkl_HeadlessInstall.cfg.in")
 endif()
 
-set(MKL_CONFIG_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/mkl_config.cfg")
+set(MKL_CONFIG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl_config.cfg")
 configure_file(
   "${_self_dir}/${mkl_Headless_FILE}"
   "${MKL_CONFIG_FILE}"
@@ -73,11 +73,11 @@ if(APPLE)
 
   set(mkl_OSX_BASE_NAME m_mkl_${mkl_version_full})
 
-  set(mkl_OSX_DMG_ABS_PATH "${EMsoftOO_SDK}/superbuild/${extProjectName}/${mkl_OSX_BASE_NAME}.dmg")
+  set(mkl_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/${mkl_OSX_BASE_NAME}.dmg")
   set(mkl_DMG ${mkl_OSX_DMG_ABS_PATH})
-  set(mkl_INSTALL_SCRIPT "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/mkl_osx_install.sh")
-  set(MKL_INSTALL_LOG_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/mkl-offline-out.log")
-  set(MKL_INSTALL_ERR_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/mkl-offline-err.log")
+  set(mkl_INSTALL_SCRIPT "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl_osx_install.sh")
+  set(MKL_INSTALL_LOG_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl-offline-out.log")
+  set(MKL_INSTALL_ERR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/mkl-offline-err.log")
 
   configure_file(
     "${_self_dir}/apple/mkl_osx_install.sh.in"
@@ -139,21 +139,21 @@ else()
 endif()
 
 
-#-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
+#-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure DREAM3D for building
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "# MKL ${mkl_version_full} Library\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# MKL ${mkl_version_full} Library\n")
 if(APPLE)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(MKL_DIR \"${MKL_INSTALL_LOCATION}/mkl\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(INTEL_DIR \"${MKL_INSTALL_LOCATION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"${MKL_INSTALL_LOCATION}/mkl\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(INTEL_DIR \"${MKL_INSTALL_LOCATION}\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(MKL_DIR \"${MKL_DIR}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"${MKL_DIR}\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(MKL_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL\" CACHE PATH \"\")\n")
-  set(MKL_DIR "${EMsoftOO_SDK}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL" CACHE PATH "" FORCE)
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(MKL_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL\" CACHE PATH \"\")\n")
+  set(MKL_DIR "${EMsoft_SDK}/${extProjectName}/${mkl_version_short}/gcc_64/lib/cmake/MKL" CACHE PATH "" FORCE)
 endif()
-#FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${MKL_DIR})\n")
+#FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${MKL_DIR})\n")
 
 
 

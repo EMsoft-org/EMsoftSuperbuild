@@ -18,15 +18,15 @@ endif()
 message(STATUS "Building: ${extProjectName} ${HDF5_VERSION}: -DBUILD_HDF5=${BUILD_HDF5}" )
 
 set(HDF5_BUILD_SHARED_LIBS ON)
-set(HDF5_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${HDF5_VERSION}-${CMAKE_BUILD_TYPE}")
-set(PL_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Source/${extProjectName}/config/cmake")
+set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}-${CMAKE_BUILD_TYPE}")
+set(PL_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Source/${extProjectName}/config/cmake")
 
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
   set(HDF5_SUFFIX "_debug")
 ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
-set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
+set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 if(NOT WIN32)
   set(HDF5_BUILD_SHARED_LIBS OFF)
@@ -42,21 +42,21 @@ endif()
 ExternalProject_Add(${extProjectName}
   # DOWNLOAD_NAME ${extProjectName}-${HDF5_VERSION}.tar.gz
   # URL ${HDF5_URL}
-  # TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-  # STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
-  # DOWNLOAD_DIR ${EMsoftOO_SDK}/superbuild/${extProjectName}
-  # SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
-  # BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+  # TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
+  # STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
+  # DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
+  # SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
+  # BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
   # INSTALL_DIR "${HDF5_INSTALL}"
 
   GIT_REPOSITORY "https://github.com/HDFGroup/hdf5/"
   GIT_PROGRESS 1
   GIT_TAG ${HDF5_GIT_TAG}
-  TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Stamp/${CMAKE_BUILD_TYPE}"
-  DOWNLOAD_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}"
-  SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Source/${extProjectName}"
-  BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Build/${CMAKE_BUILD_TYPE}"
+  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Stamp/${CMAKE_BUILD_TYPE}"
+  DOWNLOAD_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}"
+  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Source/${extProjectName}"
+  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${HDF5_INSTALL}"
 
   CMAKE_ARGS
@@ -95,20 +95,20 @@ ExternalProject_Add(${extProjectName}
 # showed that this results in a build that includes the plugin libraries 
 execute_process (COMMAND bash -c "ln -s ${PL_DIR}/HDF5PluginMacros.cmake ${PL_DIR}/plugin-config.cmake")
 
-#-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
+#-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure DREAM3D for building
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "# HDF5 Library Location\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# HDF5 Library Location\n")
 if(APPLE)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/share/cmake/hdf5\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/cmake\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/cmake/hdf5\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/cmake\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/share/cmake/hdf5\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${HDF5_VERSION}-\${BUILD_TYPE}/cmake\" CACHE PATH \"\")\n")
 endif()
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${HDF5_DIR})\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(HDF5_VERSION \"${HDF5_VERSION}\" CACHE STRING \"\")\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${HDF5_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(HDF5_VERSION \"${HDF5_VERSION}\" CACHE STRING \"\")\n")

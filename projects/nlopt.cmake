@@ -14,14 +14,14 @@ message(STATUS "Building: ${extProjectName} ${NLopt_VERSION}: -DBUILD_NLOPT=${BU
 include(GNUInstallDirs)
 
 if(MSVC_IDE)
-  set(nlopt_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${NLopt_VERSION}")
+  set(nlopt_INSTALL "${EMsoft_SDK}/${extProjectName}-${NLopt_VERSION}")
 elseif(WIN32)
-  set(nlopt_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${NLopt_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(nlopt_INSTALL "${EMsoft_SDK}/${extProjectName}-${NLopt_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
-  set(nlopt_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${NLopt_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(nlopt_INSTALL "${EMsoft_SDK}/${extProjectName}-${NLopt_VERSION}-${CMAKE_BUILD_TYPE}")
 endif()
 
-set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
+set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
 
 # if(DREAM3D_USE_CUSTOM_DOWNLOAD_SITE)
@@ -40,11 +40,11 @@ set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
 ExternalProject_Add(${extProjectName}
   ${EP_SOURCE_ARGS}
 
-  TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Stamp"
-  DOWNLOAD_DIR ${EMsoftOO_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Download
-  SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Source"
-  BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Build/${CMAKE_BUILD_TYPE}"
+  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Stamp"
+  DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Download
+  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Source"
+  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${nlopt_INSTALL}"
 
   CMAKE_ARGS
@@ -73,17 +73,17 @@ ExternalProject_Add(${extProjectName}
   LOG_INSTALL 1
 )
 
-#-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
+#-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure DREAM3D for building
-FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "# NLOpt\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "# NLOpt\n")
 if(APPLE)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(NLopt_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}-\${BUILD_TYPE}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
 elseif(WIN32)
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(NLopt_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(NLopt_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}-\${BUILD_TYPE}/${CMAKE_INSTALL_LIBDIR}/cmake/${extProjectName}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${NLopt_VERSION}-\${BUILD_TYPE}/${CMAKE_INSTALL_LIBDIR}/cmake/${extProjectName}\" CACHE PATH \"\")\n")
 endif()
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${NLopt_DIR})\n")
-FILE(APPEND ${EMsoftOO_SDK_FILE} "set(NLopt_VERSION \"${NLopt_VERSION}\" CACHE STRING \"\")\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${NLopt_DIR})\n")
+FILE(APPEND ${EMsoft_SDK_FILE} "set(NLopt_VERSION \"${NLopt_VERSION}\" CACHE STRING \"\")\n")

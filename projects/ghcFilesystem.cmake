@@ -14,18 +14,18 @@ set(ghcFilesystem_GIT_TAG "v1.3.2")
 set(ghcFilesystem_VERSION "1.3.2")
 message(STATUS "Building: ${extProjectName} ${ghcFilesystem_VERSION}:  ghcFilesystem required")
 
-set(ghcFilesystem_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${ghcFilesystem_VERSION}")
+set(ghcFilesystem_INSTALL "${EMsoft_SDK}/${extProjectName}-${ghcFilesystem_VERSION}")
 
 ExternalProject_Add(${extProjectName}
   GIT_REPOSITORY "https://github.com/gulrak/filesystem.git"
   GIT_PROGRESS 1
   GIT_TAG ${ghcFilesystem_GIT_TAG}
 
-  TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Stamp"
-  DOWNLOAD_DIR ${EMsoftOO_SDK}/superbuild/${extProjectName}/Download
-  SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Source"
-  BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp"
+  DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}/Download
+  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source"
+  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${ghcFilesystem_INSTALL}"
 
   CMAKE_ARGS
@@ -49,11 +49,11 @@ ExternalProject_Add(${extProjectName}
   LOG_INSTALL 1
 )
 
-#-- Append this information to the  EMsoftOO_SDK CMake file that helps other developers
+#-- Append this information to the  EMsoft_SDK CMake file that helps other developers
 #-- configure  EMsoft for building
-file(APPEND ${EMsoftOO_SDK_FILE} "\n")
-file(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-file(APPEND ${EMsoftOO_SDK_FILE} "# GulRok FileSystem\n")
-file(APPEND ${EMsoftOO_SDK_FILE} "set(ghcFilesystem_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${ghcFilesystem_VERSION}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
-file(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${ghcFilesystem_DIR})\n")
-file(APPEND ${EMsoftOO_SDK_FILE} "set(ghcFilesystem_VERSION \"${ghcFilesystem_VERSION}\" CACHE STRING \"\")\n")
+file(APPEND ${EMsoft_SDK_FILE} "\n")
+file(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+file(APPEND ${EMsoft_SDK_FILE} "# GulRok FileSystem\n")
+file(APPEND ${EMsoft_SDK_FILE} "set(ghcFilesystem_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${ghcFilesystem_VERSION}/lib/cmake/${extProjectName}\" CACHE PATH \"\")\n")
+file(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${ghcFilesystem_DIR})\n")
+file(APPEND ${EMsoft_SDK_FILE} "set(ghcFilesystem_VERSION \"${ghcFilesystem_VERSION}\" CACHE STRING \"\")\n")
