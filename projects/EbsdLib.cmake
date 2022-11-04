@@ -5,18 +5,18 @@ set(EbsdLib_VERSION "2.0")
 set(GIT_HASH "develop")
 
 if(MSVC_IDE)
-  set(EbsdLib_INSTALL "${EMsoft_SDK}/${extProjectName}-${EbsdLib_VERSION}")
+  set(EbsdLib_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${EbsdLib_VERSION}")
 elseif(WIN32)
-  set(EbsdLib_INSTALL "${EMsoft_SDK}/${extProjectName}-${EbsdLib_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(EbsdLib_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${EbsdLib_VERSION}-${CMAKE_BUILD_TYPE}")
 else()
-  set(EbsdLib_INSTALL "${EMsoft_SDK}/${extProjectName}-${EbsdLib_VERSION}-${CMAKE_BUILD_TYPE}")
+  set(EbsdLib_INSTALL "${EMsoftOO_SDK}/${extProjectName}-${EbsdLib_VERSION}-${CMAKE_BUILD_TYPE}")
 endif()
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
   set(EbsdLib_SUFFIX "_debug")
 ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
-set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
+set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
 
 set(DEPENDS Eigen tbb)
 if(TARGET ghcFilesystem)
@@ -34,11 +34,11 @@ ExternalProject_Add(${extProjectName}
   DEPENDS ${DEPENDS}
   GIT_REPOSITORY http://www.github.com/bluequartzsoftware/EbsdLib
   GIT_TAG "${GIT_HASH}"
-  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
-  DOWNLOAD_DIR ${EMsoft_SDK}/superbuild/${extProjectName}
-  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
-  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
+  TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
+  DOWNLOAD_DIR ${EMsoftOO_SDK}/superbuild/${extProjectName}
+  SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Source/${extProjectName}"
+  BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${EbsdLib_INSTALL}"
 
   CMAKE_ARGS
@@ -49,8 +49,8 @@ ExternalProject_Add(${extProjectName}
     -DCMAKE_OSX_SYSROOT:PATH=${OSX_SDK}
     -DEigen3_DIR:PATH=${Eigen3_DIR}
     -DEbsdLib_ENABLE_HDF5:BOOL=OFF
-    -DghcFilesystem_DIR:PATH=${EMsoft_SDK}/ghcFilesystem-1.3.2/lib/cmake/ghcFilesystem
-    -DTBB_DIR:PATH=${EMsoft_SDK}/tbb-${tbb_VERSION}-${tbb_os_name}/tbb/cmake
+    -DghcFilesystem_DIR:PATH=${EMsoftOO_SDK}/ghcFilesystem-1.3.2/lib/cmake/ghcFilesystem
+    -DTBB_DIR:PATH=${EMsoftOO_SDK}/tbb-${tbb_VERSION}-${tbb_os_name}/tbb/cmake
 
   LOG_DOWNLOAD 1
   LOG_UPDATE 1
@@ -61,23 +61,23 @@ ExternalProject_Add(${extProjectName}
 )
 
 
-#-- Append this information to the EMsoft_SDK CMake file that helps other developers
+#-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
 #-- configure EMsoft for building
-FILE(APPEND ${EMsoft_SDK_FILE} "\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "# EbsdLib Library Location\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "# EbsdLib Library Location\n")
 if(APPLE)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
 elseif(MSVC_IDE)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}/share/cmake/EbsdLib\" CACHE PATH \"\")\n") 
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}/share/cmake/EbsdLib\" CACHE PATH \"\")\n") 
 elseif(WIN32)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
 else()
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoft_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_INSTALL \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(EbsdLib_DIR \"\${EMsoftOO_SDK_ROOT}/${extProjectName}-${EbsdLib_VERSION}-\${BUILD_TYPE}/share/cmake/EbsdLib\" CACHE PATH \"\")\n")
 endif()
-FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${EbsdLib_DIR})\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "Check3rdPartyDir(DIR \${EbsdLib_DIR})\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${EbsdLib_DIR})\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "Check3rdPartyDir(DIR \${EbsdLib_DIR})\n")

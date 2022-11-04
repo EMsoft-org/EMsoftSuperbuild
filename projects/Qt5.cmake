@@ -96,11 +96,11 @@ if(NOT INSTALL_QT5 AND NOT "${Qt5_QMAKE_EXECUTABLE}" STREQUAL "")
   set(extProjectName "Qt${qt5_version_full}")
   message(STATUS "Using Installed ${extProjectName}: -DQt5_QMAKE_EXECUTABLE=${Qt5_QMAKE_EXECUTABLE}" )
 
-  FILE(APPEND ${EMsoft_SDK_FILE} "\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "# Qt5 ${qt5_version_full} Library\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"${QT_INSTALL_LIBS}/cmake/Qt5\" CACHE PATH \"\")\n")
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "# Qt5 ${qt5_version_full} Library\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(Qt5_DIR \"${QT_INSTALL_LIBS}/cmake/Qt5\" CACHE PATH \"\")\n")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
   return()
 endif()
 
@@ -108,12 +108,12 @@ if("${INSTALL_QT5}")
   message(STATUS "Building: ${extProjectName} ${qt5_version_full}: -DINSTALL_QT5=${INSTALL_QT5}" )
 endif()
 
-set(qt5_INSTALL "${EMsoft_SDK}/${extProjectName}${qt5_version_full}")
-set(qt5_BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build")
+set(qt5_INSTALL "${EMsoftOO_SDK}/${extProjectName}${qt5_version_full}")
+set(qt5_BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build")
 
 get_filename_component(_self_dir ${CMAKE_CURRENT_LIST_FILE} PATH)
 
-set(QT_INSTALL_LOCATION "${EMsoft_SDK}/${extProjectName}")
+set(QT_INSTALL_LOCATION "${EMsoftOO_SDK}/${extProjectName}")
 
 if(APPLE)
   set(qt5_Headless_FILE "apple/Qt_HeadlessInstall_OSX.js")
@@ -134,7 +134,7 @@ if(MSVC_VERSION GREATER 1900)
   set(QT_MSVC_VERSION_NAME "msvc2017_64")
 endif()
 
-set(JSFILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.js")
+set(JSFILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.js")
 configure_file(
   "${_self_dir}/${qt5_Headless_FILE}"
   "${JSFILE}"
@@ -146,7 +146,7 @@ if(APPLE)
 
   set(Qt5_OSX_BASE_NAME qt-opensource-mac-x64-${qt5_version_full})
 
-  set(Qt5_OSX_DMG_ABS_PATH "${EMsoft_SDK}/superbuild/${extProjectName}/${Qt5_OSX_BASE_NAME}.dmg")
+  set(Qt5_OSX_DMG_ABS_PATH "${EMsoftOO_SDK}/superbuild/${extProjectName}/${Qt5_OSX_BASE_NAME}.dmg")
   set(Qt5_DMG ${Qt5_OSX_DMG_ABS_PATH})
 
   configure_file(
@@ -170,8 +170,8 @@ if(APPLE)
     message(STATUS "    This may take some time for the installer to start.")
     message(STATUS "    Please wait for the installer to finish.")
     execute_process(COMMAND "${CMAKE_BINARY_DIR}/Qt5_osx_install.sh"
-                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log"
-                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log"
+                    OUTPUT_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-out.log"
+                    ERROR_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt5-offline-err.log"
                     ERROR_VARIABLE mount_error
                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
@@ -183,25 +183,25 @@ elseif(WIN32)
   set(qt5_online_installer "qt-opensource-windows-x86-${qt5_version_full}.exe")
   set(qt5_url "http://qt.mirror.constant.com/archive/qt/${qt5_version_major}/${qt5_version_short}/qt-opensource-windows-x86-${qt5_version_full}.exe")
 
-  if(NOT EXISTS "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
+  if(NOT EXISTS "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
     message(STATUS "===============================================================")
     message(STATUS "   Downloading ${extProjectName}")
     message(STATUS "   Large Download!! This can take a bit... Please be patient")
-    file(DOWNLOAD ${qt5_url} "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}" SHOW_PROGRESS)
+    file(DOWNLOAD ${qt5_url} "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}" SHOW_PROGRESS)
   endif()
 
-  set(QT5_ONLINE_INSTALLER "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
+  set(QT5_ONLINE_INSTALLER "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
   configure_file(
     "${_self_dir}/win32/Qt_HeadlessInstall.bat"
-    "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.bat"
+    "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.bat"
     @ONLY
   )
 
-  if(NOT EXISTS "${EMsoft_SDK}/${extProjectName}")
+  if(NOT EXISTS "${EMsoftOO_SDK}/${extProjectName}")
     message(STATUS "Executing the Qt5 Installer... ")
-    execute_process(COMMAND "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.bat"
-                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-out.log"
-                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
+    execute_process(COMMAND "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.bat"
+                    OUTPUT_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/qt-unified-out.log"
+                    ERROR_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
                     ERROR_VARIABLE installer_error
                     WORKING_DIRECTORY ${qt5_BINARY_DIR} )
   endif()
@@ -210,24 +210,24 @@ else()
   set(qt5_online_installer "qt-opensource-linux-x64-${qt5_version_full}.run")
   set(qt5_url "http://qt.mirror.constant.com/archive/qt/${qt5_version_major}/${qt5_version_short}/${qt5_online_installer}")
 
-  if(NOT EXISTS "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
+  if(NOT EXISTS "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
     message(STATUS "===============================================================")
     message(STATUS "   Downloading ${extProjectName}")
     message(STATUS "   Large Download!! This can take a bit... Please be patient")
-    file(DOWNLOAD ${qt5_url} "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}" SHOW_PROGRESS)
+    file(DOWNLOAD ${qt5_url} "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}" SHOW_PROGRESS)
   endif()
 
-  set(QT5_ONLINE_INSTALLER "${EMsoft_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
+  set(QT5_ONLINE_INSTALLER "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/${qt5_online_installer}")
   configure_file(
     "${_self_dir}/unix/Qt5_linux_install.sh.in"
-    "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
+    "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
   )
 
-  if(NOT EXISTS "${EMsoft_SDK}/${extProjectName}")
+  if(NOT EXISTS "${EMsoftOO_SDK}/${extProjectName}")
     message(STATUS "Executing the Qt5 Installer... ")
-    execute_process(COMMAND "${EMsoft_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
-                    OUTPUT_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-out.log"
-                    ERROR_FILE "${EMsoft_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
+    execute_process(COMMAND "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/Qt_HeadlessInstall.sh"
+                    OUTPUT_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/qt-unified-out.log"
+                    ERROR_FILE "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download/qt-unified-err.log"
                     ERROR_VARIABLE installer_error
                     WORKING_DIRECTORY ${qt5_BINARY_DIR} )
     message(STATUS "installer_error: ${installer_error}")
@@ -239,12 +239,12 @@ endif()
 
 ExternalProject_Add(Qt5
 
-  TMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
-  STAMP_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
-  DOWNLOAD_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Download"
-  SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Source"
-  BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Build"
-  INSTALL_DIR "${EMsoft_SDK}/superbuild/${extProjectName}/Install"
+  TMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/tmp/${CMAKE_BUILD_TYPE}"
+  STAMP_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Stamp/${CMAKE_BUILD_TYPE}"
+  DOWNLOAD_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Download"
+  SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Source"
+  BINARY_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Build"
+  INSTALL_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Install"
 
   DOWNLOAD_COMMAND ""
   UPDATE_COMMAND ""
@@ -255,21 +255,21 @@ ExternalProject_Add(Qt5
   TEST_COMMAND ""
   )
 
-#-- Append this information to the EMsoft_SDK CMake file that helps other developers
+#-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
 #-- configure DREAM3D for building
-FILE(APPEND ${EMsoft_SDK_FILE} "\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
-FILE(APPEND ${EMsoft_SDK_FILE} "# Qt ${qt5_version_full} Library\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "# Qt ${qt5_version_full} Library\n")
 if(APPLE)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
-  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5" CACHE PATH "")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(Qt5_DIR \"\${EMsoftOO_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoftOO_SDK}/${extProjectName}/${qt5_version_short}/clang_64/lib/cmake/Qt5" CACHE PATH "")
 elseif(WIN32)
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5\" CACHE PATH \"\")\n")
-  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5" CACHE PATH "")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(Qt5_DIR \"\${EMsoftOO_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoftOO_SDK}/${extProjectName}/${qt5_version_short}/${QT_MSVC_VERSION_NAME}/lib/cmake/Qt5" CACHE PATH "")
 else()
-  FILE(APPEND ${EMsoft_SDK_FILE} "set(Qt5_DIR \"\${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
-  set(Qt5_DIR "${EMsoft_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5" CACHE PATH "")
+  FILE(APPEND ${EMsoftOO_SDK_FILE} "set(Qt5_DIR \"\${EMsoftOO_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5\" CACHE PATH \"\")\n")
+  set(Qt5_DIR "${EMsoftOO_SDK}/${extProjectName}/${qt5_version_short}/gcc_64/lib/cmake/Qt5" CACHE PATH "")
 endif()
-FILE(APPEND ${EMsoft_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
+FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_MODULE_PATH \${CMAKE_MODULE_PATH} \${Qt5_DIR})\n")
 
 
