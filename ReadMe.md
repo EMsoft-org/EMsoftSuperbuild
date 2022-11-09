@@ -7,7 +7,7 @@ If you find bugs and fix them **PLEASE** consider submitting a "Pull Request" fr
 ## Introduction ##
 
 This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party 
-libraries as prebuilt binaries or as source code and compiling those libraries. In this developOO bench,
+libraries as prebuilt binaries or as source code and compiling those libraries. In this developOO branch,
 the cmake code will build an EMsoftOO_SDK that is suitable for linking against the EMsoftOO object oriented 
 source code base. Note that this SDK can co-exist alongside the regular SDK built by the develop branch.
 
