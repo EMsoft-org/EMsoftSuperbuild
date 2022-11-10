@@ -26,9 +26,9 @@ ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
 
-if(NOT WIN32)
-  set(HDF5_BUILD_SHARED_LIBS OFF)
-endif()
+# if(NOT WIN32)
+#   set(HDF5_BUILD_SHARED_LIBS OFF)
+# endif()
 
 if(WIN32)
   set(CXX_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MP")
