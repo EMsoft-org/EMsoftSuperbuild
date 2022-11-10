@@ -19,8 +19,6 @@ message(STATUS "Building: ${extProjectName} ${HDF5_VERSION}: -DBUILD_HDF5=${BUIL
 
 set(HDF5_BUILD_SHARED_LIBS ON)
 set(HDF5_INSTALL "${EMsoft_SDK}/${extProjectName}-${HDF5_VERSION}-${CMAKE_BUILD_TYPE}")
-set(PL_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${HDF5_VERSION}/Source/${extProjectName}/config/cmake")
-
 
 if( CMAKE_BUILD_TYPE MATCHES Debug )
   set(HDF5_SUFFIX "_debug")
@@ -76,8 +74,6 @@ ExternalProject_Add(${extProjectName}
     -DHDF5_BUILD_HL_LIB=ON
     -DHDF_PACKAGE_NAMESPACE=hdf5::
     -DHDF5_BUILD_FORTRAN=ON
-    -DHDF5_ENABLE_PLUGIN_SUPPORT=ON
-    -DPLUGIN_DIR=${PL_DIR}
     -DHDF5_BUILD_EXAMPLES=OFF
     -DBUILD_TESTING=OFF
 
@@ -88,12 +84,6 @@ ExternalProject_Add(${extProjectName}
   LOG_TEST 1
   LOG_INSTALL 1
 )
-
-# HDF5-1.12.2 expets there to be a file called PLUGINConfig.cmake or plugin-config.cmake in the 
-# PL_DIR directory.  What is actually there is a file called HDF5PluginMacros.cmake.  So, here 
-# we create a symbolic link from plugin-config.cmake to HDF5PluginMacros.cmake... manual experimenting
-# showed that this results in a build that includes the plugin libraries 
-execute_process (COMMAND bash -c "ln -s ${PL_DIR}/HDF5PluginMacros.cmake ${PL_DIR}/plugin-config.cmake")
 
 #-- Append this information to the EMsoft_SDK CMake file that helps other developers
 #-- configure DREAM3D for building

@@ -6,10 +6,7 @@ If you find bugs and fix them **PLEASE** consider submitting a "Pull Request" fr
 
 ## Introduction ##
 
-This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party 
-libraries as prebuilt binaries or as source code and compiling those libraries.  Note that this Develop branch
-builds the SDK for the regular EMsoft package (up to version 5.X), whereas the DevelopOO branch covers the SDK 
-for the object oriented version 6 EMsoftOO of this package.
+This cmake project will build an EMsoft SDK by downloading all the necessary 3rd party libraries as prebuilt binaries or as source code and compiling those libraries.  Note that this Develop branch builds the SDK for the regular EMsoft package (up to version 5.X), whereas the DevelopOO branch covers the SDK for the object oriented version 6 EMsoftOO of this package.
 
 ## Prerequisites ##
 
@@ -42,7 +39,8 @@ Git verison 2.x is required.
 
 | Library | Version | Notes |
 |---------|---------|-------|
-| HDF5 | 1.10.5 | Compiled from Source |
+| HDF5 | 1.12.2 | Compiled from Source |
+| HDF5pl | 1.12.2 | Plugin library, compiled from Source |
 | CLFortran | 0.0.1 | Compiled from Source on GitHub |
 | FFTW | 3.3.5 | Compiled (macOS/Linux) |
 | Intel MKL | 2019_xxxx | Precompiled for IFort compilers (windows & macos) |
