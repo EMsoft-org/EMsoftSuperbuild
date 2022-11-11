@@ -87,7 +87,7 @@ ExternalProject_Add(${extProjectName}
 )
 
 #-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoftOO for building
 FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
 FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoftOO_SDK_FILE} "# HDF5 Library Location\n")
