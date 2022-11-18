@@ -122,12 +122,6 @@ if(APPLE)
     message(STATUS "Found macOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} as the host. Darwin Version:${DARWIN_VERSION}")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 13.x)
-    message(STATUS "Found macOS 12.00 Monterey as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "12.00")
-  ENDIF ()
-
-
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
       The following versions are supported:\n\
