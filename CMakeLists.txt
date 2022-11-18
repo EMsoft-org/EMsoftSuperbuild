@@ -89,6 +89,8 @@ if(APPLE)
   # or if just the command line tools are installed.
   exec_program(xcrun ARGS --show-sdk-path OUTPUT_VARIABLE OSX_SDK)
 
+  message(STATUS "Darwin Version = ${DARWIN_VERSION}, ${OSX_SDK}")
+
   IF (DARWIN_VERSION EQUAL 17) # macOS 10.13 High Sierra (Xcode 9.x)
     message(STATUS "Found macOS 10.13 High Sierra as the host. Darwin Version:${DARWIN_VERSION}")  
     set(OSX_DEPLOYMENT_TARGET "10.13")
@@ -109,18 +111,23 @@ if(APPLE)
     set(OSX_DEPLOYMENT_TARGET "10.15")
   ENDIF ()
 
+  IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 13.x)
+    message(STATUS "Found macOS 12.00 Monterey as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "12.00")
+  ENDIF ()
+
+
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
     The following versions are supported:\n\
-    (17) macOS 10.13 High Sierra\n\
     (18) macOS 10.14 Mojave\n\
     (19) macOS 10.15 Catalina\n\
     (20) macOS 11.00 Big Sur\n\
+    (21) macOS 12.00 Monterey\n\
     Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
     ")
 
   endif()
-
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoftOO_SDK.cmake
               ${EMsoftOO_SDK}/EMsoftOO_SDK.cmake @ONLY )
