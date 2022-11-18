@@ -196,6 +196,7 @@ else()
   message(FATAL_ERROR "Current Fortran Compiler is ${CMAKE_Fortran_COMPILER}")
 endif()
 
+include(oneTBB)
 include(nlopt)
 include(JsonFortran)
 include(Bcls)
@@ -203,7 +204,7 @@ include(CLFortran)
 include(Eigen)
 include(HDF5)
 # include(HDF5pl)
-include(TBB)
+
 
 
 #--------------------------------------------------------------------------------------------------
