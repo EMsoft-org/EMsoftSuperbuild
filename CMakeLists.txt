@@ -113,7 +113,7 @@ if(APPLE)
 
   IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 13.x)
     message(STATUS "Found macOS 12.00 Monterey as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "12.00")
+    set(OSX_DEPLOYMENT_TARGET "12.5")
   ENDIF ()
 
 
