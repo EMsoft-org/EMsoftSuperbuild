@@ -81,59 +81,53 @@ message(STATUS "Workspace Folder:   ${WORKSPACE_DIR}")
 set(BUILD_SHARED_LIBS ON)
 
 if(APPLE)
-  set(OSX_DEPLOYMENT_TARGET "10.15")
   set(OSX_SDK "NOT-FOUND")
-  EXEC_PROGRAM(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
-  STRING(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
-  IF (DARWIN_VERSION LESS 19) 
-    set(MACOS_NAME "Yosemite")
-    set(OSX_DEPLOYMENT_TARGET "10.10")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk")
-    message(STATUS "Found macOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} as the host. Darwin Version:${DARWIN_VERSION}")
-    message(FATAL_ERROR "MacOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} NOT supported. macOS Catalina is the minimum system")
+  # Use this to figure out the version of MacOS being used for compilation
+  exec_program(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
+  string(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
+  # Use this to figure out where the MacOS SDK folder is at. This can change based on if Xcode is actually installed
+  # or if just the command line tools are installed.
+  exec_program(xcrun ARGS --show-sdk-path OUTPUT_VARIABLE OSX_SDK)
+
+  message(STATUS "Darwin Version = ${DARWIN_VERSION}, ${OSX_SDK}")
+
+  IF (DARWIN_VERSION EQUAL 17) # macOS 10.13 High Sierra (Xcode 9.x)
+    message(STATUS "Found macOS 10.13 High Sierra as the host. Darwin Version:${DARWIN_VERSION}")  
+    set(OSX_DEPLOYMENT_TARGET "10.13")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x or Xcode 12.x)
-    set(MACOS_NAME "Catalina")
+  IF (DARWIN_VERSION EQUAL 18) # macOS 10.14 Mojave (Xcode 10.x)
+    message(STATUS "Found macOS 10.14 Mojave as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "10.14")
+  ENDIF ()
+
+  IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x or Xcode<=12.4)
+    message(STATUS "Found macOS 10.15 Catalina as the host. Darwin Version:${DARWIN_VERSION}")
     set(OSX_DEPLOYMENT_TARGET "10.15")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
-    message(STATUS "Found macOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} as the host. Darwin Version:${DARWIN_VERSION}")
   ENDIF ()
 
   IF (DARWIN_VERSION EQUAL 20) # macOS 11.00 Big Sur (Xcode 12.x)
-    set(MACOS_NAME "Big Sur")
-    set(OSX_DEPLOYMENT_TARGET "11.00")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
-    set(OSX_DEPLOYMENT_TARGET "11.00")
-    message(STATUS "Found macOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} as the host. Darwin Version:${DARWIN_VERSION}")
+    message(STATUS "Found macOS 11.00 Big Sur as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "10.15")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 12.x/Xcode 13.x)
-    set(MACOS_NAME "Monterey")
-    set(OSX_DEPLOYMENT_TARGET "12.3")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
-    message(STATUS "Found macOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} as the host. Darwin Version:${DARWIN_VERSION}")
+  IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 13.x)
+    message(STATUS "Found macOS 12.00 Monterey as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "12.5")
   ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 22) # macOS 13.00 Ventura (Xcode 13.x)
-    set(MACOS_NAME "Ventura")
-    set(OSX_DEPLOYMENT_TARGET "13.0")
-    set(OSX_SDK "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
-    message(STATUS "Found macOS ${OSX_DEPLOYMENT_TARGET} ${MACOS_NAME} as the host. Darwin Version:${DARWIN_VERSION}")
-  ENDIF ()
 
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
-      The following versions are supported:\n\
-      (19) macOS 10.15 Catalina\n\
-      (20) macOS 11.00 Big Sur\n\
-      (21) macOS 12.00 Monterey\n\
-      Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
+    The following versions are supported:\n\
+    (18) macOS 10.14 Mojave\n\
+    (19) macOS 10.15 Catalina\n\
+    (20) macOS 11.00 Big Sur\n\
+    (21) macOS 12.00 Monterey\n\
+    Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
     ")
 
   endif()
-  message(STATUS "CMAKE_HOST_SYSTEM_PROCESSOR: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
-
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoft_SDK.cmake
               ${EMsoft_SDK}/EMsoft_SDK.cmake @ONLY )
