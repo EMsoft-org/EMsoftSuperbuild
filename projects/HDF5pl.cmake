@@ -23,9 +23,9 @@ set(HDF5_ROOT "${HDF5_INSTALL}")
 set(PLUGIN_SOURCE "${EMsoftOO_SDK}/superbuild/${extProjectName}-${HDF5PL_VERSION}/Source/${extProjectName}")
 set(TGZstring "TGZ")
 
-if( CMAKE_BUILD_TYPE MATCHES Debug )
-  set(HDF5PL_SUFFIX "_debug")
-ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
+# if( CMAKE_BUILD_TYPE MATCHES Debug )
+#   set(HDF5PL_SUFFIX "_debug")
+# ENDif( CMAKE_BUILD_TYPE MATCHES Debug )
 
 set_property(DIRECTORY PROPERTY EP_BASE ${EMsoftOO_SDK}/superbuild)
 
@@ -93,7 +93,7 @@ ExternalProject_Add(${extProjectName}
 )
 
 #-- Append this information to the EMsoftOO_SDK CMake file that helps other developers
-#-- configure DREAM3D for building
+#-- configure EMsoftOO for building
 FILE(APPEND ${EMsoftOO_SDK_FILE} "\n")
 FILE(APPEND ${EMsoftOO_SDK_FILE} "#--------------------------------------------------------------------------------------------------\n")
 FILE(APPEND ${EMsoftOO_SDK_FILE} "# HDF5_plugins Library Location\n")
