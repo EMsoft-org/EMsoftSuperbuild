@@ -15,8 +15,8 @@ source code base. Note that this SDK can co-exist alongside the regular SDK buil
 
 ## Prerequisites ##
 
-+ CMake 3.15.x installed on system
-+ Compiler Suite installed on system
++ CMake 3.15.x or later installed on system (preferably 3.25)
++ Compiler Suite installed on system 
 + Fortran compiler installed on system
 + Git installed on the system
 
@@ -56,7 +56,7 @@ Git verison 2.x is required.
 
 1. Install your compiler tools
 2. Install CMake on your system
-3. Install a Fortran compiler on your system
+3. Install a Fortran compiler on your system (use "brew install gcc")
 4. Install Git on your system
 5. Clone this repository onto your hard disk.
 6. open a terminal and invoke the following commands
