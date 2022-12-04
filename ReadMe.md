@@ -10,9 +10,9 @@ This cmake project will build an EMsoft SDK by downloading all the necessary 3rd
 
 ## Prerequisites ##
 
-+ CMake 3.15.x installed on system
-+ Compiler Suite installed on system
-+ Fortran compiler installed on system
++ CMake 3.15.x or later installed on system (preferably 3.25)
++ Compiler Suite installed on system (on OS X, preferably installed via "brew install gcc")
++ Fortran compiler installed on system (OS X: brew install gcc will install gfortran as well)
 + Git installed on the system
 
 ## Supported Platforms ##
@@ -48,6 +48,9 @@ Git verison 2.x is required.
 | Eigen | 3.3.5 | Compiled from Source |
 | Qt 5 | 5.12.4 | Precompiled Binaries from [www.qt.io](http://download.qt.io) |
 
+## EMsoft versions ##
+EMsoft 5.0.X requires a build of the regular develop branch in the EMsoftSuperbuild repository.  For the Object Oriented version, EMsoftOO, (which is effectively EMsoft 6.0)please use the developOO branch of the EMsoftSuperbuild repository.
+
 ## macOS/Linux Instructions ##
 
 1. Install your compiler tools
@@ -67,6 +70,9 @@ Git verison 2.x is required.
         cd Release
         cmake -DEMsoft_SDK=/Some/Path/To/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../
         make -j
+
+
+Note that the Superbuild has been successfully installed on the arm64 M1 platform using XCode 13 on Monterey and XCode 14 on Ventura.
 
 ## Windows Instructions ##
 
