@@ -57,7 +57,6 @@ RUN mkdir ~/EMs \
  && git clone https://github.com/EMsoft-org/EMsoftSuperbuild.git \
  && git clone https://github.com/EMsoft-org/EMsoftData.git \
  && git clone https://github.com/EMsoft-org/EMsoft.git \
- && mv EMsoftSuperbuild EMsoftSuperbuild \
  && mkdir EMsoftBuild && mkdir GenEMsoftData && cd EMsoftSuperbuild && mkdir Debug Release
 
 # EMsoftSuperbuild
