@@ -55,7 +55,7 @@ RUN mkdir -p /etc/OpenCL/vendors && \
 RUN mkdir ~/EMs \
  && cd ~/EMs \
  && git clone https://github.com/EMsoft-org/EMsoftSuperbuild.git \
- && mkdir EMPlay && cd EMsoftSuperbuild && mkdir Debug Release
+ && cd EMsoftSuperbuild && mkdir Debug Release
 
 # EMsoftSuperbuild
 RUN cd ~/EMs/EMsoftSuperbuild/Debug/ \
