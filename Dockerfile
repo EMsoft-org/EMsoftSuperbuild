@@ -54,11 +54,9 @@ RUN mkdir -p /etc/OpenCL/vendors && \
 # clone EMsoft and set up SDK Debug/Release
 RUN mkdir ~/EMs \
  && cd ~/EMs \
- && git clone --branch developOO https://github.com/ZacharyVarley/EMsoftSuperbuild.git \
- && git clone https://github.com/EMsoft-org/EMsoftData.git \
- && git clone https://github.com/EMsoft-org/EMsoftOO.git \
+ && git clone --branch developOO https://github.com/EMsoft-org/EMsoftSuperbuild.git \
  && mv EMsoftSuperbuild EMsoftOOSuperbuild \
- && mkdir EMsoftOOBuild && mkdir GenEMsoftData && cd EMsoftOOSuperbuild && mkdir Debug Release
+ && cd EMsoftOOSuperbuild && mkdir Debug Release
 
 # EMsoftSuperbuild
 RUN cd ~/EMs/EMsoftOOSuperbuild/Debug/ \
