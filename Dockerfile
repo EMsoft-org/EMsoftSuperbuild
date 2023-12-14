@@ -52,13 +52,13 @@ RUN mkdir -p /etc/OpenCL/vendors && \
     echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
 
 # clone EMsoft and set up SDK Debug/Release
-RUN mkdir ~/EMs \
- && cd ~/EMs \
+RUN mkdir /home/EMs \
+ && cd /home/EMs \
  && git clone https://github.com/EMsoft-org/EMsoftSuperbuild.git \
  && cd EMsoftSuperbuild && mkdir Debug Release
 
 # EMsoftSuperbuild
-RUN cd ~/EMs/EMsoftSuperbuild/Debug/ \
+RUN cd /home/EMs/EMsoftSuperbuild/Debug/ \
  && cmake -DEMsoft_SDK=/opt/EMsoft_SDK -DCMAKE_BUILD_TYPE=Debug ../ -G Ninja && ninja \
  && cd ../Release \
  && cmake -DEMsoft_SDK=/opt/EMsoft_SDK -DCMAKE_BUILD_TYPE=Release ../ -G Ninja && ninja
