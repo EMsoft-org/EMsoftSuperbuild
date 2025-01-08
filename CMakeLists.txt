@@ -126,6 +126,11 @@ if(APPLE)
     set(OSX_DEPLOYMENT_TARGET "14.0")
   ENDIF ()
 
+ IF (DARWIN_VERSION EQUAL 24) # macOS 15.00 Sequoia(Xcode 16.x)
+    message(STATUS "Found macOS 15.00 Sequoia as the host. Darwin Version:${DARWIN_VERSION}")
+    set(OSX_DEPLOYMENT_TARGET "15.0")
+  ENDIF ()
+
   if("${OSX_SDK}" STREQUAL "NOT-FOUND")
     message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
     The following versions are supported:\n\
@@ -135,6 +140,7 @@ if(APPLE)
     (21) macOS 12.00 Monterey\n\
     (22) macOS 13.00 Ventura\n\
     (23) macOS 14.00 Sonoma\n\
+    (24) macOS 15.00 Sequoia\n\
     Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
     ")
 
