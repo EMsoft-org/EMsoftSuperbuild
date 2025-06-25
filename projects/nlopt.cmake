@@ -37,6 +37,7 @@ set_property(DIRECTORY PROPERTY EP_BASE ${EMsoft_SDK}/superbuild)
   )
 #endif()
 
+
 ExternalProject_Add(${extProjectName}
   ${EP_SOURCE_ARGS}
 
@@ -46,6 +47,8 @@ ExternalProject_Add(${extProjectName}
   SOURCE_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Source"
   BINARY_DIR "${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Build/${CMAKE_BUILD_TYPE}"
   INSTALL_DIR "${nlopt_INSTALL}"
+
+  PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${EMsoftSuperBuild_SOURCE_DIR}/projects/patches/nlopt/CMakeLists.txt ${EMsoft_SDK}/superbuild/${extProjectName}-${NLopt_VERSION}/Source
 
   CMAKE_ARGS
     -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
