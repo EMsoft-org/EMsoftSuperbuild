@@ -4,6 +4,8 @@ if(${CMAKE_MAJOR_VERSION} STREQUAL "3")
   cmake_policy(SET CMP0048 NEW)
   # CMake 3.1 introduces if() policies on dereferencing variables in quotes
   cmake_policy(SET CMP0054 NEW)
+  # The DOWNLOAD_EXTRACT_TIMESTAMP option was not given
+  cmake_policy(SET CMP0135 NEW)
 endif()
 
 cmake_minimum_required(VERSION 3.14.5)
@@ -81,65 +83,57 @@ message(STATUS "Workspace Folder:   ${WORKSPACE_DIR}")
 set(BUILD_SHARED_LIBS ON)
 
 if(APPLE)
-  set(OSX_SDK "NOT-FOUND")
-  # Use this to figure out the version of MacOS being used for compilation
-  exec_program(uname ARGS -v  OUTPUT_VARIABLE DARWIN_VERSION)
-  string(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
-  # Use this to figure out where the MacOS SDK folder is at. This can change based on if Xcode is actually installed
-  # or if just the command line tools are installed.
-  exec_program(xcrun ARGS --show-sdk-path OUTPUT_VARIABLE OSX_SDK)
+    execute_process(COMMAND uname -v
+                    OUTPUT_VARIABLE DARWIN_VERSION)
+    string(REGEX MATCH "[0-9]+" DARWIN_VERSION ${DARWIN_VERSION})
 
-  message(STATUS "Darwin Version = ${DARWIN_VERSION}, ${OSX_SDK}")
+    execute_process(COMMAND sw_vers -productVersion
+                    OUTPUT_VARIABLE OSX_PRODUCT_VERSION)
+    string(STRIP "${OSX_PRODUCT_VERSION}" OSX_PRODUCT_VERSION)
+    
+    # Use this to figure out where the MacOS SDK folder is at. This can change based on if Xcode is actually installed
+    # or if just the command line tools are installed.
+    execute_process(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE OSX_SDK)
+    string(STRIP "${OSX_SDK}" OSX_SDK)
 
-  IF (DARWIN_VERSION EQUAL 17) # macOS 10.13 High Sierra (Xcode 9.x)
-    message(STATUS "Found macOS 10.13 High Sierra as the host. Darwin Version:${DARWIN_VERSION}")  
-    set(OSX_DEPLOYMENT_TARGET "10.13")
-  ENDIF ()
+    if(DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x or Xcode 12.x)
+      message(FATAL_ERROR "MacOS Big Sur (11.x) is the minimum version needed to compile ${DREAM3DNX_APPLICATION_NAME}")
+    endif()
 
-  IF (DARWIN_VERSION EQUAL 18) # macOS 10.14 Mojave (Xcode 10.x)
-    message(STATUS "Found macOS 10.14 Mojave as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "10.14")
-  ENDIF ()
+    if(DARWIN_VERSION EQUAL 20) # macOS 11.00 Big Sur (Xcode 12.x)
+      # message(STATUS "Found macOS 11.00 Big Sur as the host. Darwin Version:${DARWIN_VERSION}")
+      set(CMAKE_MACOS_NAME "Big Sur")
+      set(CMAKE_MACOS_VERSION "11.00")
+      set(OSX_DEPLOYMENT_TARGET "11.0")
+    endif()
 
-  IF (DARWIN_VERSION EQUAL 19) # macOS 10.15 Catalina (Xcode 11.x or Xcode<=12.4)
-    message(STATUS "Found macOS 10.15 Catalina as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "10.15")
-  ENDIF ()
+    IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 12.x/Xcode 13.x)
+      set(CMAKE_MACOS_NAME "Monterey")
+      set(CMAKE_MACOS_VERSION "12.00")
+      set(OSX_DEPLOYMENT_TARGET "12.0")
+    ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 20) # macOS 11.00 Big Sur (Xcode 12.x)
-    message(STATUS "Found macOS 11.00 Big Sur as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "10.15")
-  ENDIF ()
+    IF (DARWIN_VERSION EQUAL 22) # macOS 13.00 Ventura (Xcode 13.x/Xcode 14.x)
+      set(CMAKE_MACOS_NAME "Ventura")
+      set(CMAKE_MACOS_VERSION "13.00")
+      set(OSX_DEPLOYMENT_TARGET "13.0")
+    ENDIF ()
 
-  IF (DARWIN_VERSION EQUAL 21) # macOS 12.00 Monterey (Xcode 13.x)
-    message(STATUS "Found macOS 12.00 Monterey as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "12.5")
-  ENDIF ()
+    IF (DARWIN_VERSION EQUAL 23) # macOS 14.00 Sonoma (Xcode 15.x/Xcode 16.x)
+      set(CMAKE_MACOS_NAME "Sonoma")
+      set(CMAKE_MACOS_VERSION "14.00")
+      set(OSX_DEPLOYMENT_TARGET "14.0")
+    ENDIF ()
 
- IF (DARWIN_VERSION EQUAL 22) # macOS 13.00 Ventura (Xcode 14.x)
-    message(STATUS "Found macOS 13.00 Ventura as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "13.0")
-  ENDIF ()
+    IF (DARWIN_VERSION EQUAL 24) # macOS 15.00 Sequoia (Xcode 16.x)
+      set(CMAKE_MACOS_NAME "Sequoia")
+      set(CMAKE_MACOS_VERSION "15.00")
+      set(OSX_DEPLOYMENT_TARGET "15.0")
+    ENDIF ()
 
- IF (DARWIN_VERSION EQUAL 23) # macOS 14.00 Sonoma (Xcode 15.x)
-    message(STATUS "Found macOS 14.00 Sonoma as the host. Darwin Version:${DARWIN_VERSION}")
-    set(OSX_DEPLOYMENT_TARGET "14.0")
-  ENDIF ()
-
-
-  if("${OSX_SDK}" STREQUAL "NOT-FOUND")
-    message(FATAL_ERROR "This version of macOS (${DARWIN_VERSION}) is not recognized.\
-    The following versions are supported:\n\
-    (18) macOS 10.14 Mojave\n\
-    (19) macOS 10.15 Catalina\n\
-    (20) macOS 11.00 Big Sur\n\
-    (21) macOS 12.00 Monterey\n\
-    (22) macOS 13.00 Ventura\n\
-    (23) macOS 14.00 Sonoma\n\
-    Please edit ${CMAKE_CURRENT_LIST_FILE} and add this version of macOS to the detection logic.
-    ")
-
-  endif()
+    message(STATUS "* System: MacOS ${CMAKE_MACOS_NAME} (${OSX_PRODUCT_VERSION}) Running on ${CMAKE_SYSTEM_PROCESSOR}")
+    message(STATUS "* CMAKE_OSX_DEPLOYMENT_TARGET: ${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    message(STATUS "* OSX_SDK: ${OSX_SDK}")
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/projects/apple/OSX_EMsoft_SDK.cmake
               ${EMsoft_SDK}/EMsoft_SDK.cmake @ONLY )
@@ -196,30 +190,29 @@ else()
   message(FATAL_ERROR "Current Fortran Compiler is ${CMAKE_Fortran_COMPILER}")
 endif()
 
-include(oneTBB)
 include(nlopt)
 include(JsonFortran)
 include(Bcls)
 include(CLFortran)
-include(Eigen)
 include(HDF5)
 # include(HDF5pl)
 
 
 
 #--------------------------------------------------------------------------------------------------
-# Are we installing Qt (ON by default)
+# Are we installing Qt (OFF by default)
+# If we are, then we need additional libraries
+# This part of the code base is not in any way maintained any more.
 #--------------------------------------------------------------------------------------------------
 OPTION(INSTALL_QT5 "Download and Install Qt5" OFF)
-
 if("${INSTALL_QT5}" STREQUAL "ON")
   if(NOT MSVC)
     include(ghcFilesystem)
   endif()
+  include(oneTBB)
+  include(Eigen)
   include(EbsdLib)
   include(Qt5)
-else()
-  message(WARNING "Qt5 & EBSDLib are disabled. Only command line tools will be compiled. Use -DINSTALL_QT5=ON to enable Qt5 and EBSDLib installation.")
 endif()
 
 #------------------------------------------------------------------------------

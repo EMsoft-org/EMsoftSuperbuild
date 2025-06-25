@@ -7,7 +7,7 @@ if("${BUILD_NLOPT}" STREQUAL "OFF")
 endif()
 
 set(extProjectName "nlopt")
-set(NLopt_VERSION "2.7.0")
+set(NLopt_VERSION "2.10.0")
 message(STATUS "Building: ${extProjectName} ${NLopt_VERSION}: -DBUILD_NLOPT=${BUILD_NLOPT}" )
 
 # This is need to figure out the proper install dir for some Linux distributions

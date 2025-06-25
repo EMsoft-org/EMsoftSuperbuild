@@ -2,6 +2,9 @@
 set(extProjectName "fftw")
 message(STATUS "External Project: ${extProjectName}" )
 
+# The DOWNLOAD_EXTRACT_TIMESTAMP option was not given
+cmake_policy(SET CMP0135 NEW)
+
 set(FFTW_VERSION "3.3.8")
 set(FFTW_PREFIX "${EMsoft_SDK}/superbuild/${extProjectName}")
 set(FFTW_FOLDER_NAME "fftw-${FFTW_VERSION}-pl2.tar.gz")
