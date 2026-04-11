@@ -15,24 +15,25 @@ source code base. Note that this SDK can co-exist alongside the regular SDK buil
 
 ## Prerequisites ##
 
-+ CMake 3.15.x or later installed on system (preferably 3.25)
-+ Compiler Suite installed on system 
-+ Fortran compiler installed on system
-+ Git installed on the system
++ CMake 3.25 or later installed on the system. The Visual Studio 2022 bundled CMake 3.31.x works.
++ Compiler suite installed on the system
++ Fortran compiler installed on the system
++ Git 2.x installed on the system
++ On Windows for this branch, install Visual Studio 2022 plus Intel oneAPI Base Toolkit and HPC Toolkit so that `ifx` and MKL are available
 
 ## Supported Platforms ##
 
-| Operating System | C/C++ Compiler | Fortran Compiler |
-|------------------|----------------|------------------|
-| macOS (>=10.13) | Xcode Native tools (10/11) | GFortran 6.3.0 or Intel Fortran 19\*\* |
-| Windows (10) | Visual Studio 2015 (CE/Pro) | Intel Fortran v17/v19 |
-| Linux (Ubuntu 16.x, CentOS 7.x) | GCC 7.x and Above, Clang 3.8 and greater | GNU Fortran 6.3.5 20160904 or newer |
+| Operating System | C/C++ Compiler | Fortran Compiler | Status |
+|------------------|----------------|------------------|--------|
+| macOS (>=10.13) | Xcode Native tools (10/11) | GFortran 6.3.0 or Intel Fortran 19\*\* | Legacy instructions |
+| Windows 11 | Visual Studio 2022 | Intel oneAPI `ifx` | Validated on this branch |
+| Linux (Ubuntu 16.x, CentOS 7.x) | GCC 7.x and above, Clang 3.8 and greater | GNU Fortran 6.3.5 20160904 or newer | Legacy instructions |
 
 \*\*macOS Note: If you are installing Intel Fortran try to install into a location **other** then /opt/intel which is the default. Try /opt/intel_sw instead.
 
 ## Git Locations ##
 
-Git verison 2.x is required.
+Git version 2.x is required.
 
 | Operating System |  Notes  |
 |------------------|--------------|
@@ -47,7 +48,7 @@ Git verison 2.x is required.
 | HDF5 | 1.12.2 | Compiled from Source |
 | CLFortran | 0.0.1 | Compiled from Source on GitHub |
 | FFTW | 3.3.5 | Compiled (macOS/Linux) |
-| Intel MKL | 2019_xxxx | Precompiled for IFort compilers (windows & macos) |
+| Intel MKL | oneAPI install | Uses the MKL installation that ships with Intel oneAPI on Windows |
 | Json-Fortran | 4.2.1 | Compiled from source on GitHub |
 | Eigen | 3.3.5 | Compiled from Source |
 | Qt 5 | 5.12.4 | Precompiled Binaries from [www.qt.io](http://download.qt.io) |
@@ -75,34 +76,47 @@ Git verison 2.x is required.
 
 ## Windows Instructions ##
 
-*Currently ONLY NMake files are supported. Visual Studio support is being looked at*
+This branch is currently validated on Windows with the `NMake Makefiles` generator, Visual Studio 2022, and Intel oneAPI `ifx` (tested with oneAPI 2025.3 and the Visual Studio 2022 bundled CMake 3.31.x).
 
-1. Install your compiler tools
-2. Install CMake on your system
-3. Install a Fortran compiler on your system
-4. Install Git on your system
-5. Create the following Directories:
-    + C:/Users/[USERNAME]/EMsoftOO_SDK
-    + C:/Users/[USERNAME]/EMsoft-Dev
-6. Open a command prompt and invoke the following commands
+### Toolchain Installation ###
 
-        cd C:/Users/[USERNAME]/EMsoft-Dev
-		git clone git://www.github.com/emsoft-org/EMsoftSuperbuild
+1. Install Visual Studio 2022 with the Desktop development with C++ workload.
+2. Install Intel oneAPI Base Toolkit and Intel oneAPI HPC Toolkit. This provides MKL and the `ifx` Fortran compiler.
+3. Install Git.
+4. Install CMake 3.25 or later, or use the CMake that ships with Visual Studio 2022.
+
+### Configure and Build ###
+
+1. Open a Command Prompt window.
+2. Initialize the Visual Studio 2022 and Intel oneAPI build environment:
+
+        call "C:\Program Files (x86)\Intel\oneAPI\setvars.bat" intel64 vs2022
+
+3. Choose an SDK install location, for example:
+
+        C:/Users/[USERNAME]/EMsoftOO_SDK
+
+4. Clone the repository and configure a Release build:
+
+        cd C:/Users/[USERNAME]
+        git clone https://github.com/EMsoft-org/EMsoftSuperbuild.git
         cd EMsoftSuperbuild
-        mkdir Debug
-        cd Debug
-        cmake -G "NMake Makefiles" -DEMsoftOO_SDK=C:/Users/[USERNAME]/EMsoftOO_SDK -DCMAKE_BUILD_TYPE=Debug ../
-        nmake
-        cd ../
-        mkdir Release
-        cd Release
-        cmake -G "NMake Makefiles" -DEMsoftOO_SDK=C:/Users/[USERNAME]/EMsoftOO_SDK -DCMAKE_BUILD_TYPE=Release ../
-        make -j
+        cmake -S . -B build-ifx -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_Fortran_COMPILER=ifx -DEMsoftOO_SDK=C:/Users/[USERNAME]/EMsoftOO_SDK -DINSTALL_QT5=OFF
 
-7. The initial run of CMake is going to take  **REALLY** long time because it will be downloading the full Qt 5.x installer which is about 3~4 GB in size. On macOS systems it then must verify the .dmg, mount it and run the installer (which verifies the .app). Go get coffee. Compiling (the 'make -j' part) should not take that long, only about 5 minutes or so.
+5. Build the SDK:
 
-**NOTE**: there is currently a known issue where the Qt 5.x installer will NOT actually run during the Linux cmake process. If the user does *NOT* want to build the GUI application then this is fine. If the user does want to build the GUI application then they will need to install Qt 5.x themselves. The download will be at /path/to/EMsoft_SDK/superbuild/Qt/download
+        cmake --build build-ifx
 
-The developer can use CMakeGui if they would like instead of the command lines. The only required variable are the path to where you want the EMsoft_SDK folder and the build type (Debug or Release)
+6. After a successful build, the generated SDK configuration file will be located at:
+
+        C:/Users/[USERNAME]/EMsoftOO_SDK/EMsoftOO_SDK.cmake
+
+7. To generate a Debug SDK, use a different build directory and switch `-DCMAKE_BUILD_TYPE=Debug`.
+
+### Notes ###
+
++ `-DINSTALL_QT5=OFF` builds the command-line dependency stack only. Set `-DINSTALL_QT5=ON` if you also want Qt 5 and EBSDLib.
++ Enabling Qt will trigger a very large Qt download during the first configure.
++ The developer can also use CMake GUI. The required variables are `EMsoftOO_SDK` and `CMAKE_BUILD_TYPE`.
 
 Once the SDK builds correctly, no errors are reported on the command line, then the developer can proceed to clone and build EMsoft itself.

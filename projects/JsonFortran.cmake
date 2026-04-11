@@ -56,12 +56,11 @@ else()
   endif()
 endif()
 
-if (${CMAKE_Fortran_COMPILER} MATCHES "gfortran.*")
+if(EMSOFTOO_FORTRAN_IS_GNU)
   set(FC_NAME "GNU")
+elseif(EMSOFTOO_FORTRAN_IS_INTEL)
+  set(FC_NAME "intel")
 endif()
-# if (${CMAKE_Fortran_COMPILER} MATCHES "ifort.*")
-#   set(FC_NAME "intel")
-# endif()
 
 ExternalProject_Add(${extProjectName}
   #DOWNLOAD_NAME ${extProjectName}-${JSONFORTRAN_VERSION}.tar.gz
@@ -92,10 +91,9 @@ ExternalProject_Add(${extProjectName}
   LOG_INSTALL 1
 )
 
-if (${CMAKE_Fortran_COMPILER} MATCHES "gfortran.*")
+if(EMSOFTOO_FORTRAN_IS_GNU)
   set(FC_NAME "gnu")
-endif()
-if (${CMAKE_Fortran_COMPILER} MATCHES "ifort.*")
+elseif(EMSOFTOO_FORTRAN_IS_INTEL)
   set(FC_NAME "intel")
 endif()
 
