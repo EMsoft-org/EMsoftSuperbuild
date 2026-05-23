@@ -13,7 +13,7 @@ set(Eigen_VERSION "3.3.9")
 message(STATUS "Building: ${extProjectName} ${Eigen3_VERSION}: -DBUILD_EIGEN=${BUILD_EIGEN}")
 
 #set(Eigen_URL "https://bitbucket.org/eigen/eigen/get/${Eigen_VERSION}.tar.gz")
-set(Eigen_URL "http://dream3d.bluequartz.net/binaries/SDK/Eigen-${Eigen_VERSION}.tar.gz")
+set(Eigen_URL "https://gitlab.com/libeigen/eigen/-/archive/${Eigen_VERSION}/eigen-${Eigen_VERSION}.tar.gz")
 set(SOURCE_DIR "${EMsoftOO_SDK}/superbuild/${extProjectName}/Source/${extProjectName}.tar.gz")
 
 if(WIN32)

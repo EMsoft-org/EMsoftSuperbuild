@@ -23,6 +23,7 @@ Support/Scripts/GMT/gmt.history
 /Release/
 /DebugOO/
 /ReleaseOO/
+/buildOO/
 .ctags
 .vscode
 /ExternalProjects
