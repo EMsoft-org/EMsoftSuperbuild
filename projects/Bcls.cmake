@@ -49,6 +49,11 @@ if(EMSOFTOO_FORTRAN_IS_GNU)
   set(BCLS_USE_MKL "OFF")
 elseif(EMSOFTOO_FORTRAN_IS_INTEL)
   set(BCLS_USE_MKL "ON")
+  set(BCLS_MKL_DIR "${MKL_DIR}")
+  if(NOT "${BCLS_MKL_DIR}" STREQUAL "")
+    # Avoid backslash escape parsing issues in generated ExternalProject scripts on Windows.
+    file(TO_CMAKE_PATH "${BCLS_MKL_DIR}" BCLS_MKL_DIR)
+  endif()
 else()
   message(STATUS "The Fotran compiler is NOT recognized. EMsoft may not support it.")
   message(FATAL_ERROR "Current Fotran Compiler is ${CMAKE_Fortran_COMPILER}")
@@ -77,7 +82,7 @@ ExternalProject_Add(${extProjectName}
     -DOpenCL_INCLUDE_DIR:PATH=${OpenCL_INCLUDE_DIR}
     -DOpenCL_LIBRARY:FILEPATH=${OpenCL_LIBRARY}
     -DBCLS_USE_MKL:BOOL=${BCLS_USE_MKL}
-    -DMKL_DIR:PATH=${MKL_DIR}
+    -DMKL_DIR:STRING=${BCLS_MKL_DIR}
 
   LOG_DOWNLOAD 1
   LOG_UPDATE 1

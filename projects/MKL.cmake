@@ -112,27 +112,52 @@ elseif(WIN32) #-----------------------------------------------------------------
   # is installed MKL is also installed with it so there is no need to actuall7 install
   # MKL at this time. If EMsoft ever supports GFortran on Windows then this will
   # need to be revisited.
-  get_filename_component(IFORT_COMPILER_ROOT_DIR ${CMAKE_Fortran_COMPILER} DIRECTORY)
-  get_filename_component(IFORT_COMPILER_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY)
-  get_filename_component(IFORT_COMPILER_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY)
+  set(_mkl_probe_paths "")
 
-  set(MKL_DIR "${IFORT_COMPILER_ROOT_DIR}/mkl")
-
-  # recent (as of spring 2021) ifort changes mean that MKL can be installed in a different location in bundled w/ 'oneAPI'
-  # w/ oneAPI the ifort root dir is e.g. C:/Program Files (x86)/Intel/oneAPI/compiler/2021.1.1/windows
-  # but the mkl root dir is e.g. C:/Program Files (x86)/Intel/oneAPI/mkl/2021.1.1
-  if(NOT EXISTS ${MKL_DIR} AND ${IFORT_COMPILER_ROOT_DIR} MATCHES ".+[/\]Intel[/\]oneAPI[/\]compiler[/\].+[/\]windows")
-    get_filename_component(ONE_API_ROOT_DIR ${IFORT_COMPILER_ROOT_DIR} DIRECTORY) # e.g. C:/Program Files (x86)/Intel/oneAPI/compiler/2021.1.1
-    get_filename_component(ONE_API_VERSION  ${ONE_API_ROOT_DIR}        NAME     ) # e.g. 2021.1.1
-    get_filename_component(ONE_API_ROOT_DIR ${ONE_API_ROOT_DIR}        DIRECTORY) # e.g. C:/Program Files (x86)/Intel/oneAPI/compiler
-    get_filename_component(ONE_API_ROOT_DIR ${ONE_API_ROOT_DIR}        DIRECTORY) # e.g. C:/Program Files (x86)/Intel/oneAPI
-    set(MKL_DIR "${ONE_API_ROOT_DIR}/mkl/${ONE_API_VERSION}")
+  # If the environment was initialized through setvars.bat, MKLROOT is the most reliable source.
+  if(DEFINED ENV{MKLROOT} AND EXISTS "$ENV{MKLROOT}")
+    list(APPEND _mkl_probe_paths "$ENV{MKLROOT}")
   endif()
 
-  # in either case having the value wrong makes debugging much harder down the line
-  if(NOT EXISTS ${MKL_DIR})
-    message(FATAL_ERROR "failed to determine MKL directory (tried ${MKL_DIR})")
+  # Legacy assumption: ifort root has an mkl sibling.
+  get_filename_component(IFORT_COMPILER_ROOT_DIR "${CMAKE_Fortran_COMPILER}" DIRECTORY)
+  get_filename_component(IFORT_COMPILER_ROOT_DIR "${IFORT_COMPILER_ROOT_DIR}" DIRECTORY)
+  get_filename_component(IFORT_COMPILER_ROOT_DIR "${IFORT_COMPILER_ROOT_DIR}" DIRECTORY)
+  list(APPEND _mkl_probe_paths "${IFORT_COMPILER_ROOT_DIR}/mkl")
+
+  # oneAPI layouts:
+  #   * .../oneAPI/compiler/<version>/windows/bin/ifx.exe -> .../oneAPI/mkl/<version>
+  #   * .../oneAPI/compiler/latest/bin/ifx.exe            -> .../oneAPI/mkl/latest
+  file(TO_CMAKE_PATH "${IFORT_COMPILER_ROOT_DIR}" IFORT_COMPILER_ROOT_DIR_NORM)
+  if(IFORT_COMPILER_ROOT_DIR_NORM MATCHES ".+[/\\]Intel[/\\]oneAPI[/\\]compiler$")
+    get_filename_component(ONE_API_ROOT_DIR "${IFORT_COMPILER_ROOT_DIR}" DIRECTORY)
+    list(APPEND _mkl_probe_paths "${ONE_API_ROOT_DIR}/mkl/latest")
+    list(APPEND _mkl_probe_paths "${ONE_API_ROOT_DIR}/mkl")
+  elseif(IFORT_COMPILER_ROOT_DIR_NORM MATCHES ".+[/\\]Intel[/\\]oneAPI[/\\]compiler[/\\][^/\\\\]+$")
+    get_filename_component(ONE_API_VERSION "${IFORT_COMPILER_ROOT_DIR}" NAME)
+    get_filename_component(ONE_API_COMPILER_ROOT "${IFORT_COMPILER_ROOT_DIR}" DIRECTORY)
+    get_filename_component(ONE_API_ROOT_DIR "${ONE_API_COMPILER_ROOT}" DIRECTORY)
+    list(APPEND _mkl_probe_paths "${ONE_API_ROOT_DIR}/mkl/${ONE_API_VERSION}")
+    list(APPEND _mkl_probe_paths "${ONE_API_ROOT_DIR}/mkl/latest")
+    list(APPEND _mkl_probe_paths "${ONE_API_ROOT_DIR}/mkl")
   endif()
+
+  set(MKL_DIR "")
+  foreach(_mkl_probe IN LISTS _mkl_probe_paths)
+    if(EXISTS "${_mkl_probe}")
+      set(MKL_DIR "${_mkl_probe}")
+      break()
+    endif()
+  endforeach()
+
+  # having this value wrong makes debugging much harder down the line
+  if("${MKL_DIR}" STREQUAL "")
+    string(REPLACE ";" "\n  " _mkl_probe_paths_report "${_mkl_probe_paths}")
+    message(FATAL_ERROR "failed to determine MKL directory. Probed:\n  ${_mkl_probe_paths_report}")
+  endif()
+
+  # Normalize path separators for generated CMake scripts to avoid backslash escape parsing.
+  file(TO_CMAKE_PATH "${MKL_DIR}" MKL_DIR)
 
 else()
 

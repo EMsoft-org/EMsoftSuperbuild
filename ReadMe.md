@@ -76,14 +76,25 @@ Git version 2.x is required.
 
 ## Windows Instructions ##
 
-This branch is currently validated on Windows with the `NMake Makefiles` generator, Visual Studio 2022, and Intel oneAPI `ifx` (tested with oneAPI 2025.3 and the Visual Studio 2022 bundled CMake 3.31.x).
+> "All hope abandon ye who enter here..."
+
+Toolchain installation behavior can vary across compiler, CUDA, CMake, and IDE versions, and package layouts may differ between systems. As a result, additional post-install configuration is often required; in practice, a disciplined, agentic workflow (iterative validation, environment checks, and targeted reconfiguration) is necessary for reliable setup.
+
+This branch is currently validated on Windows with the `NMake Makefiles` generator, Visual Studio 2022 Community, and Intel oneAPI `ifx` (tested with Visual Studio 2022 17.14.x, oneAPI 2025.3.1, CUDA 12.9.1, and the Visual Studio 2022 bundled CMake 3.31.x).
 
 ### Toolchain Installation ###
 
-1. Install Visual Studio 2022 with the Desktop development with C++ workload.
-2. Install Intel oneAPI Base Toolkit and Intel oneAPI HPC Toolkit. This provides MKL and the `ifx` Fortran compiler.
-3. Install Git.
-4. Install CMake 3.25 or later, or use the CMake that ships with Visual Studio 2022.
+1. Install Visual Studio 2022 Community 17.14.x with the Desktop development with C++ workload.
+   + Download bootstrapper: [vs_community.exe](https://aka.ms/vs/17/release/vs_community.exe)
+   + Release history (17.x details): [Visual Studio 2022 Release History](https://learn.microsoft.com/en-us/visualstudio/releases/2022/release-history)
+2. Install Intel oneAPI Base Toolkit 2025.3.1.35 (provides MKL and core toolchain pieces).
+   + Download: [intel-oneapi-base-toolkit-2025.3.1.35.exe](https://registrationcenter-download.intel.com/akdlm/IRC_NAS/076e961b-2c29-48a8-9203-c96f00e7051b/intel-oneapi-base-toolkit-2025.3.1.35.exe)
+3. Install Intel oneAPI HPC Toolkit 2025.3.1.54 (provides `ifx` Fortran).
+   + Download: [intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe](https://registrationcenter-download.intel.com/akdlm/IRC_NAS/36f868e9-84b3-4b4f-90ef-ca84092cae6a/intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe)
+4. Install NVIDIA CUDA Toolkit 12.9.1 if `BUILD_CLFortran=ON` (required for OpenCL headers/libs used by CLFortran on Windows).
+   + Download page (Windows x86_64): [CUDA Toolkit 12.9.1 Downloads](https://developer.nvidia.com/cuda-12-9-1-download-archive?target_arch=x86_64&target_os=Windows)
+5. Install Git.
+6. Install CMake 3.25 or later, or use the CMake that ships with Visual Studio 2022.
 
 ### Configure and Build ###
 
@@ -117,6 +128,7 @@ This branch is currently validated on Windows with the `NMake Makefiles` generat
 
 + `-DINSTALL_QT5=OFF` builds the command-line dependency stack only. Set `-DINSTALL_QT5=ON` if you also want Qt 5 and EBSDLib.
 + Enabling Qt will trigger a very large Qt download during the first configure.
++ If CUDA is installed in a non-default location, set `-DNVIDIA_CUDA_DIR=<path>` and `-DNVIDIA_CUDA_DEV_VERSION=12.9`.
 + The developer can also use CMake GUI. The required variables are `EMsoftOO_SDK` and `CMAKE_BUILD_TYPE`.
 
 Once the SDK builds correctly, no errors are reported on the command line, then the developer can proceed to clone and build EMsoft itself.

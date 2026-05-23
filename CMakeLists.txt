@@ -15,7 +15,7 @@ if(WIN32)
   message(STATUS "**************************************************************************")
   message(STATUS "* Platform: Windows")
   message(STATUS "* ONLY NVidia GPUs are supported on Windows platforms. Please ensure that")
-  message(STATUS "* the NVidia GPU computing toolkit version 10.0 is installed on your")
+  message(STATUS "* the NVidia GPU computing toolkit version 10.0 or newer is installed on your")
   message(STATUS "* computer before trying to compile EMsoft.")
   message(STATUS "**************************************************************************")
 
