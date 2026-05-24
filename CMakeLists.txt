@@ -15,7 +15,7 @@ if(WIN32)
   message(STATUS "**************************************************************************")
   message(STATUS "* Platform: Windows")
   message(STATUS "* ONLY NVidia GPUs are supported on Windows platforms. Please ensure that")
-  message(STATUS "* the NVidia GPU computing toolkit version 10.0 is installed on your")
+  message(STATUS "* the NVidia GPU computing toolkit version 10.0 or newer is installed on your")
   message(STATUS "* computer before trying to compile EMsoft.")
   message(STATUS "**************************************************************************")
 
@@ -187,13 +187,21 @@ FILE(APPEND ${EMsoftOO_SDK_FILE} "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)\n")
 #------------------------------------------------------------------------------
 # Get the name of the Fortran compiler for easier decisions
 get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
+set(EMSOFTOO_FORTRAN_IS_GNU OFF)
+set(EMSOFTOO_FORTRAN_IS_INTEL OFF)
+
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR Fortran_COMPILER_NAME MATCHES "gfortran.*")
+  set(EMSOFTOO_FORTRAN_IS_GNU ON)
+elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel" OR Fortran_COMPILER_NAME MATCHES "ifort.*" OR Fortran_COMPILER_NAME MATCHES "ifx.*")
+  set(EMSOFTOO_FORTRAN_IS_INTEL ON)
+endif()
 
 #------------------------------------------------------------------------------
 # On Windows we are going to use Intel MKL with the FFTW interface so we do not
 # need to install FFTW3
-if(${Fortran_COMPILER_NAME} MATCHES "gfortran.*")
+if(EMSOFTOO_FORTRAN_IS_GNU)
   include(FFTW)
-elseif (${Fortran_COMPILER_NAME} MATCHES "ifort.*")
+elseif(EMSOFTOO_FORTRAN_IS_INTEL)
   set(OSX_DEPLOYMENT_TARGET "10.13")
   include(MKL)
 else()
